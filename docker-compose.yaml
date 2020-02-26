@@ -1,0 +1,35 @@
+version: "2"
+services:
+  cc_gateway:
+    image: chaincode_gateway:node_v2
+    build:
+      context: ./
+    ports:
+      - 4000:4000
+    volumes:
+      - /var/hyperledger/cc_gateway/crypto:/usr/src/app/crypto
+      - /var/hyperledger/cc_gateway/fabric-client-wallet:/usr/src/app/fabric-client-kv-org1
+    container_name: cc_gateway
+    network_mode: host
+
+  c_advisor:
+    container_name: c_advisor
+    image: google/cadvisor:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    network_mode: host
+
+  fabric_health:
+    image: fabric_health:node
+    build:
+      context: ./fabric_health
+    ports:
+      - 9091:9091
+    container_name: fabric_health
+    network_mode: host
