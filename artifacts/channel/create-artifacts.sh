@@ -23,4 +23,4 @@ configtxgen -profile OrdererGenesis -channelID $SYS_CHANNEL  -outputBlock ./gene
 
 
 # Generate channel configuration block
-configtxgen -profile BasicChannel -outputCreateChannelTx ./channel.tx -channelID $CHANNEL_NAME
+configtxgen -profile BasicChannel -outputCreateChannelTx ./mychannel.tx -channelID $CHANNEL_NAME
