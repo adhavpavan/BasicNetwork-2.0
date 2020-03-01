@@ -106,7 +106,7 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-artifacts/channel/channel.tx
+artifacts/channel/mychannel.tx
 artifacts/channel/genesis.block
 artifacts/channel/Org1MSPanchors.tx
 artifacts/channel/Org2MSPanchors.tx
@@ -118,3 +118,4 @@ crypto/*
 artifacts/src/github.com/golang
 artifacts/src/github.com/pkg
 artifacts/src/github.com/hyperledger
+channel-artifacts/*
