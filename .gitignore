@@ -121,3 +121,5 @@ artifacts/src/github.com/hyperledger
 channel-artifacts/*
 artifacts/src/github.com/fabcar/go/vendor
 artifacts/src/github.com/fabcar/go/go.sum
+crypto/fabric-client-kv-org1
+fabcar.tar.gz
