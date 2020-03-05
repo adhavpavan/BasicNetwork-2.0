@@ -2,10 +2,7 @@ export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 export PEER0_ORG1_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 export PEER0_ORG2_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
-# export FABRIC_CFG_PATH=${PWD}/artifacts/channel
 export FABRIC_CFG_PATH=${PWD}/artifacts/channel/config/
-# echo $ORDERER_CA
-echo $FABRIC_CFG_PATH
 
 export CHANNEL_NAME=mychannel
 

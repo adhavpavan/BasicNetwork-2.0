@@ -1,0 +1,9 @@
+1)  This is an implicit meta policy, it will trigger other policy evaluations, whose failures may be benign
+2020-03-04 17:29:39.341 UTC [policies] func1 -> DEBU 1fa26 Evaluation Failed: Only 0 policies were satisfied, but needed 2 of [ Org1MSP/Endorsement Org2MSP/Endorsement ]
+2020-03-04 17:29:39.341 UTC [policies] EvaluateSignedData -> DEBU 1fa27 Signature set did not satisfy policy /Channel/Application/LifecycleEndorsement
+2020-03-04 17:29:39.341 UTC [policies] EvaluateSignedData -> DEBU 1fa28 == Done Evaluating *policies.ImplicitMetaPolicy Policy /Channel/Application/LifecycleEndorsement
+2020-03-04 17:29:39.341 UTC [vscc] Validate -> ERRO 1fa29 VSCC error: stateBasedValidator.Validate failed, err validation of endorsement policy for chaincode _lifecycle in tx 8:0 failed: implicit policy evaluation failed - 0 sub-policies were satisfied, but this policy requires 2 of the 'Endorsement' sub-policies to be satisfied
+
+
+
+

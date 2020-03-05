@@ -1,0 +1,142 @@
+pavan@pavan-ThinkPad-X1-Carbon-3rd:~/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network$ ./network.sh deployCC
+deploying chaincode on channel 'mychannel'
+
+Vendoring Go dependencies ...
+~/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/chaincode/fabcar/go ~/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network
+~/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network
+Finished vendoring Go dependencies
+++ peer lifecycle chaincode package fabcar.tar.gz --path ../chaincode/fabcar/go/ --lang golang --label fabcar_1
+++ res=0
+++ set +x
+===================== Chaincode is packaged on peer0.org1 ===================== 
+
+Installing chaincode on peer0.org1...
+++ peer lifecycle chaincode install fabcar.tar.gz
+++ res=0
+++ set +x
+2020-03-04 22:01:39.509 IST [cli.lifecycle.chaincode] submitInstallProposal -> INFO 001 Installed remotely: response:<status:200 payload:"\nIfabcar_1:2d71a524a4321e87c0019f4113e8ddf0d4172ffdd3b0d74fef7946829f9f27e9\022\010fabcar_1" > 
+2020-03-04 22:01:39.509 IST [cli.lifecycle.chaincode] submitInstallProposal -> INFO 002 Chaincode code package identifier: fabcar_1:2d71a524a4321e87c0019f4113e8ddf0d4172ffdd3b0d74fef7946829f9f27e9
+===================== Chaincode is installed on peer0.org1 ===================== 
+
+Install chaincode on peer0.org2...
+++ peer lifecycle chaincode install fabcar.tar.gz
+++ res=0
+++ set +x
+2020-03-04 22:01:52.405 IST [cli.lifecycle.chaincode] submitInstallProposal -> INFO 001 Installed remotely: response:<status:200 payload:"\nIfabcar_1:2d71a524a4321e87c0019f4113e8ddf0d4172ffdd3b0d74fef7946829f9f27e9\022\010fabcar_1" > 
+2020-03-04 22:01:52.405 IST [cli.lifecycle.chaincode] submitInstallProposal -> INFO 002 Chaincode code package identifier: fabcar_1:2d71a524a4321e87c0019f4113e8ddf0d4172ffdd3b0d74fef7946829f9f27e9
+===================== Chaincode is installed on peer0.org2 ===================== 
+
+++ peer lifecycle chaincode queryinstalled
+++ res=0
+++ set +x
+Installed chaincodes on peer:
+Package ID: fabcar_1:2d71a524a4321e87c0019f4113e8ddf0d4172ffdd3b0d74fef7946829f9f27e9, Label: fabcar_1
+PackageID is fabcar_1:2d71a524a4321e87c0019f4113e8ddf0d4172ffdd3b0d74fef7946829f9f27e9
+===================== Query installed successful on peer0.org1 on channel ===================== 
+
+++ peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --channelID mychannel --name fabcar --version 1 --init-required --package-id fabcar_1:2d71a524a4321e87c0019f4113e8ddf0d4172ffdd3b0d74fef7946829f9f27e9 --sequence 1
+++ set +x
+2020-03-04 22:01:54.628 IST [chaincodeCmd] ClientWait -> INFO 001 txid [17126c277e0609d4e811ed2347beba87019f4960d37ba78e1355b889fa9c85d3] committed with status (VALID) at 
+===================== Chaincode definition approved on peer0.org1 on channel 'mychannel' ===================== 
+
+===================== Checking the commit readiness of the chaincode definition on peer0.org1 on channel 'mychannel'... ===================== 
+Attempting to check the commit readiness of the chaincode definition on peer0.org1 secs
+++ peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name fabcar --version 1 --sequence 1 --output json --init-required
+++ res=0
+++ set +x
+{
+	"approvals": {
+		"Org1MSP": true,
+		"Org2MSP": false
+	}
+}
+===================== Checking the commit readiness of the chaincode definition successful on peer0.org1 on channel 'mychannel' ===================== 
+===================== Checking the commit readiness of the chaincode definition on peer0.org2 on channel 'mychannel'... ===================== 
+Attempting to check the commit readiness of the chaincode definition on peer0.org2 secs
+++ peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name fabcar --version 1 --sequence 1 --output json --init-required
+++ res=0
+++ set +x
+{
+	"approvals": {
+		"Org1MSP": true,
+		"Org2MSP": false
+	}
+}
+===================== Checking the commit readiness of the chaincode definition successful on peer0.org2 on channel 'mychannel' ===================== 
+++ peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --channelID mychannel --name fabcar --version 1 --init-required --package-id fabcar_1:2d71a524a4321e87c0019f4113e8ddf0d4172ffdd3b0d74fef7946829f9f27e9 --sequence 1
+++ set +x
+2020-03-04 22:02:02.909 IST [chaincodeCmd] ClientWait -> INFO 001 txid [f505a21bea25676be36cc9f716f7a666046e9994b11ca97a30297d3d999a6699] committed with status (VALID) at 
+===================== Chaincode definition approved on peer0.org2 on channel 'mychannel' ===================== 
+
+===================== Checking the commit readiness of the chaincode definition on peer0.org1 on channel 'mychannel'... ===================== 
+Attempting to check the commit readiness of the chaincode definition on peer0.org1 secs
+++ peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name fabcar --version 1 --sequence 1 --output json --init-required
+++ res=0
+++ set +x
+{
+	"approvals": {
+		"Org1MSP": true,
+		"Org2MSP": true
+	}
+}
+===================== Checking the commit readiness of the chaincode definition successful on peer0.org1 on channel 'mychannel' ===================== 
+===================== Checking the commit readiness of the chaincode definition on peer0.org2 on channel 'mychannel'... ===================== 
+Attempting to check the commit readiness of the chaincode definition on peer0.org2 secs
+++ peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name fabcar --version 1 --sequence 1 --output json --init-required
+++ res=0
+++ set +x
+{
+	"approvals": {
+		"Org1MSP": true,
+		"Org2MSP": true
+	}
+}
+===================== Checking the commit readiness of the chaincode definition successful on peer0.org2 on channel 'mychannel' ===================== 
+++ peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --channelID mychannel --name fabcar --peerAddresses localhost:7051 --tlsRootCertFiles /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt --version 1 --sequence 1 --init-required
+++ res=0
+++ set +x
+2020-03-04 22:02:11.517 IST [chaincodeCmd] ClientWait -> INFO 001 txid [69f3998dd3b992abbc09ec5a6791a160b85d9054f7171d85314cf6c2ee4fbb39] committed with status (VALID) at localhost:9051
+2020-03-04 22:02:11.667 IST [chaincodeCmd] ClientWait -> INFO 002 txid [69f3998dd3b992abbc09ec5a6791a160b85d9054f7171d85314cf6c2ee4fbb39] committed with status (VALID) at localhost:7051
+===================== Chaincode definition committed on channel 'mychannel' ===================== 
+
+===================== Querying chaincode definition on peer0.org1 on channel 'mychannel'... ===================== 
+Attempting to Query committed status on peer0.org1, Retry after 3 seconds.
+++ peer lifecycle chaincode querycommitted --channelID mychannel --name fabcar
+++ res=0
+++ set +x
+
+Committed chaincode definition for chaincode 'fabcar' on channel 'mychannel':
+Version: 1, Sequence: 1, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [Org1MSP: true, Org2MSP: true]
+===================== Query chaincode definition successful on peer0.org1 on channel 'mychannel' ===================== 
+
+===================== Querying chaincode definition on peer0.org2 on channel 'mychannel'... ===================== 
+Attempting to Query committed status on peer0.org2, Retry after 3 seconds.
+++ peer lifecycle chaincode querycommitted --channelID mychannel --name fabcar
+++ res=0
+++ set +x
+
+Committed chaincode definition for chaincode 'fabcar' on channel 'mychannel':
+Version: 1, Sequence: 1, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [Org1MSP: true, Org2MSP: true]
+===================== Query chaincode definition successful on peer0.org2 on channel 'mychannel' ===================== 
+
+++ peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt --isInit -c '{"function":"initLedger","Args":[]}'
+++ res=0
+++ set +x
+2020-03-04 22:02:17.877 IST [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 
+===================== Invoke transaction successful on peer0.org1 peer0.org2 on channel 'mychannel' ===================== 
+
+++ peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls true --cafile /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles /home/pavan/Music/BlockchainCourse/fabric-sample_2.0/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}'
+++ res=0
+++ set +x
+2020-03-04 22:02:27.962 IST [chaincodeCmd] chaincodeInvokeOrQuery -> INFO 001 Chaincode invoke successful. result: status:200 
+===================== Invoke transaction successful on peer0.org1 peer0.org2 on channel 'mychannel' ===================== 
+
+Querying chaincode on peer0.org1...
+===================== Querying on peer0.org1 on channel 'mychannel'... ===================== 
+Attempting to Query peer0.org1 ...1583339550 secs
+++ peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryAllCars"]}'
+++ res=0
+++ set +x
+
+[{"Key":"CAR0","Record":{"make":"Toyota","model":"Prius","colour":"blue","owner":"Tomoko"}},{"Key":"CAR1","Record":{"make":"Ford","model":"Mustang","colour":"red","owner":"Brad"}},{"Key":"CAR2","Record":{"make":"Hyundai","model":"Tucson","colour":"green","owner":"Jin Soo"}},{"Key":"CAR3","Record":{"make":"Volkswagen","model":"Passat","colour":"yellow","owner":"Max"}},{"Key":"CAR4","Record":{"make":"Tesla","model":"S","colour":"black","owner":"Adriana"}},{"Key":"CAR5","Record":{"make":"Peugeot","model":"205","colour":"purple","owner":"Michel"}},{"Key":"CAR6","Record":{"make":"Chery","model":"S22L","colour":"white","owner":"Aarav"}},{"Key":"CAR7","Record":{"make":"Fiat","model":"Punto","colour":"violet","owner":"Pari"}},{"Key":"CAR8","Record":{"make":"Tata","model":"Nano","colour":"indigo","owner":"Valeria"}},{"Key":"CAR9","Record":{"make":"Holden","model":"Barina","colour":"brown","owner":"Shotaro"}}]
+===================== Query successful on peer0.org1 on channel 'mychannel' ===================== 
