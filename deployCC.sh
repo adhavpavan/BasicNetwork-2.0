@@ -86,7 +86,7 @@ installChaincode(){
 # installChaincode
 
 queryInstalled(){
-    setGlobalsForPeer1Org1
+    setGlobalsForPeer0Org1
     peer lifecycle chaincode queryinstalled >&log.txt
     cat log.txt
     PACKAGE_ID=$(sed -n "/fabcar_${VERSION}/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
@@ -97,20 +97,20 @@ queryInstalled(){
 }
 queryInstalled
 
-# approveForMyOrg1(){
-#     setGlobalsForPeer0Org1
-#     peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name fabcar --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${VERSION}
-#     echo "===================== chaincode approved from org 1 ===================== "
-    
-# }
-
-
 approveForMyOrg1(){
-    setGlobalsForPeer1Org1
-    peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name fabcar --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${VERSION} 
+    setGlobalsForPeer0Org1
+    peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name fabcar --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${VERSION}
     echo "===================== chaincode approved from org 1 ===================== "
     
 }
+approveForMyOrg1
+
+# approveForMyOrg1(){
+#     setGlobalsForPeer1Org1
+#     peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name fabcar --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${VERSION} 
+#     echo "===================== chaincode approved from org 1 ===================== "
+    
+# }
 
 # approveForMyOrg1
 
@@ -152,7 +152,7 @@ checkCommitReadyness(){
     peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA --name fabcar  --version ${VERSION} --sequence ${VERSION} --output json --init-required
     echo "===================== checking commit readyness from org 2 ===================== "
 }
-checkCommitReadyness
+# checkCommitReadyness
 
 commitChaincodeDefination(){
     # setGlobalsForPeer0Org1

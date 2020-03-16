@@ -53,7 +53,7 @@ services:
       - FABRIC_LOGGING_SPEC=DEBUG
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
-      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       - ORDERER_GENERAL_TLS_ENABLED=true
@@ -73,7 +73,7 @@ services:
     # networks:
     #     - test
     volumes:
-      - ./channel/genesis.block:/var/hyperledger/orderer/genesis.block
+      - ./channel/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
       - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
       - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls:/var/hyperledger/orderer/tls
 
@@ -185,7 +185,7 @@ services:
       file: base.yaml
       service: peer-base
     environment:
-      - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=DEBUG
       - ORDERER_GENERAL_LOGLEVEL=debug
       - CORE_PEER_LOCALMSPID=Org1MSP
 
@@ -329,31 +329,3 @@ services:
       - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
       - ./channel/:/etc/hyperledger/channel/
-
-  # cli:
-  #   container_name: cli
-  #   image: hyperledger/fabric-tools
-  #   tty: true
-  #   environment:
-  #     - GOPATH=/opt/gopath
-  #     - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-  #     - CORE_LOGGING_LEVEL=DEBUG
-  #     - CORE_PEER_ID=cli
-  #     - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-  #     - CORE_PEER_LOCALMSPID=Org1MSP
-  #     # - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/Org1MSP
-
-  #     - CORE_PEER_TLS_ENABLED=true
-  #     - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
-  #     - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
-  #     - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-
-  #     - CORE_CHAINCODE_KEEPALIVE=10
-  #   working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-  #   command: /bin/bash
-  #   volumes:
-  #     - /var/run/:/host/var/run/
-  #     - ./src/github.com:/opt/gopath/src/github.com/
-  #     - ./channel/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-  #     - ./channel/:/etc/hyperledger/channel/
