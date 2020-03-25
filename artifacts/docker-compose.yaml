@@ -26,6 +26,8 @@ services:
       - ./channel/crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
       - ./channel/crypto-config/peerOrganizations/org1.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
     container_name: ca.org1.example.com
+    networks:
+      - test
 
   ca-org2:
     image: hyperledger/fabric-ca
@@ -44,16 +46,18 @@ services:
       - ./channel/crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
       - ./channel/crypto-config/peerOrganizations/org2.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
     container_name: ca.org2.example.com
+    networks:
+      - test
 
   orderer.example.com:
     container_name: orderer.example.com
     image: hyperledger/fabric-orderer
     environment:
-      - ORDERER_GENERAL_LOGLEVEL=debug
-      - FABRIC_LOGGING_SPEC=DEBUG
+      - ORDERER_GENERAL_LOGLEVEL=info
+      - FABRIC_LOGGING_SPEC=INFO
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
-      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       - ORDERER_GENERAL_TLS_ENABLED=true
@@ -70,10 +74,10 @@ services:
     ports:
       - 7050:7050
       - 8443:8443
-    # networks:
-    #     - test
+    networks:
+        - test
     volumes:
-      - ./channel/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./channel/genesis.block:/var/hyperledger/orderer/genesis.block
       - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
       - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls:/var/hyperledger/orderer/tls
 
@@ -151,6 +155,8 @@ services:
       - COUCHDB_PASSWORD=
     ports:
       - 5984:5984
+    networks:
+      - test
 
   couchdb1:
     container_name: couchdb1
@@ -160,6 +166,8 @@ services:
       - COUCHDB_PASSWORD=
     ports:
       - 6984:5984
+    networks:
+      - test
 
   couchdb2:
     container_name: couchdb2
@@ -169,6 +177,8 @@ services:
       - COUCHDB_PASSWORD=
     ports:
       - 7984:5984
+    networks:
+      - test
 
   couchdb3:
     container_name: couchdb3
@@ -178,6 +188,8 @@ services:
       - COUCHDB_PASSWORD=
     ports:
       - 8984:5984
+    networks:
+      - test
 
   peer0.org1.example.com:
     container_name: peer0.org1.example.com
@@ -186,11 +198,14 @@ services:
       service: peer-base
     environment:
       - FABRIC_LOGGING_SPEC=DEBUG
-      - ORDERER_GENERAL_LOGLEVEL=debug
+      - ORDERER_GENERAL_LOGLEVEL=DEBUG
       - CORE_PEER_LOCALMSPID=Org1MSP
+      
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
 
       - CORE_PEER_ID=peer0.org1.example.com
       - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      # - CORE_PEER_ADDRESS=localhost:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
       - CORE_PEER_CHAINCODEADDRESS=peer0.org1.example.com:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
@@ -208,7 +223,7 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
     depends_on:
       - couchdb0
     ports:
@@ -218,6 +233,8 @@ services:
       - ./channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
       - ./channel/:/etc/hyperledger/channel/
+    networks:
+    - test
 
   peer1.org1.example.com:
     container_name: peer1.org1.example.com
@@ -228,6 +245,8 @@ services:
       - FABRIC_LOGGING_SPEC=DEBUG
       - ORDERER_GENERAL_LOGLEVEL=debug
       - CORE_PEER_LOCALMSPID=Org1MSP
+
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
 
       - CORE_PEER_ID=peer1.org1.example.com
       - CORE_PEER_ADDRESS=peer1.org1.example.com:8051
@@ -247,7 +266,7 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
     ports:
       - 8051:8051
     volumes:
@@ -255,6 +274,8 @@ services:
       - ./channel/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
       - ./channel/:/etc/hyperledger/channel/
+    networks:
+    - test
 
   peer0.org2.example.com:
     container_name: peer0.org2.example.com
@@ -265,6 +286,8 @@ services:
       - FABRIC_LOGGING_SPEC=DEBUG
       - ORDERER_GENERAL_LOGLEVEL=debug
       - CORE_PEER_LOCALMSPID=Org2MSP
+
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
 
       - CORE_PEER_ID=peer0.org2.example.com
       - CORE_PEER_ADDRESS=peer0.org2.example.com:9051
@@ -284,7 +307,7 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
     ports:
       - 9051:9051
     volumes:
@@ -292,6 +315,8 @@ services:
       - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
       - ./channel/:/etc/hyperledger/channel/
+    networks:
+    - test
 
   peer1.org2.example.com:
     container_name: peer1.org2.example.com
@@ -302,6 +327,8 @@ services:
       - FABRIC_LOGGING_SPEC=DEBUG
       - ORDERER_GENERAL_LOGLEVEL=debug
       - CORE_PEER_LOCALMSPID=Org2MSP
+
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=artifacts_test
       
       - CORE_PEER_ID=peer1.org2.example.com
       - CORE_PEER_ADDRESS=peer1.org2.example.com:10051
@@ -321,7 +348,7 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
     ports:
       - 10051:10051
     volumes:
@@ -329,3 +356,5 @@ services:
       - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
       - ./channel/:/etc/hyperledger/channel/
+    networks:
+    - test

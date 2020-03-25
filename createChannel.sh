@@ -45,6 +45,7 @@ setGlobalsForPeer1Org2(){
 }
 
 createChannel(){
+    rm -rf ./channel-artifacts/*
     setGlobalsForPeer0Org1
 
     peer channel create -o localhost:7050 -c $CHANNEL_NAME --ordererTLSHostnameOverride orderer.example.com -f ./artifacts/channel/${CHANNEL_NAME}.tx --outputBlock ./channel-artifacts/${CHANNEL_NAME}.block --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA

@@ -6,4 +6,20 @@
 
 
 
+ SignatureSetToValidIdentities -> DEBU 197cb signature for identity 0 validated
+2020-03-21 14:25:18.955 UTC [cauthdsl] func1 -> DEBU 197cc 0xc0037051e0 gate 1584800718955906071 evaluation starts
+2020-03-21 14:25:18.955 UTC [cauthdsl] func2 -> DEBU 197cd 0xc0037051e0 signed by 0 principal evaluation starts (used [false])
+2020-03-21 14:25:18.955 UTC [cauthdsl] func2 -> DEBU 197ce 0xc0037051e0 processing identity 0 - &{Org1MSP de5277a3bd083eb980a95cf6c9d81b0bc4d0921cea5623f3fac8f9dbc47c8e52}
+2020-03-21 14:25:18.956 UTC [cauthdsl] func2 -> DEBU 197cf 0xc0037051e0 identity 0 does not satisfy principal: The identity is not a [PEER] under this MSP [Org1MSP]: The identity does not contain OU [PEER], MSP: [Org1MSP]
+2020-03-21 14:25:18.956 UTC [cauthdsl] func2 -> DEBU 197d0 0xc0037051e0 principal evaluation fails
+2020-03-21 14:25:18.956 UTC [cauthdsl] func1 -> DEBU 197d1 0xc0037051e0 gate 1584800718955906071 evaluation fails
+2020-03-21 14:25:18.956 UTC [policies] EvaluateSignedData -> DEBU 197d2 Signature set did not satisfy policy /Channel/Application/Org1MSP/Endorsement
+2020-03-21 14:25:18.956 UTC [policies] EvaluateSignedData -> DEBU 197d3 == Done Evaluating *cauthdsl.policy Policy /Channel/Application/Org1MSP/Endorsement
+2020-03-21 14:25:18.956 UTC [vscc] Validate -> ERRO 197d4 VSCC error: stateBasedValidator.Validate failed, err validation of endorsement policy for collection _implicit_org_Org1MSP chaincode _lifecycle in tx 5:0 failed: signature set did not satisfy policy
+2020-03-21 14:25:18.956 UTC [vscc] Validate -> DEBU 197d5 block 5, namespace: _lifecycle, tx 0 validation results is: validation of endorsement policy for collection _implicit_org_Org1MSP chaincode _lifecycle in tx 5:0 failed: signature set did not satisfy policy
+2020-03-21 14:25:18.956 UTC [committer.txvalidator] ValidateWithPlugin -> DEBU 197d6 Transaction d9e72b6f403fc140effb5ac7c8c276a804ed859f4b3dd3f38b2b8676d5430f05 appears to be invalid: validation of endorsement policy for collection _implicit_org_Org1MSP chaincode _lifecycle in tx 5:0 failed: signature set did not satisfy policy
+2020-03-21 14:25:18.956 UTC [committer.txvalidator] validateTx -> ERRO 197d7 Dispatch for transaction txId = d9e72b6f403fc140effb5ac7c8c276a804ed859f4b3dd3f38b2b8676d5430f05 returned error: validation of endorsement policy for collection _implicit_org_Org1MSP chaincode _lifecycle in tx 5:0 failed: signature set did not satisfy policy
 
+
+
+Error starting fabcar chaincode: connection error: desc = "transport: error while dialing: dial tcp: lookup peer0.org1.example.com on 127.0.0.11:53: no such host"
