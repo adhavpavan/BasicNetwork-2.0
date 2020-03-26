@@ -332,6 +332,7 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req
 app.get('/channels/:channelName/chaincodes/:chaincodeName', async function (req, res) {
 	try {
 		logger.debug('==================== QUERY BY CHAINCODE ==================');
+
 		var channelName = req.params.channelName;
 		var chaincodeName = req.params.chaincodeName;
 		let args = req.query.args;

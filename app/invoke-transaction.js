@@ -101,34 +101,6 @@ var invokeChaincode = async function (peerNames, channelName, chaincodeName, fcn
 						logger.info('Transaction %s has status of %s in blocl %s', tx, code, block_num);
 						logger.debug('Getting transaction for transaction ID %s', tx)
 
-
-						let response_payload = await channel.queryTransaction(tx, "peer0.org1.example.com");
-						if (response_payload) {
-							logger.debug("Logging response payload", response_payload);
-							logger.debug(util.inspect(response_payload, false, null, true))
-
-							let config = {
-								headers: {
-									'Content-Type': 'application/json'
-								}
-							}
-
-							axios.post(apiServerEndPoint, response_payload, config)
-								.then((res) => {
-									logger.debug("Logging response payload")
-									logger.debug(res)
-								})
-								.catch(err => {
-									logger.error(err.message)
-								});
-
-						} else {
-							logger.error('response_payload is null');
-							logger.info('response_payload is null')
-						}
-
-
-
 						clearTimeout(event_timeout);
 
 						if (code !== 'VALID') {
