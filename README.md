@@ -304,29 +304,3 @@ docker rm -f $(docker ps -aq)
 docker rmi -f $(docker images | grep dev | awk '{print $3}')
 rm -rf fabric-client-kv-org[1-2]
 ```
-
-### Network configuration considerations
-
-You have the ability to change configuration parameters by either directly editing the network-config.yaml file or provide an additional file for an alternative target network. The app uses an optional environment variable "TARGET_NETWORK" to control the configuration files to use. For example, if you deployed the target network on Amazon Web Services EC2, you can add a file "network-config-aws.yaml", and set the "TARGET_NETWORK" environment to 'aws'. The app will pick up the settings inside the "network-config-aws.yaml" file.
-
-#### IP Address** and PORT information
-
-If you choose to customize your docker-compose yaml file by hardcoding IP Addresses and PORT information for your peers and orderer, then you MUST also add the identical values into the network-config.yaml file. The url and eventUrl settings will need to be adjusted to match your docker-compose yaml file.
-
-```
-peer1.org1.example.com:
-  url: grpcs://x.x.x.x:7056
-  eventUrl: grpcs://x.x.x.x:7058
-
-```
-
-#### Discover IP Address
-
-To retrieve the IP Address for one of your network entities, issue the following command:
-
-```
-# this will return the IP Address for peer0
-docker inspect peer0 | grep IPAddress
-```
-
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
