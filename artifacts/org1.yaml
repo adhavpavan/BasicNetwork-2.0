@@ -4,7 +4,7 @@
 # blockchain network that are necessary for the applications to interact with it. These are all
 # knowledge that must be acquired from out-of-band sources. This file provides such a source.
 #
-name: "balance-transfer-org1"
+name: "basic-network-org1"
 
 #
 # Any properties with an "x-" prefix will be treated as application-specific, exactly like how naming
@@ -19,7 +19,7 @@ x-type: "hlfv1"
 #
 # Describe what the target network is/does.
 #
-description: "Balance Transfer Network - client definition for Org1"
+description: "Basic Network - client definition for Org1"
 
 #
 # Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
