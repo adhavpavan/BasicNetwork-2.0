@@ -1,3 +1,4 @@
-docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+docker stop $(docker ps -aq) 
+# docker rm $(docker ps -aq)
 
-docker rmi $(docker iamges | grep dev)
+docker rmi $(docker images | grep dev)

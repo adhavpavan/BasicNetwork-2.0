@@ -68,24 +68,27 @@ packageChaincode(){
     --label ${CC_NAME}_${VERSION}
     echo "===================== Chaincode is packaged on peer0.org1 ===================== "
 }
+# packageChaincode
 
 installChaincode(){
     setGlobalsForPeer0Org1
     peer lifecycle chaincode install ${CC_NAME}.tar.gz
     echo "===================== Chaincode is installed on peer0.org1 ===================== "
     
-    setGlobalsForPeer1Org1
-    peer lifecycle chaincode install ${CC_NAME}.tar.gz
-    echo "===================== Chaincode is installed on peer1.org1 ===================== "
+    # setGlobalsForPeer1Org1
+    # peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    # echo "===================== Chaincode is installed on peer1.org1 ===================== "
     
     setGlobalsForPeer0Org2
     peer lifecycle chaincode install ${CC_NAME}.tar.gz
     echo "===================== Chaincode is installed on peer0.org2 ===================== "
     
-    setGlobalsForPeer1Org2
-    peer lifecycle chaincode install ${CC_NAME}.tar.gz
-    echo "===================== Chaincode is installed on peer1.org2 ===================== "
+    # setGlobalsForPeer1Org2
+    # peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    # echo "===================== Chaincode is installed on peer1.org2 ===================== "
 }
+
+# installChaincode
 
 queryInstalled(){
     setGlobalsForPeer0Org1
@@ -95,6 +98,8 @@ queryInstalled(){
     echo PackageID is ${PACKAGE_ID}
     echo "===================== Query installed successful on peer0.org1 on channel ===================== "
 }
+
+# queryInstalled
 
 approveForMyOrg1(){
     setGlobalsForPeer0Org1
@@ -107,6 +112,8 @@ approveForMyOrg1(){
     echo "===================== chaincode approved from org 1 ===================== "
     
 }
+
+# approveForMyOrg1
 
 # --signature-policy "OR ('Org1MSP.member')"
 # --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA
@@ -123,6 +130,8 @@ checkCommitReadyness(){
     echo "===================== checking commit readyness from org 1 ===================== "
 }
 
+# checkCommitReadyness
+
 approveForMyOrg2(){
     setGlobalsForPeer0Org2
 
@@ -135,6 +144,8 @@ approveForMyOrg2(){
     echo "===================== chaincode approved from org 2 ===================== "
 }
 
+# approveForMyOrg2
+
 checkCommitReadyness(){
     
     setGlobalsForPeer0Org1
@@ -142,13 +153,20 @@ checkCommitReadyness(){
     echo "===================== checking commit readyness from org 1 ===================== "
 }
 
+# checkCommitReadyness
+
 commitChaincodeDefination(){
     setGlobalsForPeer0Org1
-    set -x
-    peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED  --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA --version ${VERSION} --sequence ${VERSION} --init-required
-    set +x
+    peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
+    --tls $CORE_PEER_TLS_ENABLED  --cafile $ORDERER_CA \
+    --channelID $CHANNEL_NAME --name ${CC_NAME} \
+    --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+    --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+    --version ${VERSION} --sequence ${VERSION} --init-required
    
 }
+
+# commitChaincodeDefination
 
 queryCommitted(){
     setGlobalsForPeer0Org1
@@ -156,9 +174,17 @@ queryCommitted(){
     
 }
 
+# queryCommitted
+
 chaincodeInvokeInit(){
     setGlobalsForPeer0Org1
-    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA --isInit -c '{"Args":[]}'
+    peer chaincode invoke -o localhost:7050 \
+    --ordererTLSHostnameOverride orderer.example.com \
+    --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
+    -C $CHANNEL_NAME -n ${CC_NAME} \
+    --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+    --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+    --isInit -c '{"Args":[]}'
     
 }
 
@@ -166,11 +192,11 @@ chaincodeInvokeInit(){
 
 chaincodeInvoke(){
     # setGlobalsForPeer0Org1
-    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
-    --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} \
-    --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-    --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  \
-    -c '{"function":"initLedger","Args":[]}'
+    # peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
+    # --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} \
+    # --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+    # --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  \
+    # -c '{"function":"initLedger","Args":[]}'
     
     setGlobalsForPeer0Org1
 
@@ -191,11 +217,12 @@ chaincodeInvoke(){
         --tls $CORE_PEER_TLS_ENABLED \
         --cafile $ORDERER_CA \
         -C $CHANNEL_NAME -n ${CC_NAME}  \
-        --peerAddresses localhost:7051 \
-        --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA $PEER_CONN_PARMS  \
+        --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  \
         -c '{"function": "initLedger","Args":[]}'
 }
+
+# chaincodeInvoke
 
 chaincodeQuery(){
     setGlobalsForPeer1Org1
@@ -208,16 +235,18 @@ chaincodeQuery(){
     #'{"Args":["GetSampleData","Key1"]}'
 }
 
-# presetup
-# packageChaincode
-# installChaincode
-# queryInstalled
-# approveForMyOrg1
-# checkCommitReadyness
-# approveForMyOrg2
-# checkCommitReadyness
-# commitChaincodeDefination
-# queryCommitted
-# chaincodeInvokeInit
-# chaincodeInvoke
+# chaincodeQuery
+
+presetup
+packageChaincode
+installChaincode
+queryInstalled
+approveForMyOrg1
+checkCommitReadyness
+approveForMyOrg2
+checkCommitReadyness
+commitChaincodeDefination
+queryCommitted
+chaincodeInvokeInit
+chaincodeInvoke
 chaincodeQuery

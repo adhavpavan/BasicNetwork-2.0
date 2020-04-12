@@ -1,4 +1,4 @@
-module github.com/example_cc
+module github.com/fabcar/go
 
 go 1.13
 

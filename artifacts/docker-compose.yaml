@@ -47,6 +47,7 @@ services:
   orderer.example.com:
     container_name: orderer.example.com
     image: hyperledger/fabric-orderer
+    dns_search: .
     environment:
       - ORDERER_GENERAL_LOGLEVEL=info
       - FABRIC_LOGGING_SPEC=INFO
@@ -59,6 +60,7 @@ services:
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_VERBOSE=true
       - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
@@ -79,6 +81,7 @@ services:
   orderer2.example.com:
     container_name: orderer2.example.com
     image: hyperledger/fabric-orderer
+    dns_search: .
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - FABRIC_LOGGING_SPEC=DEBUG
@@ -91,6 +94,7 @@ services:
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_VERBOSE=true
       - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
@@ -101,8 +105,8 @@ services:
     ports:
       - 8050:7050
       - 8444:8443
-    # networks:
-    #     - test
+    networks:
+        - test
     volumes:
       - ./channel/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
       - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp:/var/hyperledger/orderer/msp
@@ -111,6 +115,7 @@ services:
   orderer3.example.com:
     container_name: orderer3.example.com
     image: hyperledger/fabric-orderer
+    dns_search: .
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - FABRIC_LOGGING_SPEC=DEBUG
@@ -123,6 +128,7 @@ services:
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_VERBOSE=true
       - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
@@ -133,8 +139,8 @@ services:
     ports:
       - 9050:7050
       - 8445:8443
-    # networks:
-    #     - test
+    networks:
+        - test
     volumes:
       - ./channel/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
       - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/msp:/var/hyperledger/orderer/msp
@@ -200,7 +206,6 @@ services:
 
       - CORE_PEER_ID=peer0.org1.example.com
       - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-      # - CORE_PEER_ADDRESS=localhost:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
       - CORE_PEER_CHAINCODEADDRESS=peer0.org1.example.com:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052

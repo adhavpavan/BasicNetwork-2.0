@@ -5,7 +5,7 @@ rm -rf ./crypto-config
 rm genesis.block mychannel.tx
 rm -rf ../../channel-artifacts/*
 
-# Generate Crypto artifactes for organizations
+#Generate Crypto artifactes for organizations
 cryptogen generate --config=./crypto-config.yaml --output=./crypto-config/
 
 
@@ -16,10 +16,7 @@ SYS_CHANNEL="sys-channel"
 # channel name defaults to "mychannel"
 CHANNEL_NAME="mychannel"
 
-echo "---------------------------------------------"
 echo $CHANNEL_NAME
-
-# export FABRIC_CFG_PATH=${PWD}/configtx
 
 # Generate System Genesis block
 configtxgen -profile OrdererGenesis -configPath . -channelID $SYS_CHANNEL  -outputBlock ./genesis.block
