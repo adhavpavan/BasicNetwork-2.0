@@ -1,0 +1,32 @@
+@base_url = http://localhost:4000
+# @bearer_token = Bearer
+
+@token = "Bearer your_token"
+
+GET {{base_url}}/users/znzH8BtW0cYqf3aVSrCB/departments
+Content-Type: application/json
+
+Authorization: token {{token}}
+
+###
+POST {{base_url}}/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@gmail.com",
+  "password": "12345678",
+  "organization_id": "1"
+}
+
+###
+
+POST {{base_url}}/users
+Content-Type: application/json
+
+{
+    "username": "Pavan",
+    "orgName": "Org1"
+}
+
+###
