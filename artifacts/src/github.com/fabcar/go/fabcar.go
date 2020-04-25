@@ -101,7 +101,7 @@ package main
 	 carAsBytes, _ := json.Marshal(car)
 	 APIstub.PutState(args[0], carAsBytes)
  
-	 return shim.Success(nil)
+	 return shim.Success(carAsBytes)
  }
  
  func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface) sc.Response {
@@ -162,7 +162,7 @@ package main
 	 carAsBytes, _ = json.Marshal(car)
 	 APIstub.PutState(args[0], carAsBytes)
  
-	 return shim.Success(nil)
+	 return shim.Success(carAsBytes)
  }
  
  // The main function is only relevant in unit test mode. Only included here for completeness.
