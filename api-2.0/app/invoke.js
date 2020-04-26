@@ -1,6 +1,3 @@
-// import { Gateway, Wallets, GatewayOptions, DefaultEventHandlerStrategies, TxEventHandlerFactory, TxEventHandler } from 'fabric-network'
-
-
 const { Gateway, Wallets, TxEventHandler, GatewayOptions, DefaultEventHandlerStrategies, TxEventHandlerFactory } = require('fabric-network');
 const fs = require('fs');
 const path = require("path")
@@ -36,48 +33,50 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
         }
 
         const connectOptions = {
-            transaction: {
-                strategy: DefaultEventHandlerStrategies.MSPID_SCOPE_ANYFORTX
-            }
-        }
-
-
-        // Create a new gateway for connecting to our peer node.
-        const gateway = new Gateway();
-        await gateway.connect(ccp, {
             wallet, identity: username, discovery: { enabled: true, asLocalhost: true },
             eventHandlerOptions: {
                 commitTimeout: 100,
                 strategy: DefaultEventHandlerStrategies.MSPID_SCOPE_ANYFORTX
             },
-        });
+        }
 
-        // await gateway.connect(ccp, { wallet, identity: username, connectOptions });
-
-        console.log(gateway)
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, connectOptions);
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork(channelName);
-
-        // Get the contract from the network.
         const contract = network.getContract(chaincodeName);
 
-        // Submit the specified transaction.
-        // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
-        // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
-        // await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
-        let result = await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4]);
-        let result = await contract.submitTransaction("changeCarOwner", "A", 'new Owner');
+        let result
+        let message;
+        if (fcn === "createCar") {
+            result = await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4]);
+            message = `Successfully added the car asset with key ${args[0]}`
 
-        // Disconnect from the gateway.
+        } else if (fcn === "changeCarOwner") {
+            result = await contract.submitTransaction(fcn, args[0], args[1]);
+            message = `Successfully changed car owner with key ${args[0]}`
+        } else {
+            return `Invocation require either createCar or changeCarOwner as function but got ${fcn}`
+        }
+
         await gateway.disconnect();
 
-        return result
+        result = JSON.parse(result.toString());
+
+        let response = {
+            message: message,
+            result
+        }
+
+        return response;
 
 
     } catch (error) {
 
         console.log(`Getting error: ${error}`)
+        return error.message
 
     }
 }

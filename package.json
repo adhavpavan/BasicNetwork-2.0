@@ -1,7 +1,7 @@
 {
   "name": "balance-transfer",
   "version": "1.0.0",
-  "description": "A balance-transfer example node program to demonstrate using node.js SDK APIs",
+  "description": "Basic Network node program to demonstrate using node.js SDK APIs",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"

@@ -1,4 +1,4 @@
-const { Gateway, Wallets, GatewayOptions, DefaultEventHandlerStrategies, TxEventHandlerFactory, TxEventHandler } = require('fabric-network');
+const { Gateway, Wallets, } = require('fabric-network');
 const fs = require('fs');
 const path = require("path")
 const log4js = require('log4js');
@@ -10,9 +10,6 @@ const helper = require('./helper')
 const query = async (channelName, chaincodeName, args, fcn, username, org_name) => {
 
     try {
-
-
-        logger.debug(util.format('\n============ Query transaction on channel %s ============\n', channelName));
 
         // load the network configuration
         const ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org1.json');
@@ -34,14 +31,6 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
             return;
         }
 
-        const connectOptions = {
-            transaction: {
-                strategy: DefaultEventHandlerStrategies.NETWORK_SCOPE_ANYFORTX
-            }
-        }
-
-
-        console.log(`Checking----------------------------------------------------`)
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
         await gateway.connect(ccp, {
@@ -54,14 +43,13 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
         // Get the contract from the network.
         const contract = network.getContract(chaincodeName);
 
-        console.log(`chaincode name is : ${chaincodeName}`)
-
-
-        const result = await contract.evaluateTransaction(fcn, args[0]);
+        let result = await contract.evaluateTransaction(fcn, args[0]);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        return result.toString()
+        result = JSON.parse(result.toString());
+        return result
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
+        return error.message
 
     }
 }

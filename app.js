@@ -43,20 +43,7 @@ var query = require('./app/query.js');
 var host = process.env.HOST || hfc.getConfigSetting('host');
 var port = process.env.PORT || hfc.getConfigSetting('port');
 
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////// PROMETHEUS METRICS CONFIGURATION /////////////
-///////////////////////////////////////////////////////////////////////////////
-const writeLatencyGauge = new prometheus.Gauge({ name: 'write_latency', help: 'latency for write requests' });
-const requestCountGauge = new prometheus.Gauge({ name: 'request_count', help: 'requests count' });
-const readLatencyGauge = new prometheus.Gauge({ name: 'read_latency', help: 'latency for read requests' });
-const queriesCountGauge = new prometheus.Gauge({ name: 'queries_count', help: 'queries count' });
-const totalTransaction = new prometheus.Gauge({ name: 'total_transaction', help: 'Counter for total transaction' })
-const failedTransaction = new prometheus.Gauge({ name: 'failed_transaction', help: 'Counter for failed transaction' })
-const successfulTransaction = new prometheus.Gauge({ name: 'successful_transaction', help: 'counter for successful transaction' })
 
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////// SET CONFIGURATONS ////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
 app.options('*', cors());
 app.use(cors());
 //support parsing of application/json type post data
