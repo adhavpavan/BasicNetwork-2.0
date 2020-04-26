@@ -126,3 +126,6 @@ fabcar.tar.gz
 artifacts/src/github.com/fabcar_contract_api/go/vendor
 artifacts/src/github.com/fabcar_contract_api/go/go.sum
 api-2.0/wallet
+api-1.4/crypto/org1
+api-1.4/fabric-client-kv-org1
+api-1.4/node_modules

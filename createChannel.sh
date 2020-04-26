@@ -14,7 +14,7 @@ setGlobalsForOrderer(){
 }
 
 setGlobalsForPeer0Org1(){
-    export CORE_PEER_LOCALMSPID="Org1MSP"  
+    export CORE_PEER_LOCALMSPID="Org1MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
     export CORE_PEER_ADDRESS=localhost:7051
@@ -47,8 +47,13 @@ setGlobalsForPeer1Org2(){
 createChannel(){
     rm -rf ./channel-artifacts/*
     setGlobalsForPeer0Org1
-
+    
     peer channel create -o localhost:7050 -c $CHANNEL_NAME --ordererTLSHostnameOverride orderer.example.com -f ./artifacts/channel/${CHANNEL_NAME}.tx --outputBlock ./channel-artifacts/${CHANNEL_NAME}.block --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
+}
+
+removeOldCrypto(){
+    rm -rf ./api-1.4/crypto/*
+    rm -rf ./api-1.4/fabric-client-kv-org1/*
 }
 
 
@@ -75,6 +80,8 @@ updateAnchorPeers(){
     peer channel update -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com -c $CHANNEL_NAME -f ./artifacts/channel/${CORE_PEER_LOCALMSPID}anchors.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
     
 }
+
+removeOldCrypto
 
 createChannel
 joinChannel

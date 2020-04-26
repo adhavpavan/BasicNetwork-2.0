@@ -5,6 +5,7 @@ package main
 	 "encoding/json"
 	 "fmt"
 	 "strconv"
+	 "time"
  
 	 "github.com/hyperledger/fabric-chaincode-go/shim"
 	sc "github.com/hyperledger/fabric-protos-go/peer"
@@ -49,6 +50,10 @@ package main
 		 return s.queryAllCars(APIstub)
 	 } else if function == "changeCarOwner" {
 		 return s.changeCarOwner(APIstub, args)
+	 } else if function == "getHistoryForAsset" {
+		 return s.getHistoryForAsset(APIstub, args)
+	 } else if function == "queryCarsByOwner" {
+		 return s.queryCarsByOwner(APIstub, args)
 	 }
  
 	 return shim.Error("Invalid Smart Contract function name.")
@@ -100,9 +105,75 @@ package main
  
 	 carAsBytes, _ := json.Marshal(car)
 	 APIstub.PutState(args[0], carAsBytes)
+
+
+	indexName := "owner~key"
+	colorNameIndexKey, err := APIstub.CreateCompositeKey(indexName, []string{car.Owner, args[0]})
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	value := []byte{0x00}
+	APIstub.PutState(colorNameIndexKey, value)
+
  
 	 return shim.Success(carAsBytes)
  }
+
+
+func (t *SmartContract) queryCarsByOwner(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments")
+	}
+	owner := args[0]
+
+	ownerAndIdResultIterator, err := APIstub.GetStateByPartialCompositeKey("owner~key", []string{owner})
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	defer ownerAndIdResultIterator.Close()
+
+	var i int
+	var id string
+
+	var cars []byte
+	bArrayMemberAlreadyWritten := false
+
+	cars = append([]byte("["))
+
+	for i = 0; ownerAndIdResultIterator.HasNext(); i++ {
+		responseRange, err := ownerAndIdResultIterator.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		objectType, compositeKeyParts, err := APIstub.SplitCompositeKey(responseRange.Key)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		id = compositeKeyParts[1]
+		assetAsBytes, err := APIstub.GetState(id)
+
+		if bArrayMemberAlreadyWritten == true {
+			newBytes := append([]byte(","), assetAsBytes...)
+			cars = append(cars, newBytes...)
+
+		} else {
+			// newBytes := append([]byte(","), carsAsBytes...)
+			cars = append(cars, assetAsBytes...)
+		}
+
+		fmt.Printf("Found a asset for index : %s asset id : ", objectType, compositeKeyParts[0], compositeKeyParts[1])
+		bArrayMemberAlreadyWritten = true
+
+	}
+
+	cars = append(cars, []byte("]")...)
+
+	return shim.Success(cars)
+}
  
  func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface) sc.Response {
  
@@ -164,6 +235,73 @@ package main
  
 	 return shim.Success(carAsBytes)
  }
+
+
+
+func (t *SmartContract) getHistoryForAsset(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) < 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	carName := args[0]
+
+
+	resultsIterator, err := stub.GetHistoryForKey(carName)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	defer resultsIterator.Close()
+
+	// buffer is a JSON array containing historic values for the marble
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+
+	bArrayMemberAlreadyWritten := false
+	for resultsIterator.HasNext() {
+		response, err := resultsIterator.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		// Add a comma before array members, suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"TxId\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(response.TxId)
+		buffer.WriteString("\"")
+
+		buffer.WriteString(", \"Value\":")
+		// if it was a delete operation on given key, then we need to set the
+		//corresponding value null. Else, we will write the response.Value
+		//as-is (as the Value itself a JSON marble)
+		if response.IsDelete {
+			buffer.WriteString("null")
+		} else {
+			buffer.WriteString(string(response.Value))
+		}
+
+		buffer.WriteString(", \"Timestamp\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
+		buffer.WriteString("\"")
+
+		buffer.WriteString(", \"IsDelete\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(strconv.FormatBool(response.IsDelete))
+		buffer.WriteString("\"")
+
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
+
+	fmt.Printf("- getHistoryForAsset returning:\n%s\n", buffer.String())
+
+	return shim.Success(buffer.Bytes())
+}
+
  
  // The main function is only relevant in unit test mode. Only included here for completeness.
  func main() {
