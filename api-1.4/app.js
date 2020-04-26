@@ -259,7 +259,6 @@ app.post('/channels/:channelName/chaincodes', async function (req, res) {
 });
 // Invoke transaction on chaincode on target peers
 app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req, res) {
-	totalTransaction.inc()
 	try {
 		logger.debug('==================== INVOKE ON CHAINCODE ==================');
 		var peers = req.body.peers;
@@ -292,10 +291,6 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req
 		let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, fcn, args, req.username, req.orgname);
 		const latency = Date.now() - start;
 
-		writeLatencyGauge.inc(latency)
-		requestCountGauge.inc()
-		successfulTransaction.inc()
-
 
 		const response_payload = {
 			result: message,
@@ -305,7 +300,6 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req
 		res.send(response_payload);
 
 	} catch (error) {
-		failedTransaction.inc()
 		const response_payload = {
 			result: null,
 			error: error.name,
@@ -355,9 +349,6 @@ app.get('/channels/:channelName/chaincodes/:chaincodeName', async function (req,
 		const start = Date.now();
 		let message = await query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname);
 		const latency = Date.now() - start;
-
-		readLatencyGauge.inc(latency)
-		queriesCountGauge.inc()
 
 		const response_payload = {
 			result: message,
