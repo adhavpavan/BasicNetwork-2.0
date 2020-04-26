@@ -17,8 +17,6 @@
 var log4js = require('log4js');
 var logger = log4js.getLogger('SampleWebApp');
 var express = require('express');
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 var util = require('util');
@@ -38,7 +36,6 @@ var join = require('./app/join-channel.js');
 var install = require('./app/install-chaincode.js');
 var instantiate = require('./app/instantiate-chaincode.js');
 var invoke = require('./app/invoke-transaction.js');
-// var invoke = require('./app/invoke-offline');
 var query = require('./app/query.js');
 var host = process.env.HOST || hfc.getConfigSetting('host');
 var port = process.env.PORT || hfc.getConfigSetting('port');
@@ -257,6 +254,9 @@ app.post('/channels/:channelName/chaincodes', async function (req, res) {
 	let message = await instantiate.instantiateChaincode(peers, channelName, chaincodeName, chaincodeVersion, chaincodeType, fcn, args, req.username, req.orgname);
 	res.send(message);
 });
+
+
+
 // Invoke transaction on chaincode on target peers
 app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req, res) {
 	try {
@@ -309,70 +309,130 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req
 	}
 });
 
+
 // Query on chaincode on target peers
 app.get('/channels/:channelName/chaincodes/:chaincodeName', async function (req, res) {
-	try {
-		logger.debug('==================== QUERY BY CHAINCODE ==================');
+	logger.debug('==================== QUERY BY CHAINCODE ==================');
+	var channelName = req.params.channelName;
+	var chaincodeName = req.params.chaincodeName;
+	let args = req.query.args;
+	let fcn = req.query.fcn;
+	let peer = req.query.peer;
 
-		var channelName = req.params.channelName;
-		var chaincodeName = req.params.chaincodeName;
-		let args = req.query.args;
-		let fcn = req.query.fcn;
-		let peer = req.query.peer;
+	logger.debug('channelName : ' + channelName);
+	logger.debug('chaincodeName : ' + chaincodeName);
+	logger.debug('fcn : ' + fcn);
+	logger.debug('args : ' + args);
 
-		logger.debug('channelName : ' + channelName);
-		logger.debug('chaincodeName : ' + chaincodeName);
-		logger.debug('fcn : ' + fcn);
-		logger.debug('args : ' + args);
-
-		if (!chaincodeName) {
-			res.json(getErrorMessage('\'chaincodeName\''));
-			return;
-		}
-		if (!channelName) {
-			res.json(getErrorMessage('\'channelName\''));
-			return;
-		}
-		if (!fcn) {
-			res.json(getErrorMessage('\'fcn\''));
-			return;
-		}
-		if (!args) {
-			res.json(getErrorMessage('\'args\''));
-			return;
-		}
-		console.log('args==========', args);
-		args = args.replace(/'/g, '"');
-		args = JSON.parse(args);
-		logger.debug(args);
-
-		const start = Date.now();
-		let message = await query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname);
-		const latency = Date.now() - start;
-
-		const response_payload = {
-			result: message,
-			error: null,
-			errorData: null
-		}
-
-		res.send(response_payload);
-	} catch (error) {
-		const response_payload = {
-			result: null,
-			error: error.name,
-			errorData: error.message
-		}
-		res.send(response_payload)
+	if (!chaincodeName) {
+		res.json(getErrorMessage('\'chaincodeName\''));
+		return;
 	}
+	if (!channelName) {
+		res.json(getErrorMessage('\'channelName\''));
+		return;
+	}
+	if (!fcn) {
+		res.json(getErrorMessage('\'fcn\''));
+		return;
+	}
+	if (!args) {
+		res.json(getErrorMessage('\'args\''));
+		return;
+	}
+	args = args.replace(/'/g, '"');
+	args = JSON.parse(args);
+	logger.debug(args);
+
+	let message = await query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname);
+	res.send(message);
 });
 
-//api for Prometheus
-app.get('/metrics', (req, res) => {
-	res.set('Content-Type', prometheus.register.contentType);
-	res.end(prometheus.register.metrics());
+//  Query Get Block by BlockNumber
+app.get('/channels/:channelName/blocks/:blockId', async function (req, res) {
+	logger.debug('==================== GET BLOCK BY NUMBER ==================');
+	let blockId = req.params.blockId;
+	let peer = req.query.peer;
+	logger.debug('channelName : ' + req.params.channelName);
+	logger.debug('BlockID : ' + blockId);
+	logger.debug('Peer : ' + peer);
+	if (!blockId) {
+		res.json(getErrorMessage('\'blockId\''));
+		return;
+	}
+
+	let message = await query.getBlockByNumber(peer, req.params.channelName, blockId, req.username, req.orgname);
+	res.send(message);
 });
 
+// Query Get Transaction by Transaction ID
+app.get('/channels/:channelName/transactions/:trxnId', async function (req, res) {
+	logger.debug('================ GET TRANSACTION BY TRANSACTION_ID ======================');
+	logger.debug('channelName : ' + req.params.channelName);
+	let trxnId = req.params.trxnId;
+	let peer = req.query.peer;
+	if (!trxnId) {
+		res.json(getErrorMessage('\'trxnId\''));
+		return;
+	}
+
+	let message = await query.getTransactionByID(peer, req.params.channelName, trxnId, req.username, req.orgname);
+	res.send(message);
+});
+// Query Get Block by Hash
+app.get('/channels/:channelName/blocks', async function (req, res) {
+	logger.debug('================ GET BLOCK BY HASH ======================');
+	logger.debug('channelName : ' + req.params.channelName);
+	let hash = req.query.hash;
+	let peer = req.query.peer;
+	if (!hash) {
+		res.json(getErrorMessage('\'hash\''));
+		return;
+	}
+
+	let message = await query.getBlockByHash(peer, req.params.channelName, hash, req.username, req.orgname);
+	res.send(message);
+});
+//Query for Channel Information
+app.get('/channels/:channelName', async function (req, res) {
+	logger.debug('================ GET CHANNEL INFORMATION ======================');
+	logger.debug('channelName : ' + req.params.channelName);
+	let peer = req.query.peer;
+
+	let message = await query.getChainInfo(peer, req.params.channelName, req.username, req.orgname);
+	res.send(message);
+});
+//Query for Channel instantiated chaincodes
+app.get('/channels/:channelName/chaincodes', async function (req, res) {
+	logger.debug('================ GET INSTANTIATED CHAINCODES ======================');
+	logger.debug('channelName : ' + req.params.channelName);
+	let peer = req.query.peer;
+
+	let message = await query.getInstalledChaincodes(peer, req.params.channelName, 'instantiated', req.username, req.orgname);
+	res.send(message);
+});
+// Query to fetch all Installed/instantiated chaincodes
+app.get('/chaincodes', async function (req, res) {
+	var peer = req.query.peer;
+	var installType = req.query.type;
+	logger.debug('================ GET INSTALLED CHAINCODES ======================');
+
+	let message = await query.getInstalledChaincodes(peer, null, 'installed', req.username, req.orgname)
+	res.send(message);
+});
+// Query to fetch channels
+app.get('/channels', async function (req, res) {
+	logger.debug('================ GET CHANNELS ======================');
+	logger.debug('peer: ' + req.query.peer);
+	var peer = req.query.peer;
+	if (!peer) {
+		res.json(getErrorMessage('\'peer\''));
+		return;
+	}
+
+	let message = await query.getChannels(peer, req.username, req.orgname);
+	res.send(message);
+});
 
 
 module.exports = app

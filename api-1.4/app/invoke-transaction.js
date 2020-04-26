@@ -19,9 +19,6 @@ var axios = require('axios').default
 var helper = require('./helper.js');
 var logger = helper.getLogger('invoke-chaincode');
 
-const apiServerEndPoint = `http://127.0.0.1:3002/api/v2/fabric`
-// curl - X POST http://172.17.0.1:4000/api/v2/multichain  -H 'Content-Type: application/json'  -H 'cache-control: no-cache'  -d "$3"
-
 
 var invokeChaincode = async function (peerNames, channelName, chaincodeName, fcn, args, username, org_name) {
 	logger.debug(util.format('\n============ invoke transaction on channel %s ============\n', channelName));
@@ -41,9 +38,6 @@ var invokeChaincode = async function (peerNames, channelName, chaincodeName, fcn
 		// will need the transaction ID string for the event registration later
 		tx_id_string = tx_id.getTransactionID();
 
-		// logger.debug("Logging arguments inside invoke-transaction.js", args)
-
-		// send proposal to endorser
 		var request = {
 			targets: peerNames,
 			chaincodeId: chaincodeName,
@@ -55,15 +49,9 @@ var invokeChaincode = async function (peerNames, channelName, chaincodeName, fcn
 
 		let results = await channel.sendTransactionProposal(request);
 
-		// the returned object has both the endorsement results
-		// and the actual proposal, the proposal will be needed
-		// later when we send a transaction to the orderer
 		var proposalResponses = results[0];
 		var proposal = results[1];
 
-		// lets have a look at the responses to see if they are
-		// all good, if good they will also include signatures
-		// required to be committed
 		var all_good = true;
 		for (var i in proposalResponses) {
 			let one_good = false;
@@ -117,10 +105,7 @@ var invokeChaincode = async function (peerNames, channelName, chaincodeName, fcn
 						logger.error(err);
 						reject(err);
 					},
-						// the default for 'unregister' is true for transaction listeners
-						// so no real need to set here, however for 'disconnect'
-						// the default is false as most event hubs are long running
-						// in this use case we are using it only once
+
 						{ unregister: true, disconnect: true }
 					);
 					eh.connect();
@@ -181,5 +166,7 @@ var invokeChaincode = async function (peerNames, channelName, chaincodeName, fcn
 		throw new Error(message);
 	}
 };
+
+
 
 exports.invokeChaincode = invokeChaincode;
