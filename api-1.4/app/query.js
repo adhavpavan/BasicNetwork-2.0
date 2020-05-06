@@ -38,8 +38,16 @@ var queryChaincode = async function (peer, channelName, chaincodeName, args, fcn
 		};
 		let response_payloads = await channel.queryByChaincode(request);
 
+		if (response_payloads[0].status == 500) {
+			return {
+				status: 500,
+				error: response_payloads[0].toString('utf8'),
+				successs: false
+			}
+		}
+
 		console.log(response_payloads[0].toString('utf8'));
-		console.log(response_payloads);
+
 		if (response_payloads != '') {
 			for (let i = 0; i < response_payloads.length; i++) {
 				logger.info('Batch', args[0] + '=' + response_payloads[i].toString('utf8'));
