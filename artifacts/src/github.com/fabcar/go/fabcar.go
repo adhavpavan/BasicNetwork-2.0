@@ -10,6 +10,8 @@ import (
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 	sc "github.com/hyperledger/fabric-protos-go/peer"
 	"github.com/hyperledger/fabric/common/flogging"
+
+	"github.com/hyperledger/fabric-chaincode-go/pkg/cid"
 )
 
 // SmartContract Define the Smart Contract structure
@@ -53,6 +55,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.getHistoryForAsset(APIstub, args)
 	} else if function == "queryCarsByOwner" {
 		return s.queryCarsByOwner(APIstub, args)
+	} else if function == "restictedMethod" {
+		return s.restictedMethod(APIstub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -210,6 +214,44 @@ func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface) sc.Res
 	fmt.Printf("- queryAllCars:\n%s\n", buffer.String())
 
 	return shim.Success(buffer.Bytes())
+}
+
+func (s *SmartContract) restictedMethod(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	// get an ID for the client which is guaranteed to be unique within the MSP
+	//id, err := cid.GetID(stub) -
+
+	// get the MSP ID of the client's identity
+	//mspid, err := cid.GetMSPID(stub) -
+
+	// get the value of the attribute
+	//val, ok, err := cid.GetAttributeValue(stub, "attr1") -
+
+	// get the X509 certificate of the client, or nil if the client's identity was not based on an X509 certificate
+	//cert, err := cid.GetX509Certificate(stub) -
+
+	val, ok, err := cid.GetAttributeValue(APIstub, "role")
+	if err != nil {
+		// There was an error trying to retrieve the attribute
+		shim.Error("Error while retriving attributes")
+	}
+	if !ok {
+		// The client identity does not possess the attribute
+		shim.Error("Client identity doesnot posses the attribute")
+	}
+	// Do something with the value of 'val'
+	if val != "approver" {
+		fmt.Println("Attribute role: " + val)
+		return shim.Error("only approver attribute users can get data using this method")
+	} else {
+		if len(args) != 1 {
+			return shim.Error("Incorrect number of arguments. Expecting 1")
+		}
+
+		carAsBytes, _ := APIstub.GetState(args[0])
+		return shim.Success(carAsBytes)
+	}
+
 }
 
 func (s *SmartContract) changeCarOwner(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
