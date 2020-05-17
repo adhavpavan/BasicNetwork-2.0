@@ -148,7 +148,9 @@ approveForMyOrg2() {
 checkCommitReadyness() {
 
     setGlobalsForPeer0Org1
-    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --name ${CC_NAME} --version ${VERSION} --sequence ${VERSION} --output json --init-required
+    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME \
+        --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+        --name ${CC_NAME} --version ${VERSION} --sequence ${VERSION} --output json --init-required
     echo "===================== checking commit readyness from org 1 ===================== "
 }
 

@@ -21,6 +21,7 @@ services:
       - ./channel/crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
       - ./channel/crypto-config/peerOrganizations/org1.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
     container_name: ca.org1.example.com
+    hostname: ca.org1.example.com
     networks:
       - test
 
@@ -41,6 +42,7 @@ services:
       - ./channel/crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
       - ./channel/crypto-config/peerOrganizations/org2.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
     container_name: ca.org2.example.com
+    hostname: ca.org2.example.com
     networks:
       - test
 

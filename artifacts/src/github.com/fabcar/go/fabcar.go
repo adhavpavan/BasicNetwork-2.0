@@ -219,16 +219,16 @@ func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface) sc.Res
 func (s *SmartContract) restictedMethod(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	// get an ID for the client which is guaranteed to be unique within the MSP
-	//id, err := cid.GetID(stub) -
+	//id, err := cid.GetID(APIstub) -
 
 	// get the MSP ID of the client's identity
-	//mspid, err := cid.GetMSPID(stub) -
+	//mspid, err := cid.GetMSPID(APIstub) -
 
 	// get the value of the attribute
-	//val, ok, err := cid.GetAttributeValue(stub, "attr1") -
+	//val, ok, err := cid.GetAttributeValue(APIstub, "attr1") -
 
 	// get the X509 certificate of the client, or nil if the client's identity was not based on an X509 certificate
-	//cert, err := cid.GetX509Certificate(stub) -
+	//cert, err := cid.GetX509Certificate(APIstub) -
 
 	val, ok, err := cid.GetAttributeValue(APIstub, "role")
 	if err != nil {
@@ -242,7 +242,7 @@ func (s *SmartContract) restictedMethod(APIstub shim.ChaincodeStubInterface, arg
 	// Do something with the value of 'val'
 	if val != "approver" {
 		fmt.Println("Attribute role: " + val)
-		return shim.Error("only approver attribute users can get data using this method")
+		return shim.Error("Only user with role as APPROVER have access this method!")
 	} else {
 		if len(args) != 1 {
 			return shim.Error("Incorrect number of arguments. Expecting 1")
@@ -334,6 +334,56 @@ func (t *SmartContract) getHistoryForAsset(stub shim.ChaincodeStubInterface, arg
 
 	return shim.Success(buffer.Bytes())
 }
+
+// func (s *SmartContract) addBulkAsset(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+// 	logger.Infof("Function addBulkAsset called and length of arguments is:  %d", len(args))
+// 	if len(args) >= 500 {
+// 		logger.Errorf("Incorrect number of arguments in function CreateAsset, expecting less than 500, but got: %b", len(args))
+// 		return shim.Error("Incorrect number of arguments, expecting 2")
+// 	}
+
+// 	var eventKeyValue []string
+
+// 	for i, s := range args {
+
+// 		key :=s[0];
+// 		var car = Car{Make: s[1], Model: s[2], Colour: s[3], Owner: s[4]}
+
+// 		eventKeyValue = strings.SplitN(s, "#", 3)
+// 		if len(eventKeyValue) != 3 {
+// 			logger.Errorf("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"EventType#Key#Value\" format")
+// 			return shim.Error("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"EventType#Key#Value\" format")
+// 		}
+
+// 		assetAsBytes := []byte(eventKeyValue[2])
+// 		err := APIstub.PutState(eventKeyValue[1], assetAsBytes)
+// 		if err != nil {
+// 			logger.Errorf("Error coocured while putting state for asset %s in APIStub, error: %s", eventKeyValue[1], err.Error())
+// 			return shim.Error(err.Error())
+// 		}
+// 		// logger.infof("Adding value for ")
+// 		fmt.Println(i, s)
+
+// 		indexName := "Event~Id"
+// 		eventAndIDIndexKey, err2 := APIstub.CreateCompositeKey(indexName, []string{eventKeyValue[0], eventKeyValue[1]})
+
+// 		if err2 != nil {
+// 			logger.Errorf("Error coocured while putting state in APIStub, error: %s", err.Error())
+// 			return shim.Error(err2.Error())
+// 		}
+
+// 		value := []byte{0x00}
+// 		err = APIstub.PutState(eventAndIDIndexKey, value)
+// 		if err != nil {
+// 			logger.Errorf("Error coocured while putting state in APIStub, error: %s", err.Error())
+// 			return shim.Error(err.Error())
+// 		}
+// 		// logger.Infof("Created Composite key : %s", eventAndIDIndexKey)
+
+// 	}
+
+// 	return shim.Success(nil)
+// }
 
 // The main function is only relevant in unit test mode. Only included here for completeness.
 func main() {
