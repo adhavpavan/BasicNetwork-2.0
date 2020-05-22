@@ -57,12 +57,24 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.queryCarsByOwner(APIstub, args)
 	} else if function == "restictedMethod" {
 		return s.restictedMethod(APIstub, args)
+	} else if function == "test" {
+		return s.test(APIstub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
 }
 
 func (s *SmartContract) queryCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	carAsBytes, _ := APIstub.GetState(args[0])
+	return shim.Success(carAsBytes)
+}
+
+func (s *SmartContract) test(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")

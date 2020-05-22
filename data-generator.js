@@ -10,14 +10,6 @@ let conf = {
 	}
 };
 
-let farmerCount = 15
-let heapLotCount = 3
-let farmerPrefix = "MP1301000"
-let farmerKeyArray = []
-let heapLotPrefix = "2019101"
-let heapLotKeyArray = []
-let tcPrefix = "ORG/TC/1802/101"
-let tcKey = null
 
 const createPostData = async (pk, data) => {
 	// console.log("Inside createPostData: DATA", data)
@@ -45,19 +37,4 @@ const postFarmerData = async (pk) => {
 	).then(function (response) { console.log(`${pk.toString()} => `, response.data); }
 	).catch(function (error) { console.log(error); });
 
-};
-
-const postHeapLotData = async (pk, farmersList) => {
-	console.log(pk, farmersList)
-	let data = {
-		created_at: (new Date).getTime(),
-		weight: 1000,
-		consumed_weight: '0',
-		farmers: farmersList
-	}
-	let postData = await createPostData("heap_lot_created#" + pk.toString(), data)
-
-	return axios.post(url, postData, conf
-	).then(function (response) { console.log(`${pk.toString()} => `, response.data); }
-	).catch(function (error) { console.log(error); });
 };
