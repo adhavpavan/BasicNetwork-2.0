@@ -60,7 +60,6 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	} else if function == "test" {
 		return s.test(APIstub, args)
 	}
-
 	return shim.Error("Invalid Smart Contract function name.")
 }
 

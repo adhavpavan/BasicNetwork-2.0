@@ -15,8 +15,7 @@ Content-Type: application/json
 {
   "name": "John Doe",
   "email": "john.doe@gmail.com",
-  "password": "12345678",
-  "organization_id": "1"
+  "password": "12345678"
 }
 
 ###

@@ -187,15 +187,11 @@ chaincodeInvokeInit() {
 chaincodeQuery() {
     setGlobalsForPeer0Org1
 
-    # Query all cars
-    # peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["queryAllCars"]}'
-
     # Query Car by Id
     peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"function": "test","Args":["CAR0"]}'
-    #'{"Args":["GetSampleData","Key1"]}'
 }
 
-chaincodeQuery
+# chaincodeQuery
 
 
 packageChaincode

@@ -27,7 +27,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
 
     const userIdentity = await wallet.get(username);
     if (userIdentity) {
-        console.log('An identity for the user "user1" already exists in the wallet');
+        console.log(`An identity for the user ${username} already exists in the wallet`);
         var response = {
             success: true,
             message: username + ' enrolled Successfully',
@@ -36,7 +36,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     }
 
     // Check to see if we've already enrolled the admin user.
-    const adminIdentity = await wallet.get('admin');
+    let adminIdentity = await wallet.get('admin');
     if (!adminIdentity) {
         console.log('An identity for the admin user "admin" does not exist in the wallet');
         await enrollAdmin();
@@ -64,7 +64,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     };
 
     await wallet.put(username, x509Identity);
-    console.log('Successfully registered and enrolled admin user "user1" and imported it into the wallet');
+    console.log(`Successfully registered and enrolled admin user ${username} and imported it into the wallet`);
 
     var response = {
         success: true,
@@ -108,6 +108,8 @@ const enrollAdmin = async () => {
         };
         await wallet.put('admin', x509Identity);
         console.log('Successfully enrolled admin user "admin" and imported it into the wallet');
+        return
+
 
     } catch (error) {
         console.error(`Failed to enroll admin user "admin": ${error}`);

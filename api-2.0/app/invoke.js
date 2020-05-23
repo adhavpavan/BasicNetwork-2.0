@@ -23,7 +23,7 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get(username);
+        let identity = await wallet.get(username);
         if (!identity) {
             console.log(`An identity for the user ${username} does not exist in the wallet, so registering user`);
             await helper.getRegisteredUser(username, org_name, true)
@@ -36,7 +36,7 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
             wallet, identity: username, discovery: { enabled: true, asLocalhost: true },
             eventHandlerOptions: {
                 commitTimeout: 100,
-                strategy: DefaultEventHandlerStrategies.MSPID_SCOPE_ANYFORTX
+                strategy: DefaultEventHandlerStrategies.NETWORK_SCOPE_ALLFORTX
             },
         }
 

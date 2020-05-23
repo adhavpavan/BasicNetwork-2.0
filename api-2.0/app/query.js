@@ -22,7 +22,7 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
         console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
-        const identity = await wallet.get(username);
+        let identity = await wallet.get(username);
         if (!identity) {
             console.log(`An identity for the user ${username} does not exist in the wallet, so registering user`);
             await helper.getRegisteredUser(username, org_name, true)
