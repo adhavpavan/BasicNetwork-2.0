@@ -129,3 +129,16 @@ api-1.4/crypto/org1
 api-1.4/fabric-client-kv-org1
 api-1.4/node_modules
 channel-artifacts/mychannel.block
+addOrg3/crypto-config/peerOrganizations/org3.example.com
+addOrg3/scripts/original_config.pb
+addOrg3/scripts/config_block.pb
+addOrg3/scripts/channel-artifacts/mychannel.block
+addOrg3/scripts/config_update_in_envelope.json
+addOrg3/scripts/config_update.json
+addOrg3/scripts/config_update.pb
+addOrg3/scripts/config.json
+addOrg3/scripts/log.txt
+addOrg3/scripts/modified_config.json
+addOrg3/scripts/modified_config.pb
+addOrg3/scripts/org3_update_in_envelope.pb
+addOrg3/scripts/org3.json

@@ -210,9 +210,9 @@ chaincodeInvoke() {
     #     --peerAddresses localhost:7051 \
     #     --tlsRootCertFiles $PEER0_ORG1_CA \
     #     --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA   \
-    #     -c '{"function": "CreateCar","Args":["Car-ABCDEEE", "Audi", "R8", "Red", "Pavan"]}'
+    #     -c '{"function": "createCar","Args":["Car-ABCDEEE", "Audi", "R8", "Red", "Pavan"]}'
 
-    ## Change car owner
+    ## Init ledger
     peer chaincode invoke -o localhost:7050 \
         --ordererTLSHostnameOverride orderer.example.com \
         --tls $CORE_PEER_TLS_ENABLED \
