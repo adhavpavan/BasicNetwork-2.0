@@ -26,6 +26,11 @@ type Car struct {
 	Owner  string `json:"owner"`
 }
 
+type carPrivateDetails struct {
+	Owner string `json:"owner"`
+	Price string `json:"price"`
+}
+
 // Init ;  Method for initializing smart contract
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
 	return shim.Success(nil)
@@ -59,7 +64,14 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.restictedMethod(APIstub, args)
 	} else if function == "test" {
 		return s.test(APIstub, args)
+	} else if function == "createPrivateCar" {
+		return s.createPrivateCar(APIstub, args)
+	} else if function == "readPrivateCar" {
+		return s.readPrivateCar(APIstub, args)
+	} else if function == "readCarPrivateDetails" {
+		return s.readCarPrivateDetails(APIstub, args)
 	}
+
 	return shim.Error("Invalid Smart Contract function name.")
 }
 
@@ -70,6 +82,34 @@ func (s *SmartContract) queryCar(APIstub shim.ChaincodeStubInterface, args []str
 	}
 
 	carAsBytes, _ := APIstub.GetState(args[0])
+	return shim.Success(carAsBytes)
+}
+
+func (s *SmartContract) readPrivateCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	carAsBytes, _ := APIstub.GetPrivateData("collectionCars", args[0])
+	return shim.Success(carAsBytes)
+}
+
+func (s *SmartContract) readCarPrivateDetails(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	carAsBytes, err := APIstub.GetPrivateData("collectionCarPrivateDetails", args[0])
+
+	if err != nil {
+		jsonResp := "{\"Error\":\"Failed to get private details for " + args[0] + ": " + err.Error() + "\"}"
+		return shim.Error(jsonResp)
+	} else if carAsBytes == nil {
+		jsonResp := "{\"Error\":\"Marble private details does not exist: " + args[0] + "\"}"
+		return shim.Error(jsonResp)
+	}
 	return shim.Success(carAsBytes)
 }
 
@@ -105,6 +145,106 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 	}
 
 	return shim.Success(nil)
+}
+
+func (s *SmartContract) createPrivateCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+	type carTransientInput struct {
+		Make  string `json:"make"` //the fieldtags are needed to keep case from bouncing around
+		Model string `json:"model"`
+		Color string `json:"color"`
+		Owner string `json:"owner"`
+		Price string `json:"price"`
+		Key   string `json:"key"`
+	}
+	if len(args) != 0 {
+		return shim.Error("1111111----Incorrect number of arguments. Private marble data must be passed in transient map.")
+	}
+
+	logger.Infof("11111111111111111111111111")
+
+	transMap, err := APIstub.GetTransient()
+	if err != nil {
+		return shim.Error("222222 -Error getting transient: " + err.Error())
+	}
+
+	carDataAsBytes, ok := transMap["car"]
+	if !ok {
+		return shim.Error("car must be a key in the transient map")
+	}
+
+	if len(carDataAsBytes) == 0 {
+		return shim.Error("333333 -marble value in the transient map must be a non-empty JSON string")
+	}
+
+	logger.Infof("2222222")
+
+	var carInput carTransientInput
+	err = json.Unmarshal(carDataAsBytes, &carInput)
+	if err != nil {
+		return shim.Error("44444 -Failed to decode JSON of: " + string(carDataAsBytes) + "Error is : " + err.Error())
+	}
+
+	logger.Infof("3333")
+
+	if len(carInput.Key) == 0 {
+		return shim.Error("name field must be a non-empty string")
+	}
+	if len(carInput.Make) == 0 {
+		return shim.Error("color field must be a non-empty string")
+	}
+	if len(carInput.Model) == 0 {
+		return shim.Error("model field must be a non-empty string")
+	}
+	if len(carInput.Color) == 0 {
+		return shim.Error("color field must be a non-empty string")
+	}
+	if len(carInput.Owner) == 0 {
+		return shim.Error("owner field must be a non-empty string")
+	}
+	if len(carInput.Price) == 0 {
+		return shim.Error("price field must be a non-empty string")
+	}
+
+	logger.Infof("444444")
+
+	// ==== Check if car already exists ====
+	carAsBytes, err := APIstub.GetPrivateData("collectionCars", carInput.Key)
+	if err != nil {
+		return shim.Error("Failed to get marble: " + err.Error())
+	} else if carAsBytes != nil {
+		fmt.Println("This marble already exists: " + carInput.Key)
+		return shim.Error("This marble already exists: " + carInput.Key)
+	}
+
+	logger.Infof("55555")
+
+	var car = Car{Make: carInput.Make, Model: carInput.Model, Colour: carInput.Color, Owner: carInput.Owner}
+
+	carAsBytes, err = json.Marshal(car)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	err = APIstub.PutPrivateData("collectionCars", carInput.Key, carAsBytes)
+	if err != nil {
+		logger.Infof("6666666")
+		return shim.Error(err.Error())
+	}
+
+	carPrivateDetails := &carPrivateDetails{Owner: carInput.Owner, Price: carInput.Price}
+
+	carPrivateDetailsAsBytes, err := json.Marshal(carPrivateDetails)
+	if err != nil {
+		logger.Infof("77777")
+		return shim.Error(err.Error())
+	}
+
+	err = APIstub.PutPrivateData("collectionCarPrivateDetails", carInput.Key, carPrivateDetailsAsBytes)
+	if err != nil {
+		logger.Infof("888888")
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(carAsBytes)
 }
 
 func (s *SmartContract) createCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
