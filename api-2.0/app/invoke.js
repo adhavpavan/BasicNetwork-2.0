@@ -5,20 +5,20 @@ const log4js = require('log4js');
 const logger = log4js.getLogger('BasicNetwork');
 const util = require('util')
 
-
 const helper = require('./helper')
 
-const invokeTransaction = async (channelName, chaincodeName, fcn, args, username, org_name) => {
+
+const invokeTransaction = async (channelName, chaincodeName, fcn, args, username, org_name, transientData) => {
     try {
         logger.debug(util.format('\n============ invoke transaction on channel %s ============\n', channelName));
 
         // load the network configuration
-        const ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org1.json');
-        const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
-        const ccp = JSON.parse(ccpJSON);
+        // const ccpPath =path.resolve(__dirname, '..', 'config', 'connection-org1.json');
+        // const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
+        const ccp = await helper.getCCP(org_name) //JSON.parse(ccpJSON);
 
         // Create a new file system based wallet for managing identities.
-        const walletPath = path.join(process.cwd(), 'wallet');
+        const walletPath = await helper.getWalletPath(org_name) //path.join(process.cwd(), 'wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 
@@ -50,14 +50,34 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
 
         let result
         let message;
-        if (fcn === "createCar") {
+        if (fcn === "createCar" || fcn === "createPrivateCarImplicitForOrg1"
+            || fcn == "createPrivateCarImplicitForOrg2") {
             result = await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4]);
             message = `Successfully added the car asset with key ${args[0]}`
 
         } else if (fcn === "changeCarOwner") {
             result = await contract.submitTransaction(fcn, args[0], args[1]);
             message = `Successfully changed car owner with key ${args[0]}`
-        } else {
+        } else if (fcn == "createPrivateCar") {
+
+            let carData = JSON.parse(transientData)
+            let key = Object.keys(carData)[0]
+            const transientDataBuffer = {}
+            // const transientDataBuffer = {
+            //     `car`: Buffer.from(JSON.stringify(carData.car))
+            // };
+            transientDataBuffer[key] = Buffer.from(JSON.stringify(carData.car))
+
+            console.log(`before sending===============================================================`)
+            result = await contract.createTransaction(fcn)
+                .setTransient(transientDataBuffer)
+                .submit()
+            console.log(`result is ====================: ${result}`)
+            // contract.setTransient(transientData)
+            // result = await contract.submitTransaction(fcn);
+            message = `Successfully submitter transient data}`
+        }
+        else {
             return `Invocation require either createCar or changeCarOwner as function but got ${fcn}`
         }
 

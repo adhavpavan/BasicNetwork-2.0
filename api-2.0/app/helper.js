@@ -8,20 +8,60 @@ const fs = require('fs');
 const util = require('util');
 
 
-const ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org1.json');
-const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
-const ccp = JSON.parse(ccpJSON);
 
+
+const getCCP = async (org) => {
+    let ccpPath;
+    if (org == "Org1") {
+        ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org1.json');
+
+    } else if (org == "Org2") {
+        ccpPath = path.resolve(__dirname, '..', 'config', 'connection-org2.json');
+    } else
+        return null
+    const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
+    const ccp = JSON.parse(ccpJSON);
+    return ccp
+}
+
+const getCaUrl = async (org, ccp) => {
+    let caURL ;
+    if (org == "Org1") {
+        caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
+
+    } else if (org == "Org2") {
+        caURL = ccp.certificateAuthorities['ca.org2.example.com'].url;
+    } else
+        return null
+    return caURL
+
+}
+
+const getWalletPath = async (org) => {
+    let walletPath;
+    if (org == "Org1") {
+        walletPath = path.join(process.cwd(), 'org1-wallet');
+
+    } else if (org == "Org2") {
+        walletPath = path.join(process.cwd(), 'org2-wallet');
+    } else
+        return null
+    return walletPath
+
+}
+
+
+const getAffiliation = async (org) => {
+    return org == "Org1" ? 'org1.department1' : 'org2.department1'
+}
 
 const getRegisteredUser = async (username, userOrg, isJson) => {
+    let ccp = await getCCP(userOrg)
 
-    console.log(JSON.stringify(Wallets))
-
-    // Create a new CA client for interacting with the CA.
-    const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
+    const caURL = await getCaUrl(userOrg, ccp)
     const ca = new FabricCAServices(caURL);
 
-    const walletPath = path.join(process.cwd(), 'wallet');
+    const walletPath = await getWalletPath(userOrg)
     const wallet = await Wallets.newFileSystemWallet(walletPath);
     console.log(`Wallet path: ${walletPath}`);
 
@@ -39,7 +79,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     let adminIdentity = await wallet.get('admin');
     if (!adminIdentity) {
         console.log('An identity for the admin user "admin" does not exist in the wallet');
-        await enrollAdmin();
+        await enrollAdmin(userOrg, ccp);
         adminIdentity = await wallet.get('admin');
         console.log("Admin Enrolled Successfully")
     }
@@ -49,19 +89,32 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     const adminUser = await provider.getUserContext(adminIdentity, 'admin');
 
     // Register the user, enroll the user, and import the new identity into the wallet.
-    const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client' }, adminUser);
+    const secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
     // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
 
     const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret });
     // const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret, attr_reqs: [{ name: 'role', optional: false }] });
-    const x509Identity = {
-        credentials: {
-            certificate: enrollment.certificate,
-            privateKey: enrollment.key.toBytes(),
-        },
-        mspId: 'Org1MSP',
-        type: 'X.509',
-    };
+
+    let x509Identity;
+    if (userOrg == "Org1") {
+        x509Identity = {
+            credentials: {
+                certificate: enrollment.certificate,
+                privateKey: enrollment.key.toBytes(),
+            },
+            mspId: 'Org1MSP',
+            type: 'X.509',
+        };
+    } else if (userOrg == "Org2") {
+        x509Identity = {
+            credentials: {
+                certificate: enrollment.certificate,
+                privateKey: enrollment.key.toBytes(),
+            },
+            mspId: 'Org2MSP',
+            type: 'X.509',
+        };
+    }
 
     await wallet.put(username, x509Identity);
     console.log(`Successfully registered and enrolled admin user ${username} and imported it into the wallet`);
@@ -74,18 +127,31 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
 }
 
 
-const enrollAdmin = async () => {
+const getCaInfo = async (org, ccp) => {
+    let caInfo
+    if (org == "Org1") {
+        caInfo = ccp.certificateAuthorities['ca.org1.example.com'];
+
+    } else if (org == "Org2") {
+        caInfo = ccp.certificateAuthorities['ca.org2.example.com'];
+    } else
+        return null
+    return caInfo
+
+}
+
+const enrollAdmin = async (org, ccp) => {
 
     console.log('calling enroll Admin method')
 
     try {
 
-        const caInfo = ccp.certificateAuthorities['ca.org1.example.com'];
+        const caInfo = await getCaInfo(org, ccp) //ccp.certificateAuthorities['ca.org1.example.com'];
         const caTLSCACerts = caInfo.tlsCACerts.pem;
         const ca = new FabricCAServices(caInfo.url, { trustedRoots: caTLSCACerts, verify: false }, caInfo.caName);
 
         // Create a new file system based wallet for managing identities.
-        const walletPath = path.join(process.cwd(), 'wallet');
+        const walletPath = await getWalletPath(org) //path.join(process.cwd(), 'wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
 
@@ -98,14 +164,28 @@ const enrollAdmin = async () => {
 
         // Enroll the admin user, and import the new identity into the wallet.
         const enrollment = await ca.enroll({ enrollmentID: 'admin', enrollmentSecret: 'adminpw' });
-        const x509Identity = {
-            credentials: {
-                certificate: enrollment.certificate,
-                privateKey: enrollment.key.toBytes(),
-            },
-            mspId: 'Org1MSP',
-            type: 'X.509',
-        };
+        let x509Identity;
+        if (org == "Org1") {
+            x509Identity = {
+                credentials: {
+                    certificate: enrollment.certificate,
+                    privateKey: enrollment.key.toBytes(),
+                },
+                mspId: 'Org1MSP',
+                type: 'X.509',
+            };
+        } else if (org == "Org2") {
+            x509Identity = {
+                credentials: {
+                    certificate: enrollment.certificate,
+                    privateKey: enrollment.key.toBytes(),
+                },
+                mspId: 'Org2MSP',
+                type: 'X.509',
+            };
+        }
+
+
         await wallet.put('admin', x509Identity);
         console.log('Successfully enrolled admin user "admin" and imported it into the wallet');
         return
@@ -120,3 +200,10 @@ const enrollAdmin = async () => {
 
 
 exports.getRegisteredUser = getRegisteredUser
+
+module.exports = {
+    getCCP: getCCP,
+    getWalletPath: getWalletPath,
+    getRegisteredUser: getRegisteredUser
+
+}

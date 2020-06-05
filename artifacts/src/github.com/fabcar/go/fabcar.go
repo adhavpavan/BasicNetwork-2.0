@@ -46,33 +46,68 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	logger.Infof("Function name is:  %d", function)
 	logger.Infof("Args length is : %d", len(args))
 
-	if function == "queryCar" {
+	// if function == "queryCar" {
+	// 	return s.queryCar(APIstub, args)
+	// } else if function == "initLedger" {
+	// 	return s.initLedger(APIstub)
+	// } else if function == "createCar" {
+	// 	return s.createCar(APIstub, args)
+	// } else if function == "queryAllCars" {
+	// 	return s.queryAllCars(APIstub)
+	// } else if function == "changeCarOwner" {
+	// 	return s.changeCarOwner(APIstub, args)
+	// } else if function == "getHistoryForAsset" {
+	// 	return s.getHistoryForAsset(APIstub, args)
+	// } else if function == "queryCarsByOwner" {
+	// 	return s.queryCarsByOwner(APIstub, args)
+	// } else if function == "restictedMethod" {
+	// 	return s.restictedMethod(APIstub, args)
+	// } else if function == "test" {
+	// 	return s.test(APIstub, args)
+	// } else if function == "createPrivateCar" {
+	// 	return s.createPrivateCar(APIstub, args)
+	// } else if function == "readPrivateCar" {
+	// 	return s.readPrivateCar(APIstub, args)
+	// } else if function == "readCarPrivateDetails" {
+	// 	return s.readCarPrivateDetails(APIstub, args)
+	// }
+
+	switch function {
+	case "queryCar":
 		return s.queryCar(APIstub, args)
-	} else if function == "initLedger" {
+	case "initLedger":
 		return s.initLedger(APIstub)
-	} else if function == "createCar" {
+	case "createCar":
 		return s.createCar(APIstub, args)
-	} else if function == "queryAllCars" {
+	case "queryAllCars":
 		return s.queryAllCars(APIstub)
-	} else if function == "changeCarOwner" {
+	case "changeCarOwner":
 		return s.changeCarOwner(APIstub, args)
-	} else if function == "getHistoryForAsset" {
+	case "getHistoryForAsset":
 		return s.getHistoryForAsset(APIstub, args)
-	} else if function == "queryCarsByOwner" {
+	case "queryCarsByOwner":
 		return s.queryCarsByOwner(APIstub, args)
-	} else if function == "restictedMethod" {
+	case "restictedMethod":
 		return s.restictedMethod(APIstub, args)
-	} else if function == "test" {
+	case "test":
 		return s.test(APIstub, args)
-	} else if function == "createPrivateCar" {
+	case "createPrivateCar":
 		return s.createPrivateCar(APIstub, args)
-	} else if function == "readPrivateCar" {
+	case "readPrivateCar":
 		return s.readPrivateCar(APIstub, args)
-	} else if function == "readCarPrivateDetails" {
+	case "readCarPrivateDetails":
 		return s.readCarPrivateDetails(APIstub, args)
+	case "createPrivateCarImplicitForOrg1":
+		return s.createPrivateCarImplicitForOrg1(APIstub, args)
+	case "createPrivateCarImplicitForOrg2":
+		return s.createPrivateCarImplicitForOrg2(APIstub, args)
+	case "queryPrivateDataHash":
+		return s.queryPrivateDataHash(APIstub, args)
+	default:
+		return shim.Error("Invalid Smart Contract function name.")
 	}
 
-	return shim.Error("Invalid Smart Contract function name.")
+	// return shim.Error("Invalid Smart Contract function name.")
 }
 
 func (s *SmartContract) queryCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
@@ -87,11 +122,28 @@ func (s *SmartContract) queryCar(APIstub shim.ChaincodeStubInterface, args []str
 
 func (s *SmartContract) readPrivateCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
+	if len(args) != 2 {
+		return shim.Error("Incorrect number of arguments. Expecting 2")
+	}
+	// collectionCars, collectionCarPrivateDetails, _implicit_org_Org1MSP, _implicit_org_Org2MSP
+	carAsBytes, err := APIstub.GetPrivateData(args[0], args[1])
+	if err != nil {
+		jsonResp := "{\"Error\":\"Failed to get private details for " + args[1] + ": " + err.Error() + "\"}"
+		return shim.Error(jsonResp)
+	} else if carAsBytes == nil {
+		jsonResp := "{\"Error\":\"Car private details does not exist: " + args[1] + "\"}"
+		return shim.Error(jsonResp)
+	}
+	return shim.Success(carAsBytes)
+}
+
+func (s *SmartContract) readPrivateCarIMpleciteForOrg1(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
-	carAsBytes, _ := APIstub.GetPrivateData("collectionCars", args[0])
+	carAsBytes, _ := APIstub.GetPrivateData("_implicit_org_Org1MSP", args[0])
 	return shim.Success(carAsBytes)
 }
 
@@ -171,6 +223,7 @@ func (s *SmartContract) createPrivateCar(APIstub shim.ChaincodeStubInterface, ar
 	if !ok {
 		return shim.Error("car must be a key in the transient map")
 	}
+	logger.Infof("********************8   " + string(carDataAsBytes))
 
 	if len(carDataAsBytes) == 0 {
 		return shim.Error("333333 -marble value in the transient map must be a non-empty JSON string")
@@ -484,6 +537,51 @@ func (t *SmartContract) getHistoryForAsset(stub shim.ChaincodeStubInterface, arg
 	fmt.Printf("- getHistoryForAsset returning:\n%s\n", buffer.String())
 
 	return shim.Success(buffer.Bytes())
+}
+
+func (s *SmartContract) createPrivateCarImplicitForOrg1(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 5 {
+		return shim.Error("Incorrect arguments. Expecting 5 arguments")
+	}
+
+	var car = Car{Make: args[1], Model: args[2], Colour: args[3], Owner: args[4]}
+
+	carAsBytes, _ := json.Marshal(car)
+	APIstub.PutState(args[0], carAsBytes)
+
+	err := APIstub.PutPrivateData("_implicit_org_Org1MSP", args[0], carAsBytes)
+	if err != nil {
+		return shim.Error("Failed to add asset: " + args[0])
+	}
+	return shim.Success(carAsBytes)
+}
+
+func (s *SmartContract) createPrivateCarImplicitForOrg2(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 5 {
+		return shim.Error("Incorrect arguments. Expecting 5 arguments")
+	}
+
+	var car = Car{Make: args[1], Model: args[2], Colour: args[3], Owner: args[4]}
+
+	carAsBytes, _ := json.Marshal(car)
+	APIstub.PutState(args[0], carAsBytes)
+
+	err := APIstub.PutPrivateData("_implicit_org_Org2MSP", args[0], carAsBytes)
+	if err != nil {
+		return shim.Error("Failed to add asset: " + args[0])
+	}
+	return shim.Success(carAsBytes)
+}
+
+func (s *SmartContract) queryPrivateDataHash(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 2 {
+		return shim.Error("Incorrect number of arguments. Expecting 2")
+	}
+	carAsBytes, _ := APIstub.GetPrivateDataHash(args[0], args[1])
+	return shim.Success(carAsBytes)
 }
 
 // func (s *SmartContract) addBulkAsset(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
