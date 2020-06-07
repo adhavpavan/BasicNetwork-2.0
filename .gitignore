@@ -146,3 +146,6 @@ addOrderer/crypto-config
 config_update_in_envelope.pb
 config.pb
 org4consenter.json
+addOrg3/scripts/channel-artifacts/mychannel.block
+api-2.0/org1-wallet
+api-2.0/org2-wallet

@@ -30,7 +30,7 @@ const postFarmerData = async (pk) => {
 		name: 'Ramlal Oberoi',
 		weight: 1000
 	}
-	let postData = await createPostData("cotton_purchased_2019_rabi#" + pk.toString(), data)
+	let postData = await createPostData(pk.toString(), data)
 	// console.log("before AXIOS call", postData)
 
 	return axios.post(url, postData, conf
