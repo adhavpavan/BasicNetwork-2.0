@@ -149,3 +149,7 @@ org4consenter.json
 addOrg3/scripts/channel-artifacts/mychannel.block
 api-2.0/org1-wallet
 api-2.0/org2-wallet
+artifacts/channel/create-certificate-with-ca/crypto-config-ca
+artifacts/channel/create-certificate-with-ca/fabric-ca
+artifacts/channel/crypto-config_1
+artifacts/channel/crypto-config_cryptogen
