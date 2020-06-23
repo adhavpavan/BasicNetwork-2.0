@@ -9,7 +9,7 @@ services:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org1
+      - FABRIC_CA_SERVER_CA_NAME=ca.org1.example.com
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=7054
     ports:
@@ -17,7 +17,8 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./fabric-ca/org1:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org1
+    container_name: ca.org1.example.com
+    hostname: ca.org1.example.com
     networks:
       - test
 
@@ -25,7 +26,7 @@ services:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org2
+      - FABRIC_CA_SERVER_CA_NAME=ca.org2.example.com
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=8054
     ports:
@@ -33,7 +34,8 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./fabric-ca/org2:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org2
+    container_name: ca.org2.example.com
+    hostname: ca.org2.example.com
     networks:
       - test
 

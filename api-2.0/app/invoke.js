@@ -58,24 +58,17 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
         } else if (fcn === "changeCarOwner") {
             result = await contract.submitTransaction(fcn, args[0], args[1]);
             message = `Successfully changed car owner with key ${args[0]}`
-        } else if (fcn == "createPrivateCar") {
-
+        } else if (fcn == "createPrivateCar" || fcn =="updatePrivateData") {
+            console.log(`Transient data is : ${transientData}`)
             let carData = JSON.parse(transientData)
+            console.log(`car data is : ${JSON.stringify(carData)}`)
             let key = Object.keys(carData)[0]
             const transientDataBuffer = {}
-            // const transientDataBuffer = {
-            //     `car`: Buffer.from(JSON.stringify(carData.car))
-            // };
             transientDataBuffer[key] = Buffer.from(JSON.stringify(carData.car))
-
-            console.log(`before sending===============================================================`)
             result = await contract.createTransaction(fcn)
                 .setTransient(transientDataBuffer)
                 .submit()
-            console.log(`result is ====================: ${result}`)
-            // contract.setTransient(transientData)
-            // result = await contract.submitTransaction(fcn);
-            message = `Successfully submitter transient data}`
+            message = `Successfully submitted transient data`
         }
         else {
             return `Invocation require either createCar or changeCarOwner as function but got ${fcn}`

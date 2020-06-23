@@ -87,11 +87,16 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     // build a user object for authenticating with the CA
     const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
     const adminUser = await provider.getUserContext(adminIdentity, 'admin');
-
-    // Register the user, enroll the user, and import the new identity into the wallet.
-    const secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+    let secret;
+    try {
+        // Register the user, enroll the user, and import the new identity into the wallet.
+     secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
     // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
 
+    } catch (error) {
+        return error.message
+    }
+    
     const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret });
     // const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret, attr_reqs: [{ name: 'role', optional: false }] });
 
