@@ -38,6 +38,8 @@ var invokeChaincode = async function (peerNames, channelName, chaincodeName, fcn
 		// will need the transaction ID string for the event registration later
 		tx_id_string = tx_id.getTransactionID();
 
+		console.log(`args are ------------------------------: ${args.length}`)
+
 		var request = {
 			targets: peerNames,
 			chaincodeId: chaincodeName,

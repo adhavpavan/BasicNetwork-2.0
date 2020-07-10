@@ -35,6 +35,8 @@ app.use(expressJWT({
 }));
 app.use(bearerToken());
 
+logger.level='debug';
+
 
 app.use((req, res, next) => {
     logger.debug('New req for %s', req.originalUrl);
