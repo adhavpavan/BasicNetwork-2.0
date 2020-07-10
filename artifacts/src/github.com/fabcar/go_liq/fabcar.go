@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/hyperledger/fabric-chaincode-go/shim"
@@ -24,6 +25,26 @@ type Car struct {
 	Model  string `json:"model"`
 	Colour string `json:"colour"`
 	Owner  string `json:"owner"`
+}
+
+type Product struct {
+	SrNumber          string `json:"srNumber"`
+	BatchNumer        string `json:"batchNumber"`
+	BatchQuantity     string `json:"batchQuantity"`
+	ProductID         string `json:"productId"`
+	ProductTypeID     string `json:"productTypeId"`
+	Name              string `json:"name"`
+	ProductTypeName   string `json:"productTypeName"`
+	BrandName         string `json:"brandName"`
+	Description       string `json:"description"`
+	Size              string `json:"size"`
+	ManufacturingDate string `json:"manufacturingDate"`
+	ImageURL          string `json:"imageUrl"`
+	WebsiteURL        string `json:"websiteUrl"`
+}
+
+type ProductBatch struct {
+	BatchNumber string `json:"string"`
 }
 
 type carPrivateDetails struct {
@@ -46,38 +67,16 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	logger.Infof("Args length is : %d", len(args))
 
 	switch function {
-	case "queryCar":
-		return s.queryCar(APIstub, args)
-	case "initLedger":
-		return s.initLedger(APIstub)
+	case "createProduct":
+		return s.createProduct(APIstub, args)
+	case "linkBatchesToProduct":
+		return s.linkBatchesToProduct(APIstub, args)
 	case "createCar":
 		return s.createCar(APIstub, args)
-	case "queryAllCars":
-		return s.queryAllCars(APIstub)
+	case "queryProduct":
+		return s.queryProduct(APIstub, args)
 	case "changeCarOwner":
 		return s.changeCarOwner(APIstub, args)
-	case "getHistoryForAsset":
-		return s.getHistoryForAsset(APIstub, args)
-	case "queryCarsByOwner":
-		return s.queryCarsByOwner(APIstub, args)
-	case "restictedMethod":
-		return s.restictedMethod(APIstub, args)
-	case "test":
-		return s.test(APIstub, args)
-	case "createPrivateCar":
-		return s.createPrivateCar(APIstub, args)
-	case "readPrivateCar":
-		return s.readPrivateCar(APIstub, args)
-	case "updatePrivateData":
-		return s.updatePrivateData(APIstub, args)
-	case "readCarPrivateDetails":
-		return s.readCarPrivateDetails(APIstub, args)
-	case "createPrivateCarImplicitForOrg1":
-		return s.createPrivateCarImplicitForOrg1(APIstub, args)
-	case "createPrivateCarImplicitForOrg2":
-		return s.createPrivateCarImplicitForOrg2(APIstub, args)
-	case "queryPrivateDataHash":
-		return s.queryPrivateDataHash(APIstub, args)
 	default:
 		return shim.Error("Invalid Smart Contract function name.")
 	}
@@ -85,62 +84,153 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	// return shim.Error("Invalid Smart Contract function name.")
 }
 
+func (s *SmartContract) createProduct(APIStub shim.ChaincodeStubInterface, args []string) sc.Response {
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	logger.Infof("Argument is: " + args[0])
+
+	var product Product
+	logger.Info("1111111111111111")
+
+	err := json.Unmarshal([]byte(args[0]), &product)
+	if err != nil {
+		logger.Info("1111122222233333")
+		logger.Infof("Getting error ---111: %s" + err.Error())
+		return shim.Error(err.Error())
+	}
+	logger.Info("222222222222222")
+
+	productAsBytes, err := json.Marshal(product)
+	if err != nil {
+		logger.Info("1234567890")
+		logger.Infof("Getting error ---2222: %s" + err.Error())
+		return shim.Error(err.Error())
+	}
+
+	logger.Info("333333333333333")
+
+	err = APIStub.PutState(product.BatchNumer, productAsBytes)
+	if err != nil {
+		logger.Info("9999999999999999999999999999999")
+		logger.Infof("Getting error ---333333333333: %s" + err.Error())
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(productAsBytes)
+}
+
+func (s *SmartContract) linkBatchesToProduct(APIStub shim.ChaincodeStubInterface, args []string) sc.Response {
+	logger.Infof("Function addBulkAsset called and length of arguments is:  %d", len(args))
+	if len(args) >= 500 {
+		logger.Errorf("Incorrect number of arguments in function CreateAsset, expecting less than 500, but got: %b", len(args))
+		return shim.Error("Incorrect number of arguments, expecting 2")
+	}
+
+	var data []string
+	logger.Info("1111111111111111")
+
+	err := json.Unmarshal([]byte(args[0]), &data)
+
+	logger.Info("Length of data array is :  %d", len(data))
+	if err != nil {
+		logger.Info("1111122222233333")
+		logger.Infof("Getting error ---111: %s" + err.Error())
+		return shim.Error(err.Error())
+	}
+	logger.Info("222222222222222")
+
+	var eventKeyValue []string
+	logger.Info("------------------------------------------")
+
+	logger.Info(args)
+	logger.Info("------------------------------------------")
+
+	// i := 0
+	// for i < len(data) {
+	for i, s := range data {
+		// carAsBytes, _ := json.Marshal(args[i])
+
+		batchProductKeyValue := strings.SplitN(s, "#", 2)
+		logger.Info("------------------------------------------")
+		logger.Info(batchProductKeyValue[0])
+		logger.Info("------------------------------------------")
+		logger.Info(batchProductKeyValue[1])
+		logger.Info("------------------------------------------")
+		if len(batchProductKeyValue) != 2 {
+			logger.Errorf("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"BatchId#ProductId\" format")
+			return shim.Error("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"BatchId#ProductId\" format")
+		}
+
+		// var productBatch ProductBatch
+		// productBatch = ProductBatch(batchProductKeyValue[1])
+
+		productBatch := &ProductBatch{BatchNumber: batchProductKeyValue[1]}
+
+		assetAsBytes, err := json.Marshal(productBatch)
+		err = APIStub.PutState(batchProductKeyValue[0], assetAsBytes)
+		if err != nil {
+			logger.Errorf("Error coocured while putting state for asset %s in APIStub, error: %s", eventKeyValue[1], err.Error())
+			return shim.Error(err.Error())
+		}
+
+		// i = i + 1
+		fmt.Println(i, s)
+	}
+
+	// for i, s := range args {
+
+	// 	batchProductKeyValue := strings.SplitN(s, "#", 2)
+	// 	logger.Info(batchProductKeyValue[0])
+	// 	logger.Info(batchProductKeyValue[1])
+	// 	if len(batchProductKeyValue) != 2 {
+	// 		logger.Errorf("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"BatchId#ProductId\" format")
+	// 		return shim.Error("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"BatchId#ProductId\" format")
+	// 	}
+
+	// 	// var productBatch ProductBatch
+	// 	// productBatch = ProductBatch(batchProductKeyValue[1])
+
+	// 	productBatch := &ProductBatch{BatchNumber: batchProductKeyValue[1]}
+
+	// 	assetAsBytes, err := json.Marshal(productBatch)
+	// 	err = APIStub.PutState(batchProductKeyValue[0], assetAsBytes)
+	// 	if err != nil {
+	// 		logger.Errorf("Error coocured while putting state for asset %s in APIStub, error: %s", eventKeyValue[1], err.Error())
+	// 		return shim.Error(err.Error())
+	// 	}
+	// 	// logger.infof("Adding value for ")
+	// 	fmt.Println(i, s)
+	// 	// logger.Infof("Created Composite key : %s", eventAndIDIndexKey)
+	// }
+
+	return shim.Success([]byte("Batches added successfully"))
+}
+
+func (s *SmartContract) queryProduct(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	batchAsBytes, _ := APIstub.GetState(args[0])
+	logger.Infof("value of batch is : " + string(batchAsBytes))
+
+	var productDetail ProductBatch
+
+	err := json.Unmarshal(batchAsBytes, &productDetail)
+	if err != nil {
+		logger.Info("Getting Error : " + err.Error())
+		return shim.Error(err.Error())
+	}
+
+	productAsBytes, _ := APIstub.GetState(productDetail.BatchNumber)
+
+	return shim.Success(productAsBytes)
+}
+
 func (s *SmartContract) queryCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 1 {
-		return shim.Error("Incorrect number of arguments. Expecting 1")
-	}
-
-	carAsBytes, _ := APIstub.GetState(args[0])
-	return shim.Success(carAsBytes)
-}
-
-func (s *SmartContract) readPrivateCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 2 {
-		return shim.Error("Incorrect number of arguments. Expecting 2")
-	}
-	// collectionCars, collectionCarPrivateDetails, _implicit_org_Org1MSP, _implicit_org_Org2MSP
-	carAsBytes, err := APIstub.GetPrivateData(args[0], args[1])
-	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get private details for " + args[1] + ": " + err.Error() + "\"}"
-		return shim.Error(jsonResp)
-	} else if carAsBytes == nil {
-		jsonResp := "{\"Error\":\"Car private details does not exist: " + args[1] + "\"}"
-		return shim.Error(jsonResp)
-	}
-	return shim.Success(carAsBytes)
-}
-
-func (s *SmartContract) readPrivateCarIMpleciteForOrg1(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 1 {
-		return shim.Error("Incorrect number of arguments. Expecting 1")
-	}
-
-	carAsBytes, _ := APIstub.GetPrivateData("_implicit_org_Org1MSP", args[0])
-	return shim.Success(carAsBytes)
-}
-
-func (s *SmartContract) readCarPrivateDetails(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 1 {
-		return shim.Error("Incorrect number of arguments. Expecting 1")
-	}
-
-	carAsBytes, err := APIstub.GetPrivateData("collectionCarPrivateDetails", args[0])
-
-	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get private details for " + args[0] + ": " + err.Error() + "\"}"
-		return shim.Error(jsonResp)
-	} else if carAsBytes == nil {
-		jsonResp := "{\"Error\":\"Marble private details does not exist: " + args[0] + "\"}"
-		return shim.Error(jsonResp)
-	}
-	return shim.Success(carAsBytes)
-}
-
-func (s *SmartContract) test(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
@@ -172,161 +262,6 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 	}
 
 	return shim.Success(nil)
-}
-
-func (s *SmartContract) createPrivateCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-	type carTransientInput struct {
-		Make  string `json:"make"` //the fieldtags are needed to keep case from bouncing around
-		Model string `json:"model"`
-		Color string `json:"color"`
-		Owner string `json:"owner"`
-		Price string `json:"price"`
-		Key   string `json:"key"`
-	}
-	if len(args) != 0 {
-		return shim.Error("1111111----Incorrect number of arguments. Private marble data must be passed in transient map.")
-	}
-
-	logger.Infof("11111111111111111111111111")
-
-	transMap, err := APIstub.GetTransient()
-	if err != nil {
-		return shim.Error("222222 -Error getting transient: " + err.Error())
-	}
-
-	carDataAsBytes, ok := transMap["car"]
-	if !ok {
-		return shim.Error("car must be a key in the transient map")
-	}
-	logger.Infof("********************8   " + string(carDataAsBytes))
-
-	if len(carDataAsBytes) == 0 {
-		return shim.Error("333333 -marble value in the transient map must be a non-empty JSON string")
-	}
-
-	logger.Infof("2222222")
-
-	var carInput carTransientInput
-	err = json.Unmarshal(carDataAsBytes, &carInput)
-	if err != nil {
-		return shim.Error("44444 -Failed to decode JSON of: " + string(carDataAsBytes) + "Error is : " + err.Error())
-	}
-
-	logger.Infof("3333")
-
-	if len(carInput.Key) == 0 {
-		return shim.Error("name field must be a non-empty string")
-	}
-	if len(carInput.Make) == 0 {
-		return shim.Error("color field must be a non-empty string")
-	}
-	if len(carInput.Model) == 0 {
-		return shim.Error("model field must be a non-empty string")
-	}
-	if len(carInput.Color) == 0 {
-		return shim.Error("color field must be a non-empty string")
-	}
-	if len(carInput.Owner) == 0 {
-		return shim.Error("owner field must be a non-empty string")
-	}
-	if len(carInput.Price) == 0 {
-		return shim.Error("price field must be a non-empty string")
-	}
-
-	logger.Infof("444444")
-
-	// ==== Check if car already exists ====
-	carAsBytes, err := APIstub.GetPrivateData("collectionCars", carInput.Key)
-	if err != nil {
-		return shim.Error("Failed to get marble: " + err.Error())
-	} else if carAsBytes != nil {
-		fmt.Println("This car already exists: " + carInput.Key)
-		return shim.Error("This car already exists: " + carInput.Key)
-	}
-
-	logger.Infof("55555")
-
-	var car = Car{Make: carInput.Make, Model: carInput.Model, Colour: carInput.Color, Owner: carInput.Owner}
-
-	carAsBytes, err = json.Marshal(car)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	err = APIstub.PutPrivateData("collectionCars", carInput.Key, carAsBytes)
-	if err != nil {
-		logger.Infof("6666666")
-		return shim.Error(err.Error())
-	}
-
-	carPrivateDetails := &carPrivateDetails{Owner: carInput.Owner, Price: carInput.Price}
-
-	carPrivateDetailsAsBytes, err := json.Marshal(carPrivateDetails)
-	if err != nil {
-		logger.Infof("77777")
-		return shim.Error(err.Error())
-	}
-
-	err = APIstub.PutPrivateData("collectionCarPrivateDetails", carInput.Key, carPrivateDetailsAsBytes)
-	if err != nil {
-		logger.Infof("888888")
-		return shim.Error(err.Error())
-	}
-
-	return shim.Success(carAsBytes)
-}
-
-func (s *SmartContract) updatePrivateData(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	type carTransientInput struct {
-		Owner string `json:"owner"`
-		Price string `json:"price"`
-		Key   string `json:"key"`
-	}
-	if len(args) != 0 {
-		return shim.Error("1111111----Incorrect number of arguments. Private marble data must be passed in transient map.")
-	}
-
-	logger.Infof("11111111111111111111111111")
-
-	transMap, err := APIstub.GetTransient()
-	if err != nil {
-		return shim.Error("222222 -Error getting transient: " + err.Error())
-	}
-
-	carDataAsBytes, ok := transMap["car"]
-	if !ok {
-		return shim.Error("car must be a key in the transient map")
-	}
-	logger.Infof("********************8   " + string(carDataAsBytes))
-
-	if len(carDataAsBytes) == 0 {
-		return shim.Error("333333 -marble value in the transient map must be a non-empty JSON string")
-	}
-
-	logger.Infof("2222222")
-
-	var carInput carTransientInput
-	err = json.Unmarshal(carDataAsBytes, &carInput)
-	if err != nil {
-		return shim.Error("44444 -Failed to decode JSON of: " + string(carDataAsBytes) + "Error is : " + err.Error())
-	}
-
-	carPrivateDetails := &carPrivateDetails{Owner: carInput.Owner, Price: carInput.Price}
-
-	carPrivateDetailsAsBytes, err := json.Marshal(carPrivateDetails)
-	if err != nil {
-		logger.Infof("77777")
-		return shim.Error(err.Error())
-	}
-
-	err = APIstub.PutPrivateData("collectionCarPrivateDetails", carInput.Key, carPrivateDetailsAsBytes)
-	if err != nil {
-		logger.Infof("888888")
-		return shim.Error(err.Error())
-	}
-
-	return shim.Success(carPrivateDetailsAsBytes)
-
 }
 
 func (s *SmartContract) createCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
@@ -611,93 +546,6 @@ func (s *SmartContract) queryPrivateDataHash(APIstub shim.ChaincodeStubInterface
 	}
 	carAsBytes, _ := APIstub.GetPrivateDataHash(args[0], args[1])
 	return shim.Success(carAsBytes)
-}
-
-func (s *SmartContract) addMultipleCarAsset(APIStub shim.ChaincodeStubInterface, args []string) sc.Response {
-	logger.Infof("Function addBulkAsset called and length of arguments is:  %d", len(args))
-	if len(args) >= 500 {
-		logger.Errorf("Incorrect number of arguments in function CreateAsset, expecting less than 500, but got: %b", len(args))
-		return shim.Error("Incorrect number of arguments, expecting 2")
-	}
-
-	var data []Car
-	logger.Info("1111111111111111")
-
-	err := json.Unmarshal([]byte(args[0]), &data)
-
-	logger.Info("Length of data array is :  %d", len(data))
-	if err != nil {
-		logger.Info("1111122222233333")
-		logger.Infof("Getting error ---111: %s" + err.Error())
-		return shim.Error(err.Error())
-	}
-	logger.Info("222222222222222")
-
-	var eventKeyValue []string
-	logger.Info("------------------------------------------")
-
-	logger.Info(args)
-	logger.Info("------------------------------------------")
-
-	// i := 0
-	// for i < len(data) {
-	for i, s := range data {
-		// carAsBytes, _ := json.Marshal(args[i])
-
-		batchProductKeyValue := strings.SplitN(s, "#", 2)
-		logger.Info("------------------------------------------")
-		logger.Info(batchProductKeyValue[0])
-		logger.Info("------------------------------------------")
-		logger.Info(batchProductKeyValue[1])
-		logger.Info("------------------------------------------")
-		if len(batchProductKeyValue) != 2 {
-			logger.Errorf("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"BatchId#ProductId\" format")
-			return shim.Error("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"BatchId#ProductId\" format")
-		}
-
-		// var productBatch ProductBatch
-		// productBatch = ProductBatch(batchProductKeyValue[1])
-
-		productBatch := &ProductBatch{BatchNumber: batchProductKeyValue[1]}
-
-		assetAsBytes, err := json.Marshal(productBatch)
-		err = APIStub.PutState(batchProductKeyValue[0], assetAsBytes)
-		if err != nil {
-			logger.Errorf("Error coocured while putting state for asset %s in APIStub, error: %s", eventKeyValue[1], err.Error())
-			return shim.Error(err.Error())
-		}
-
-		// i = i + 1
-		fmt.Println(i, s)
-	}
-
-	// for i, s := range args {
-
-	// 	batchProductKeyValue := strings.SplitN(s, "#", 2)
-	// 	logger.Info(batchProductKeyValue[0])
-	// 	logger.Info(batchProductKeyValue[1])
-	// 	if len(batchProductKeyValue) != 2 {
-	// 		logger.Errorf("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"BatchId#ProductId\" format")
-	// 		return shim.Error("Error occured, Please make sure that you have provided the array of strings and each string should be  in \"BatchId#ProductId\" format")
-	// 	}
-
-	// 	// var productBatch ProductBatch
-	// 	// productBatch = ProductBatch(batchProductKeyValue[1])
-
-	// 	productBatch := &ProductBatch{BatchNumber: batchProductKeyValue[1]}
-
-	// 	assetAsBytes, err := json.Marshal(productBatch)
-	// 	err = APIStub.PutState(batchProductKeyValue[0], assetAsBytes)
-	// 	if err != nil {
-	// 		logger.Errorf("Error coocured while putting state for asset %s in APIStub, error: %s", eventKeyValue[1], err.Error())
-	// 		return shim.Error(err.Error())
-	// 	}
-	// 	// logger.infof("Adding value for ")
-	// 	fmt.Println(i, s)
-	// 	// logger.Infof("Created Composite key : %s", eventAndIDIndexKey)
-	// }
-
-	return shim.Success([]byte("Batches added successfully"))
 }
 
 // func (s *SmartContract) addBulkAsset(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {

@@ -69,6 +69,11 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                 .setTransient(transientDataBuffer)
                 .submit()
             message = `Successfully submitted transient data`
+        }else if(fcn === "createProduct" || fcn==="linkBatchesToProduct"){
+            // console.log(JSON.parse(args))
+            result = await contract.submitTransaction(fcn, args);
+            console.log(`result is : ${result}`)
+            message = `Successfully added product`
         }
         else {
             return `Invocation require either createCar or changeCarOwner as function but got ${fcn}`
