@@ -14,14 +14,16 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-bearer-token": "^2.4.0",
-    "express-jwt": "^6.0.0",
+    "express-jwt": "^5.3.0",
     "fabric-ca-client": "^2.1.0",
     "fabric-client": "^1.4.8",
+    "fabric-common": "^1.4.10",
     "fabric-network": "^2.1.0",
     "http": "0.0.1-security",
     "js-yaml": "^3.13.1",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.2.0",
-    "npm": "^6.14.6"
+    "npm": "^6.14.6",
+    "save": "^2.4.0"
   }
 }

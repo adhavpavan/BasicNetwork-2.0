@@ -52,7 +52,7 @@ app.use(bodyParser.urlencoded({
 // set secret variable
 app.set('secret', 'thisismysecret');
 app.use(expressJWT({
-	secret: 'thisismysecret',algorithms: ['RS256']
+	secret: 'thisismysecret'
 }).unless({
 	path: ['/users', '/metrics']
 }));

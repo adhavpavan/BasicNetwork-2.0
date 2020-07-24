@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({
 // set secret variable
 app.set('secret', 'thisismysecret');
 app.use(expressJWT({
-    secret: 'thisismysecret',algorithms: ['RS256'] 
+    secret: 'thisismysecret'
 }).unless({
     path: ['/users']
 }));
@@ -46,6 +46,7 @@ app.use((req, res, next) => {
     var token = req.token;
     jwt.verify(token, app.get('secret'), (err, decoded) => {
         if (err) {
+            console.log(`Error ================:${err}`)
             res.send({
                 success: false,
                 message: 'Failed to authenticate token. Make sure to include the ' +
