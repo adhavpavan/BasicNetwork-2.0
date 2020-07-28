@@ -1,0 +1,522 @@
+{
+    "validationCode": 0,
+    "transactionEnvelope": {
+        "signature": {
+            "type": "Buffer",
+            "data": [
+                48,
+                69,
+                2,
+                33,
+                0,
+                175,
+                142,
+                4,
+                128,
+                222,
+                55,
+                108,
+                161,
+                184,
+                34,
+                54,
+                106,
+                101,
+                126,
+                216,
+                95,
+                155,
+                93,
+                115,
+                214,
+                50,
+                143,
+                223,
+                144,
+                233,
+                112,
+                88,
+                162,
+                254,
+                43,
+                45,
+                41,
+                2,
+                32,
+                108,
+                35,
+                157,
+                195,
+                65,
+                127,
+                25,
+                238,
+                191,
+                1,
+                251,
+                27,
+                249,
+                237,
+                108,
+                29,
+                73,
+                157,
+                10,
+                95,
+                170,
+                102,
+                239,
+                6,
+                240,
+                216,
+                32,
+                155,
+                85,
+                231,
+                133,
+                113
+            ]
+        },
+        "payload": {
+            "header": {
+                "channel_header": {
+                    "type": 3,
+                    "version": 1,
+                    "timestamp": "2020-07-28T04:42:05.130Z",
+                    "channel_id": "mychannel",
+                    "tx_id": "377fd10bb7c81e37421a9495f7286dd589da15c5774f3fafc2f69afe2c33d325",
+                    "epoch": "0",
+                    "extension": {
+                        "type": "Buffer",
+                        "data": [
+                            18,
+                            8,
+                            18,
+                            6,
+                            102,
+                            97,
+                            98,
+                            99,
+                            97,
+                            114
+                        ]
+                    },
+                    "typeString": "ENDORSER_TRANSACTION"
+                },
+                "signature_header": {
+                    "creator": {
+                        "Mspid": "Org1MSP",
+                        "IdBytes": "-----BEGIN CERTIFICATE-----\nMIICpDCCAkugAwIBAgIUExsglD40ajcS2p4ALoMCdSWrivAwCgYIKoZIzj0EAwIw\nczELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\nbiBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMT\nE2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMjAwNzI4MDQzNzAwWhcNMjEwNzI4MDQ0\nMjAwWjBEMTAwDQYDVQQLEwZjbGllbnQwCwYDVQQLEwRvcmcxMBIGA1UECxMLZGVw\nYXJ0bWVudDExEDAOBgNVBAMTB3BhdmFuMjIwWTATBgcqhkjOPQIBBggqhkjOPQMB\nBwNCAASOpZNrLPPKk2cxx78iI0E+wLO2kphyv4BCLHzxdZk3FM+W5MRQFZh2iGcl\n6tKNAZvWK/SnXTTDNu1okpg2OHe+o4HrMIHoMA4GA1UdDwEB/wQEAwIHgDAMBgNV\nHRMBAf8EAjAAMB0GA1UdDgQWBBT0IFBbgaohju0jlOSkn0c+8JDhkDArBgNVHSME\nJDAigCAvaH+n0aa6kCZstktftGirjl08uSPVwqv49UUIx3nHbTB8BggqAwQFBgcI\nAQRweyJhdHRycyI6eyJoZi5BZmZpbGlhdGlvbiI6Im9yZzEuZGVwYXJ0bWVudDEi\nLCJoZi5FbnJvbGxtZW50SUQiOiJwYXZhbjIyIiwiaGYuVHlwZSI6ImNsaWVudCIs\nInJvbGUiOiJhcHByb3ZlciJ9fTAKBggqhkjOPQQDAgNHADBEAiBARJD3ePpyMIk1\nmYXGNDAMzY0y+5bmNGRHbzcBDfn87QIgHE5DdB793E3bHUf5T/3YrsIF41JkuMg7\nYXl4Mif11Rs=\n-----END CERTIFICATE-----\n"
+                    },
+                    "nonce": {
+                        "type": "Buffer",
+                        "data": [
+                            182,
+                            210,
+                            76,
+                            214,
+                            45,
+                            187,
+                            201,
+                            159,
+                            205,
+                            143,
+                            145,
+                            69,
+                            246,
+                            81,
+                            214,
+                            159,
+                            157,
+                            242,
+                            123,
+                            28,
+                            11,
+                            91,
+                            188,
+                            249
+                        ]
+                    }
+                }
+            },
+            "data": {
+                "actions": [
+                    {
+                        "header": {
+                            "creator": {
+                                "Mspid": "Org1MSP",
+                                "IdBytes": "-----BEGIN CERTIFICATE-----\nMIICpDCCAkugAwIBAgIUExsglD40ajcS2p4ALoMCdSWrivAwCgYIKoZIzj0EAwIw\nczELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh\nbiBGcmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMT\nE2NhLm9yZzEuZXhhbXBsZS5jb20wHhcNMjAwNzI4MDQzNzAwWhcNMjEwNzI4MDQ0\nMjAwWjBEMTAwDQYDVQQLEwZjbGllbnQwCwYDVQQLEwRvcmcxMBIGA1UECxMLZGVw\nYXJ0bWVudDExEDAOBgNVBAMTB3BhdmFuMjIwWTATBgcqhkjOPQIBBggqhkjOPQMB\nBwNCAASOpZNrLPPKk2cxx78iI0E+wLO2kphyv4BCLHzxdZk3FM+W5MRQFZh2iGcl\n6tKNAZvWK/SnXTTDNu1okpg2OHe+o4HrMIHoMA4GA1UdDwEB/wQEAwIHgDAMBgNV\nHRMBAf8EAjAAMB0GA1UdDgQWBBT0IFBbgaohju0jlOSkn0c+8JDhkDArBgNVHSME\nJDAigCAvaH+n0aa6kCZstktftGirjl08uSPVwqv49UUIx3nHbTB8BggqAwQFBgcI\nAQRweyJhdHRycyI6eyJoZi5BZmZpbGlhdGlvbiI6Im9yZzEuZGVwYXJ0bWVudDEi\nLCJoZi5FbnJvbGxtZW50SUQiOiJwYXZhbjIyIiwiaGYuVHlwZSI6ImNsaWVudCIs\nInJvbGUiOiJhcHByb3ZlciJ9fTAKBggqhkjOPQQDAgNHADBEAiBARJD3ePpyMIk1\nmYXGNDAMzY0y+5bmNGRHbzcBDfn87QIgHE5DdB793E3bHUf5T/3YrsIF41JkuMg7\nYXl4Mif11Rs=\n-----END CERTIFICATE-----\n"
+                            },
+                            "nonce": {
+                                "type": "Buffer",
+                                "data": [
+                                    182,
+                                    210,
+                                    76,
+                                    214,
+                                    45,
+                                    187,
+                                    201,
+                                    159,
+                                    205,
+                                    143,
+                                    145,
+                                    69,
+                                    246,
+                                    81,
+                                    214,
+                                    159,
+                                    157,
+                                    242,
+                                    123,
+                                    28,
+                                    11,
+                                    91,
+                                    188,
+                                    249
+                                ]
+                            }
+                        },
+                        "payload": {
+                            "chaincode_proposal_payload": {
+                                "input": {
+                                    "chaincode_spec": {
+                                        "type": 1,
+                                        "typeString": "GOLANG",
+                                        "input": {
+                                            "args": [
+                                                {
+                                                    "type": "Buffer",
+                                                    "data": [
+                                                        99,
+                                                        114,
+                                                        101,
+                                                        97,
+                                                        116,
+                                                        101,
+                                                        67,
+                                                        97,
+                                                        114
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Buffer",
+                                                    "data": [
+                                                        83,
+                                                        117,
+                                                        112,
+                                                        101,
+                                                        114,
+                                                        67,
+                                                        97,
+                                                        114,
+                                                        57
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Buffer",
+                                                    "data": [
+                                                        84,
+                                                        101,
+                                                        115,
+                                                        108,
+                                                        97
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Buffer",
+                                                    "data": [
+                                                        70,
+                                                        49,
+                                                        45,
+                                                        82,
+                                                        101,
+                                                        108,
+                                                        111,
+                                                        97,
+                                                        100,
+                                                        101,
+                                                        100
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Buffer",
+                                                    "data": [
+                                                        87,
+                                                        104,
+                                                        105,
+                                                        116,
+                                                        101
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Buffer",
+                                                    "data": [
+                                                        85,
+                                                        115,
+                                                        101,
+                                                        114,
+                                                        51
+                                                    ]
+                                                }
+                                            ],
+                                            "decorations": {}
+                                        },
+                                        "chaincode_id": {
+                                            "path": "",
+                                            "name": "fabcar",
+                                            "version": ""
+                                        },
+                                        "timeout": 0
+                                    }
+                                }
+                            },
+                            "action": {
+                                "proposal_response_payload": {
+                                    "proposal_hash": "47cdc3ea4f4567d75bb630df6460b694d082371bd2a137cb4f01e5125dcb2615",
+                                    "extension": {
+                                        "results": {
+                                            "data_model": 0,
+                                            "ns_rwset": [
+                                                {
+                                                    "namespace": "_lifecycle",
+                                                    "rwset": {
+                                                        "reads": [
+                                                            {
+                                                                "key": "namespaces/fields/fabcar/Sequence",
+                                                                "version": {
+                                                                    "block_num": "5",
+                                                                    "tx_num": "0"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "range_queries_info": [],
+                                                        "writes": [],
+                                                        "metadata_writes": []
+                                                    },
+                                                    "collection_hashed_rwset": []
+                                                },
+                                                {
+                                                    "namespace": "fabcar",
+                                                    "rwset": {
+                                                        "reads": [
+                                                            {
+                                                                "key":" 􏿿initialized",
+                                                                "version": {
+                                                                    "block_num": "6",
+                                                                    "tx_num": "0"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "range_queries_info": [],
+                                                        "writes": [
+                                                            {
+                                                                "key":" owner~key User3 SuperCar9 ",
+                                                                "is_delete": false,
+                                                                "value":" "
+                                                            },
+                                                            {
+                                                                "key": "SuperCar9",
+                                                                "is_delete": false,
+                                                                "value": "{\"make\":\"Tesla\",\"model\":\"F1-Reloaded\",\"colour\":\"White\",\"owner\":\"User3\"}"
+                                                            }
+                                                        ],
+                                                        "metadata_writes": []
+                                                    },
+                                                    "collection_hashed_rwset": []
+                                                }
+                                            ]
+                                        },
+                                        "events": {
+                                            "chaincode_id": "",
+                                            "tx_id": "",
+                                            "event_name": "",
+                                            "payload": {
+                                                "type": "Buffer",
+                                                "data": []
+                                            }
+                                        },
+                                        "response": {
+                                            "status": 200,
+                                            "message": "",
+                                            "payload": "{\"make\":\"Tesla\",\"model\":\"F1-Reloaded\",\"colour\":\"White\",\"owner\":\"User3\"}"
+                                        },
+                                        "chaincode_id": {
+                                            "path": "",
+                                            "name": "fabcar",
+                                            "version": "1"
+                                        }
+                                    }
+                                },
+                                "endorsements": [
+                                    {
+                                        "endorser": {
+                                            "Mspid": "Org1MSP",
+                                            "IdBytes": "-----BEGIN CERTIFICATE-----\nMIICKDCCAc+gAwIBAgIRALMcFBd7FP4wnaTseZJeSxQwCgYIKoZIzj0EAwIwczEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzEuZXhhbXBsZS5jb20wHhcNMjAwNzA1MDQ0ODAwWhcNMzAwNzAzMDQ0ODAw\nWjBqMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN\nU2FuIEZyYW5jaXNjbzENMAsGA1UECxMEcGVlcjEfMB0GA1UEAxMWcGVlcjAub3Jn\nMS5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABCzcUvE0UmYa\niteJKbpdOTI+juzrmcFZVgoyYjd1PPmKIZP/NQXJqm9jbCEHkLcS1S56mWhs6EjL\nvXU0iFJFq7SjTTBLMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1Ud\nIwQkMCKAIC9of6fRprqQJmy2S1+0aKuOXTy5I9XCq/j1RQjHecdtMAoGCCqGSM49\nBAMCA0cAMEQCIB37lNcFp6cSmKaeeMXkHOqnNZmlgMSk12IYutGuFxBNAiADxJsm\nyGaAaFlD3yCo0zKgULXMEldrYaDZIIlcncOulw==\n-----END CERTIFICATE-----\n"
+                                        },
+                                        "signature": {
+                                            "type": "Buffer",
+                                            "data": [
+                                                48,
+                                                68,
+                                                2,
+                                                32,
+                                                9,
+                                                9,
+                                                221,
+                                                37,
+                                                88,
+                                                236,
+                                                190,
+                                                75,
+                                                73,
+                                                207,
+                                                47,
+                                                61,
+                                                12,
+                                                18,
+                                                156,
+                                                142,
+                                                212,
+                                                92,
+                                                109,
+                                                253,
+                                                210,
+                                                232,
+                                                88,
+                                                99,
+                                                86,
+                                                37,
+                                                29,
+                                                98,
+                                                57,
+                                                180,
+                                                44,
+                                                170,
+                                                2,
+                                                32,
+                                                38,
+                                                198,
+                                                243,
+                                                152,
+                                                81,
+                                                7,
+                                                250,
+                                                81,
+                                                226,
+                                                73,
+                                                27,
+                                                199,
+                                                1,
+                                                220,
+                                                112,
+                                                234,
+                                                96,
+                                                205,
+                                                214,
+                                                132,
+                                                125,
+                                                88,
+                                                181,
+                                                32,
+                                                240,
+                                                192,
+                                                199,
+                                                243,
+                                                73,
+                                                88,
+                                                137,
+                                                122
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "endorser": {
+                                            "Mspid": "Org2MSP",
+                                            "IdBytes": "-----BEGIN CERTIFICATE-----\nMIICJzCCAc6gAwIBAgIQX2Cv/NYLHtF2YknCa4UTfzAKBggqhkjOPQQDAjBzMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQb3JnMi5leGFtcGxlLmNvbTEcMBoGA1UEAxMTY2Eu\nb3JnMi5leGFtcGxlLmNvbTAeFw0yMDA3MDUwNDQ4MDBaFw0zMDA3MDMwNDQ4MDBa\nMGoxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMQ0wCwYDVQQLEwRwZWVyMR8wHQYDVQQDExZwZWVyMC5vcmcy\nLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEdqfdqvKtt+1\nQDD7bCwhJ6+CBkxNvV9FJne33IvZrB4RPEcMYk+yuPYYMG92qmqkFPMt+9S/EhoW\nRZVGf6dk1KNNMEswDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYDVR0j\nBCQwIoAgjxe04WctIwLlUxrMwHaomwIyN2pqXMIxKV0wCKbHeEkwCgYIKoZIzj0E\nAwIDRwAwRAIgX+TrCjq/WJ6hn53aryYjwvoqWhn4uqI6MnvX1Z2EDQ4CIGABo7aX\nVYc8GIMCJGJdn0pKQePo78Vk/8W5ISL3yRo+\n-----END CERTIFICATE-----\n"
+                                        },
+                                        "signature": {
+                                            "type": "Buffer",
+                                            "data": [
+                                                48,
+                                                68,
+                                                2,
+                                                32,
+                                                27,
+                                                205,
+                                                158,
+                                                210,
+                                                220,
+                                                240,
+                                                205,
+                                                192,
+                                                10,
+                                                12,
+                                                204,
+                                                56,
+                                                74,
+                                                241,
+                                                135,
+                                                225,
+                                                156,
+                                                78,
+                                                166,
+                                                212,
+                                                12,
+                                                163,
+                                                97,
+                                                207,
+                                                35,
+                                                99,
+                                                45,
+                                                172,
+                                                161,
+                                                47,
+                                                98,
+                                                166,
+                                                2,
+                                                32,
+                                                56,
+                                                104,
+                                                93,
+                                                68,
+                                                43,
+                                                21,
+                                                89,
+                                                191,
+                                                181,
+                                                42,
+                                                88,
+                                                215,
+                                                155,
+                                                47,
+                                                4,
+                                                13,
+                                                80,
+                                                54,
+                                                131,
+                                                189,
+                                                13,
+                                                102,
+                                                35,
+                                                154,
+                                                253,
+                                                203,
+                                                58,
+                                                195,
+                                                183,
+                                                69,
+                                                189,
+                                                154
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
