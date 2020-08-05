@@ -1,0 +1,1 @@
+configtxlator proto_decode --input ./app/data/transactionData.block --type protos.ProcessedTransaction >./app/data/transaction.json

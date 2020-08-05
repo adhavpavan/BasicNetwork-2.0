@@ -18,7 +18,7 @@ const port = process.env.PORT || constants.port;
 
 const helper = require('./app/helper')
 const invoke = require('./app/invoke')
-const query = require('./app/query')
+const qscc = require('./app/qscc')
 
 app.options('*', cors());
 app.use(cors());
@@ -208,6 +208,64 @@ app.get('/channels/:channelName/chaincodes/:chaincodeName', async function (req,
             error: null,
             errorData: null
         }
+
+        res.send(response_payload);
+    } catch (error) {
+        const response_payload = {
+            result: null,
+            error: error.name,
+            errorData: error.message
+        }
+        res.send(response_payload)
+    }
+});
+
+app.get('/qscc/channels/:channelName/chaincodes/:chaincodeName', async function (req, res) {
+    try {
+        logger.debug('==================== QUERY BY CHAINCODE ==================');
+
+        var channelName = req.params.channelName;
+        var chaincodeName = req.params.chaincodeName;
+        console.log(`chaincode name is :${chaincodeName}`)
+        let args = req.query.args;
+        let fcn = req.query.fcn;
+        // let peer = req.query.peer;
+
+        logger.debug('channelName : ' + channelName);
+        logger.debug('chaincodeName : ' + chaincodeName);
+        logger.debug('fcn : ' + fcn);
+        logger.debug('args : ' + args);
+
+        if (!chaincodeName) {
+            res.json(getErrorMessage('\'chaincodeName\''));
+            return;
+        }
+        if (!channelName) {
+            res.json(getErrorMessage('\'channelName\''));
+            return;
+        }
+        if (!fcn) {
+            res.json(getErrorMessage('\'fcn\''));
+            return;
+        }
+        if (!args) {
+            res.json(getErrorMessage('\'args\''));
+            return;
+        }
+        console.log('args==========', args);
+        args = args.replace(/'/g, '"');
+        args = JSON.parse(args);
+        logger.debug(args);
+
+        let message = await qscc.qscc(channelName, chaincodeName, args, fcn, req.username, req.orgname);
+
+        const response_payload = {
+            result: message,
+            error: null,
+            errorData: null
+        }
+
+        res.send(message)
 
         res.send(response_payload);
     } catch (error) {
