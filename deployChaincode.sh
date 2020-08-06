@@ -122,6 +122,19 @@ approveForMyOrg1() {
 
 }
 
+getBlock() {
+    setGlobalsForPeer0Org1
+    # peer channel fetch 10 -c mychannel -o localhost:7050 \
+    #     --ordererTLSHostnameOverride orderer.example.com --tls \
+    #     --cafile $ORDERER_CA
+
+    peer channel getinfo  -c mychannel -o localhost:7050 \
+        --ordererTLSHostnameOverride orderer.example.com --tls \
+        --cafile $ORDERER_CA
+}
+
+# getBlock
+
 # approveForMyOrg1
 
 # --signature-policy "OR ('Org1MSP.member')"

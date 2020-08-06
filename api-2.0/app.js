@@ -32,16 +32,16 @@ app.set('secret', 'thisismysecret');
 app.use(expressJWT({
     secret: 'thisismysecret'
 }).unless({
-    path: ['/users']
+    path: ['/users','/users/login']
 }));
 app.use(bearerToken());
 
-logger.level='debug';
+logger.level = 'debug';
 
 
 app.use((req, res, next) => {
     logger.debug('New req for %s', req.originalUrl);
-    if (req.originalUrl.indexOf('/users') >= 0) {
+    if (req.originalUrl.indexOf('/users') >= 0 || req.originalUrl.indexOf('/users/login') >= 0) {
         return next();
     }
     var token = req.token;
@@ -135,18 +135,14 @@ app.post('/users/login', async function (req, res) {
         orgName: orgName
     }, app.get('secret'));
 
-    let response = await helper.getRegisteredUser(username, orgName, true);
+    let isUserRegistered = await helper.isUserRegistered(username, orgName);
 
-    logger.debug('-- returned from registering the username %s for organization %s', username, orgName);
-    if (response && typeof response !== 'string') {
-        logger.debug('Successfully registered the username %s for organization %s', username, orgName);
-        response.token = token;
-        res.json(response);
+    if (isUserRegistered) {
+        res.json({ success: true, message: { token: token } });
+
     } else {
-        logger.debug('Failed to register the username %s for organization %s with::%s', username, orgName, response);
-        res.json({ success: false, message: response });
+        res.json({ success: false, message: `User with username ${username} is not registered with ${orgName}, Please register first.` });
     }
-
 });
 
 
@@ -295,15 +291,13 @@ app.get('/qscc/channels/:channelName/chaincodes/:chaincodeName', async function 
         args = JSON.parse(args);
         logger.debug(args);
 
-        let message = await qscc.qscc(channelName, chaincodeName, args, fcn, req.username, req.orgname);
+        let response_payload = await qscc.qscc(channelName, chaincodeName, args, fcn, req.username, req.orgname);
 
-        const response_payload = {
-            result: message,
-            error: null,
-            errorData: null
-        }
-
-        res.send(message)
+        // const response_payload = {
+        //     result: message,
+        //     error: null,
+        //     errorData: null
+        // }
 
         res.send(response_payload);
     } catch (error) {

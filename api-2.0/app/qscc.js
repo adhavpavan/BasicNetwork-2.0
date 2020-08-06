@@ -4,6 +4,7 @@ const path = require("path")
 const log4js = require('log4js');
 const logger = log4js.getLogger('BasicNetwork');
 const util = require('util')
+// const { QSCCProposal } = require('khala-fabric-admin')
 
 // const blockDecoder = require('./BlockDecoder')
 
@@ -68,8 +69,10 @@ const qscc = async (channelName, chaincodeName, args, fcn, username, org_name) =
             result = fs.readFileSync('./app/data/block.json')
 
             result = JSON.parse(result.toString('utf-8'))
-        }else if (fcn == "GetTransactionByID"){
+        } else if (fcn == "GetTransactionByID") {
             result = await contract.evaluateTransaction(fcn, channelName, args[0]);
+
+            
 
             const fs = require('fs')
             fs.writeFileSync('./app/data/transactionData.block', result)
@@ -98,7 +101,7 @@ const qscc = async (channelName, chaincodeName, args, fcn, username, org_name) =
             // let decoder = new BlockDecoder()
             // console.log("Decoder is ", decoder)
             // result =  blockDecoder.decodeTransaction(result)
-            console.log("decoder block is :",result)
+            console.log("decoder block is :", result)
         }
 
         return result

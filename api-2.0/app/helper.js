@@ -7,9 +7,6 @@ const fs = require('fs');
 
 const util = require('util');
 
-
-
-
 const getCCP = async (org) => {
     let ccpPath;
     if (org == "Org1") {
@@ -25,7 +22,7 @@ const getCCP = async (org) => {
 }
 
 const getCaUrl = async (org, ccp) => {
-    let caURL ;
+    let caURL;
     if (org == "Org1") {
         caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
 
@@ -90,13 +87,13 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     let secret;
     try {
         // Register the user, enroll the user, and import the new identity into the wallet.
-     secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
-    // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
+        secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+        // const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
 
     } catch (error) {
         return error.message
     }
-    
+
     const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret });
     // const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret, attr_reqs: [{ name: 'role', optional: false }] });
 
@@ -129,6 +126,19 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
         message: username + ' enrolled Successfully',
     };
     return response
+}
+
+const isUserRegistered =async  (username, userOrg) => {
+    const walletPath = await getWalletPath(userOrg)
+    const wallet = await Wallets.newFileSystemWallet(walletPath);
+    console.log(`Wallet path: ${walletPath}`);
+
+    const userIdentity = await wallet.get(username);
+    if (userIdentity) {
+        console.log(`An identity for the user ${username} exists in the wallet`);
+        return true
+    }
+    return false
 }
 
 
@@ -190,25 +200,20 @@ const enrollAdmin = async (org, ccp) => {
             };
         }
 
-
         await wallet.put('admin', x509Identity);
         console.log('Successfully enrolled admin user "admin" and imported it into the wallet');
         return
-
-
     } catch (error) {
         console.error(`Failed to enroll admin user "admin": ${error}`);
     }
-
-
 }
-
 
 exports.getRegisteredUser = getRegisteredUser
 
 module.exports = {
     getCCP: getCCP,
     getWalletPath: getWalletPath,
-    getRegisteredUser: getRegisteredUser
+    getRegisteredUser: getRegisteredUser,
+    isUserRegistered: isUserRegistered
 
 }

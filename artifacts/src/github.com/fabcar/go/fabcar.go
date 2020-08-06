@@ -613,6 +613,30 @@ func (s *SmartContract) queryPrivateDataHash(APIstub shim.ChaincodeStubInterface
 	return shim.Success(carAsBytes)
 }
 
+// func (s *SmartContract) CreateCarAsset(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+// 	if len(args) != 1 {
+// 		return shim.Error("Incorrect number of arguments. Expecting 1")
+// 	}
+
+// 	var car Car
+// 	err := json.Unmarshal([]byte(args[0]), &car)
+// 	if err != nil {
+// 		return shim.Error(err.Error())
+// 	}
+
+// 	carAsBytes, err := json.Marshal(car)
+// 	if err != nil {
+// 		return shim.Error(err.Error())
+// 	}
+
+// 	err = APIstub.PutState(car.ID, carAsBytes)
+// 	if err != nil {
+// 		return shim.Error(err.Error())
+// 	}
+
+// 	return shim.Success(nil)
+// }
+
 // func (s *SmartContract) addBulkAsset(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 // 	logger.Infof("Function addBulkAsset called and length of arguments is:  %d", len(args))
 // 	if len(args) >= 500 {

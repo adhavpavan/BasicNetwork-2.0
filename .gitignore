@@ -153,3 +153,7 @@ artifacts/channel/create-certificate-with-ca/crypto-config-ca
 artifacts/channel/create-certificate-with-ca/fabric-ca
 artifacts/channel/crypto-config_1
 artifacts/channel/crypto-config_cryptogen
+api-2.0/app/data/transactionData.block
+api-2.0/app/data/transaction.json
+api-2.0/app/data/block.json
+api-2.0/app/data/blockData.block

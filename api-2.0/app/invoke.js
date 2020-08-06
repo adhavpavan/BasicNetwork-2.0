@@ -5,8 +5,16 @@ const log4js = require('log4js');
 const logger = log4js.getLogger('BasicNetwork');
 const util = require('util')
 
+// const createTransactionEventHandler = require('./MyTransactionEventHandler.ts')
+
 const helper = require('./helper')
 
+// const createTransactionEventHandler = (transactionId, network) => {
+//     /* Your implementation here */
+//     const mspId = network.getGateway().getIdentity().mspId;
+//     const myOrgPeers = network.getChannel().getEndorsers(mspId);
+//     return new MyTransactionEventHandler(transactionId, network, myOrgPeers);
+// }
 
 const invokeTransaction = async (channelName, chaincodeName, fcn, args, username, org_name, transientData) => {
     try {
@@ -32,12 +40,17 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
             return;
         }
 
+        
+
         const connectOptions = {
             wallet, identity: username, discovery: { enabled: true, asLocalhost: true },
             eventHandlerOptions: {
                 commitTimeout: 100,
                 strategy: DefaultEventHandlerStrategies.NETWORK_SCOPE_ALLFORTX
-            },
+            }
+            // transaction: {
+            //     strategy: createTransactionEventhandler()
+            // }
         }
 
         // Create a new gateway for connecting to our peer node.
@@ -46,6 +59,7 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork(channelName);
+
         const contract = network.getContract(chaincodeName);
 
         let result
