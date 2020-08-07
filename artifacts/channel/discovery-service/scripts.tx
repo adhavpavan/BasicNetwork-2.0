@@ -1,0 +1,13 @@
+
+
+
+
+
+1) Peer membership query:
+    discover --configFile conf.yaml peers --channel mychannel  --server localhost:7051
+
+2) Configuration query
+    discover --configFile conf.yaml config --channel mychannel  --server localhost:7051
+
+3) Endorsers query
+    discover --configFile conf.yaml endorsers --channel mychannel  --server localhost:7051 --chaincode fabcar
