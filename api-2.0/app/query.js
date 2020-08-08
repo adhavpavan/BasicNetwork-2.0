@@ -44,7 +44,7 @@ const query = async (channelName, chaincodeName, args, fcn, username, org_name) 
         const contract = network.getContract(chaincodeName);
         let result;
 
-        if (fcn == "queryCar" || fcn =="queryCarsByOwner" || fcn == 'getHistoryForAsset') {
+        if (fcn == "queryCar" || fcn =="queryCarsByOwner" || fcn == 'getHistoryForAsset' || fcn=='restictedMethod') {
             result = await contract.evaluateTransaction(fcn, args[0]);
 
         } else if (fcn == "readPrivateCar" || fcn == "queryPrivateDataHash"
