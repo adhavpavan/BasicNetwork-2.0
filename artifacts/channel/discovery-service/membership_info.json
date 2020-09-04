@@ -1,0 +1,40 @@
+[
+    {
+            "MSPID": "Org1MSP",
+            "LedgerHeight": 24,
+            "Endpoint": "peer1.org1.example.com:8051",
+            "Identity": "-----BEGIN CERTIFICATE-----\nMIICKDCCAc+gAwIBAgIRAJGekFn8N+AKnrsxRBOAL6UwCgYIKoZIzj0EAwIwczEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzEuZXhhbXBsZS5jb20wHhcNMjAwNzA1MDQ0ODAwWhcNMzAwNzAzMDQ0ODAw\nWjBqMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN\nU2FuIEZyYW5jaXNjbzENMAsGA1UECxMEcGVlcjEfMB0GA1UEAxMWcGVlcjEub3Jn\nMS5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABOw5xSQk9xxo\nYq3JIkgHLU8SwA8TAQ3roiWi42JU6jmWu4Hdwqyz4vczvM5DFTgq2REtW5TPuOHj\nHM4U7hj595GjTTBLMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1Ud\nIwQkMCKAIC9of6fRprqQJmy2S1+0aKuOXTy5I9XCq/j1RQjHecdtMAoGCCqGSM49\nBAMCA0cAMEQCIEaGTZ3VHPHZaahXw50mq8HYpWJuN9wU/nAcnES8ZJLmAiBx3JI3\nLclpBwgKlTnKsOQoKhk4sNsgAx/G0hL4zRSdBg==\n-----END CERTIFICATE-----\n",
+            "Chaincodes": [
+                    "_lifecycle"
+            ]
+    },
+    {
+            "MSPID": "Org1MSP",
+            "LedgerHeight": 24,
+            "Endpoint": "peer0.org1.example.com:7051",
+            "Identity": "-----BEGIN CERTIFICATE-----\nMIICKDCCAc+gAwIBAgIRALMcFBd7FP4wnaTseZJeSxQwCgYIKoZIzj0EAwIwczEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzEuZXhhbXBsZS5jb20wHhcNMjAwNzA1MDQ0ODAwWhcNMzAwNzAzMDQ0ODAw\nWjBqMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN\nU2FuIEZyYW5jaXNjbzENMAsGA1UECxMEcGVlcjEfMB0GA1UEAxMWcGVlcjAub3Jn\nMS5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABCzcUvE0UmYa\niteJKbpdOTI+juzrmcFZVgoyYjd1PPmKIZP/NQXJqm9jbCEHkLcS1S56mWhs6EjL\nvXU0iFJFq7SjTTBLMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1Ud\nIwQkMCKAIC9of6fRprqQJmy2S1+0aKuOXTy5I9XCq/j1RQjHecdtMAoGCCqGSM49\nBAMCA0cAMEQCIB37lNcFp6cSmKaeeMXkHOqnNZmlgMSk12IYutGuFxBNAiADxJsm\nyGaAaFlD3yCo0zKgULXMEldrYaDZIIlcncOulw==\n-----END CERTIFICATE-----\n",
+            "Chaincodes": [
+                    "fabcar",
+                    "_lifecycle"
+            ]
+    },
+    {
+            "MSPID": "Org2MSP",
+            "LedgerHeight": 24,
+            "Endpoint": "peer0.org2.example.com:9051",
+            "Identity": "-----BEGIN CERTIFICATE-----\nMIICJzCCAc6gAwIBAgIQX2Cv/NYLHtF2YknCa4UTfzAKBggqhkjOPQQDAjBzMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQb3JnMi5leGFtcGxlLmNvbTEcMBoGA1UEAxMTY2Eu\nb3JnMi5leGFtcGxlLmNvbTAeFw0yMDA3MDUwNDQ4MDBaFw0zMDA3MDMwNDQ4MDBa\nMGoxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMQ0wCwYDVQQLEwRwZWVyMR8wHQYDVQQDExZwZWVyMC5vcmcy\nLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEdqfdqvKtt+1\nQDD7bCwhJ6+CBkxNvV9FJne33IvZrB4RPEcMYk+yuPYYMG92qmqkFPMt+9S/EhoW\nRZVGf6dk1KNNMEswDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYDVR0j\nBCQwIoAgjxe04WctIwLlUxrMwHaomwIyN2pqXMIxKV0wCKbHeEkwCgYIKoZIzj0E\nAwIDRwAwRAIgX+TrCjq/WJ6hn53aryYjwvoqWhn4uqI6MnvX1Z2EDQ4CIGABo7aX\nVYc8GIMCJGJdn0pKQePo78Vk/8W5ISL3yRo+\n-----END CERTIFICATE-----\n",
+            "Chaincodes": [
+                    "fabcar",
+                    "_lifecycle"
+            ]
+    },
+    {
+            "MSPID": "Org2MSP",
+            "LedgerHeight": 24,
+            "Endpoint": "peer1.org2.example.com:10051",
+            "Identity": "-----BEGIN CERTIFICATE-----\nMIICJzCCAc6gAwIBAgIQQv2mpdv/YoMffGDHl2x1cTAKBggqhkjOPQQDAjBzMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQb3JnMi5leGFtcGxlLmNvbTEcMBoGA1UEAxMTY2Eu\nb3JnMi5leGFtcGxlLmNvbTAeFw0yMDA3MDUwNDQ4MDBaFw0zMDA3MDMwNDQ4MDBa\nMGoxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMQ0wCwYDVQQLEwRwZWVyMR8wHQYDVQQDExZwZWVyMS5vcmcy\nLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+WJ0g7FHp5gp\nBOyVsicQG+0eVNwCc4haVwwAb9coAnrb7sYhtcmXWTUPIJUOG3NtnaZ8Bm/r3/1/\npWCJzu16QqNNMEswDgYDVR0PAQH/BAQDAgeAMAwGA1UdEwEB/wQCMAAwKwYDVR0j\nBCQwIoAgjxe04WctIwLlUxrMwHaomwIyN2pqXMIxKV0wCKbHeEkwCgYIKoZIzj0E\nAwIDRwAwRAIgZ+S3bChuLRGbxFUSaeWLawWh5zgugvs7dkaz0/VJaGACIDXmdPm6\nSlLw4wy62CGvTHfQReBHVFBBA7Rr4pitkBPW\n-----END CERTIFICATE-----\n",
+            "Chaincodes": [
+                    "_lifecycle"
+            ]
+    }
+]
