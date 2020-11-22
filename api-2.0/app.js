@@ -32,7 +32,7 @@ app.set('secret', 'thisismysecret');
 app.use(expressJWT({
     secret: 'thisismysecret'
 }).unless({
-    path: ['/users','/users/login']
+    path: ['/users','/users/login', '/register']
 }));
 app.use(bearerToken());
 
@@ -41,7 +41,7 @@ logger.level = 'debug';
 
 app.use((req, res, next) => {
     logger.debug('New req for %s', req.originalUrl);
-    if (req.originalUrl.indexOf('/users') >= 0 || req.originalUrl.indexOf('/users/login') >= 0) {
+    if (req.originalUrl.indexOf('/users') >= 0 || req.originalUrl.indexOf('/users/login') >= 0 || req.originalUrl.indexOf('/register') >= 0) {
         return next();
     }
     var token = req.token;
@@ -100,6 +100,44 @@ app.post('/users', async function (req, res) {
     }, app.get('secret'));
 
     let response = await helper.getRegisteredUser(username, orgName, true);
+
+    logger.debug('-- returned from registering the username %s for organization %s', username, orgName);
+    if (response && typeof response !== 'string') {
+        logger.debug('Successfully registered the username %s for organization %s', username, orgName);
+        response.token = token;
+        res.json(response);
+    } else {
+        logger.debug('Failed to register the username %s for organization %s with::%s', username, orgName, response);
+        res.json({ success: false, message: response });
+    }
+
+});
+
+// Register and enroll user
+app.post('/register', async function (req, res) {
+    var username = req.body.username;
+    var orgName = req.body.orgName;
+    logger.debug('End point : /users');
+    logger.debug('User name : ' + username);
+    logger.debug('Org name  : ' + orgName);
+    if (!username) {
+        res.json(getErrorMessage('\'username\''));
+        return;
+    }
+    if (!orgName) {
+        res.json(getErrorMessage('\'orgName\''));
+        return;
+    }
+
+    var token = jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + parseInt(constants.jwt_expiretime),
+        username: username,
+        orgName: orgName
+    }, app.get('secret'));
+
+    console.log(token)
+
+    let response = await helper.registerAndGerSecret(username, orgName);
 
     logger.debug('-- returned from registering the username %s for organization %s', username, orgName);
     if (response && typeof response !== 'string') {
