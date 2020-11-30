@@ -1,0 +1,17 @@
+version: "2"
+
+networks:
+  test:
+
+services:
+  offchaindb:
+    container_name: offchaindb
+    image: couchdb
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=password
+    ports:
+      - 5990:5984
+    networks:
+      - test
+
