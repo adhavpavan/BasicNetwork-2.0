@@ -34,7 +34,7 @@
                 "hostnameOverride": "peer0.org1.example.com"
             }
         },
-        "peer1.org1.example.com": {
+	"peer1.org1.example.com": {
             "url": "grpcs://localhost:8051",
             "tlsCACerts": {
                 "pem": "-----BEGIN CERTIFICATE-----\nMIICWDCCAf2gAwIBAgIQO/5ZnVJT/0PuCueOvuoexTAKBggqhkjOPQQDAjB2MQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQb3JnMS5leGFtcGxlLmNvbTEfMB0GA1UEAxMWdGxz\nY2Eub3JnMS5leGFtcGxlLmNvbTAeFw0yMDA4MjkwNTMxMDBaFw0zMDA4MjcwNTMx\nMDBaMHYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH\nEw1TYW4gRnJhbmNpc2NvMRkwFwYDVQQKExBvcmcxLmV4YW1wbGUuY29tMR8wHQYD\nVQQDExZ0bHNjYS5vcmcxLmV4YW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0D\nAQcDQgAEtWAg5GSQ6gK9gU46YO3uiRQekDcKiz06PWqpYg3h15z+IU34Zka6GaHm\nMwRE6zA1CewmJqCZu2gFZ8Ez+qO/86NtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1Ud\nJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1Ud\nDgQiBCCKlnxmsCdK5tJh5bq/vHytQ8xzzcar0uk03fL22EeyHTAKBggqhkjOPQQD\nAgNJADBGAiEA8VmAZaK4uVdhRIN/Q/xCLuV3xeLpJYRCByu7HZWaMSQCIQDF6HKa\n7dAIGafMY+rfJx7yEPI7JzoDPdNB/iXm1FsPNg==\n-----END CERTIFICATE-----\n"
@@ -44,6 +44,8 @@
                 "hostnameOverride": "peer1.org1.example.com"
             }
         }
+
+	
     },
     "certificateAuthorities": {
         "ca.org1.example.com": {
