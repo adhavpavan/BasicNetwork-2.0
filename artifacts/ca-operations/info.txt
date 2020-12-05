@@ -1,0 +1,26 @@
+===========================================
+Attribute Info:
+    id:
+  name:
+  type: client
+  affiliation: org1.department1
+  maxenrollments: -1
+  attributes:
+    - name: hf.Revoker
+      value: true
+    - name: anotherAttrName
+      value: anotherAttrValue
+====================================================
+The following are the supported reasons that can be specified using -r flag:
+
+    - unspecified
+    - keycompromise
+    - cacompromise
+    - affiliationchange
+    - superseded
+    - cessationofoperation
+    - certificatehold
+    - removefromcrl
+    - privilegewithdrawn
+    - aacompromise
+================================================
