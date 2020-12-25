@@ -57,6 +57,26 @@ const configPath = path.resolve(__dirname, 'nextblock.txt');
 
 const nano = require('nano')(couchdb_address);
 
+require('dotenv').config()
+
+const { MongoClient } = require('mongodb');
+let uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.gxh9w.mongodb.net/fabric?retryWrites=true&w=majority`
+const client = new MongoClient(uri);
+let mongodb;
+const connectMongo = async () => {
+
+    try {
+        let c = await client.connect();
+        mongodb = c.db()
+        console.log('Connected to mongodb')
+    } catch (error) {
+        console.log(`Error occure while connecting to mongodb`, error)
+    }
+}
+
+connectMongo()
+
+
 // simple map to hold blocks for processing
 class BlockMap {
     constructor() {
@@ -108,7 +128,7 @@ async function main() {
         // Parse the connection profile. This would be the path to the file downloaded
         // from the IBM Blockchain Platform operational console.
         // const ccpPath = path.resolve(__dirname, '..', 'first-network', 'connection-org1.json');
-        const ccpPath= '../../api-2.0/config/connection-org1.json'
+        const ccpPath = '../../api-2.0/config/connection-org1.json'
         const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
@@ -138,6 +158,9 @@ async function main() {
 
 // listener function to check for blocks in the ProcessingMap
 async function processPendingBlocks(ProcessingMap) {
+    if (!mongodb){
+        await connectMongo()
+    }
 
     setTimeout(async () => {
 
@@ -155,7 +178,7 @@ async function processPendingBlocks(ProcessingMap) {
             }
 
             try {
-                await blockProcessing.processBlockEvent(channelid, processBlock, use_couchdb, nano)
+                await blockProcessing.processBlockEvent(channelid, processBlock, use_couchdb, nano, mongodb)
             } catch (error) {
                 console.error(`Failed to process block: ${error}`);
             }

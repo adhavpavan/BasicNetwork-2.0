@@ -99,11 +99,6 @@ const qscc = async (channelName, chaincodeName, args, fcn, username, org_name) =
 
             // result = JSON.parse(result)
 
-
-            // let decoder = new BlockDecoder()
-            // console.log("Decoder is ", decoder)
-            // result =  blockDecoder.decodeTransaction(result)
-            console.log("decoder block is :", result)
         }
 
         return result

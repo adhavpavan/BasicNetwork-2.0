@@ -1,0 +1,16 @@
+
+version: '2'
+
+networks:
+  test:
+
+services:
+
+  analytics_metabase:
+    image: metabase/metabase
+    ports:
+      - "3010:3000"
+    container_name: analytics_metabase
+    hostname: analytics_metabase
+    networks:
+      - test

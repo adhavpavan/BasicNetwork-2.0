@@ -157,3 +157,7 @@ api-2.0/app/data/transactionData.block
 api-2.0/app/data/transaction.json
 api-2.0/app/data/block.json
 api-2.0/app/data/blockData.block
+Explorer/crypto-config
+artifacts/src/github.com/vf
+artifacts/ca-operations/clients
+artifacts/ca-operations/fabric-ca

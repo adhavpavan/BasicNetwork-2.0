@@ -7,7 +7,9 @@ const couchdbutil = require('./couchdbutil.js');
 
 const configPath = path.resolve(__dirname, 'nextblock.txt');
 
-exports.processBlockEvent = async function (channelname, block, use_couchdb, nano) {
+require('dotenv').config()
+
+exports.processBlockEvent = async function (channelname, block, use_couchdb, nano, mongodb) {
     return new Promise((async (resolve, reject) => {
 
         // reject the block if the block number is not defined
@@ -39,7 +41,7 @@ exports.processBlockEvent = async function (channelname, block, use_couchdb, nan
             // filter through valid tx, refer below for list of error codes
             // https://github.com/hyperledger/fabric-sdk-node/blob/release-1.4/fabric-client/lib/protos/peer/transaction.proto
             if (txSuccess[dataItem] !== 0) {
-              continue;
+                continue;
             }
 
             const timestamp = dataArray[dataItem].payload.header.channel_header.timestamp;
@@ -95,7 +97,7 @@ exports.processBlockEvent = async function (channelname, block, use_couchdb, nan
                         // if couchdb is configured, then write to couchdb
                         if (use_couchdb) {
                             try {
-                                await writeValuesToCouchDBP(nano, channelname, writeObject);
+                                await writeValuesToCouchDBP(nano, channelname, writeObject, mongodb);
                             } catch (error) {
 
                             }
@@ -113,7 +115,7 @@ exports.processBlockEvent = async function (channelname, block, use_couchdb, nan
     }));
 }
 
-async function writeValuesToCouchDBP(nano, channelname, writeObject) {
+async function writeValuesToCouchDBP(nano, channelname, writeObject, mongodb) {
     console.log(`writeValuesToCouchDBP`)
     return new Promise((async (resolve, reject) => {
 
@@ -157,6 +159,14 @@ async function writeValuesToCouchDBP(nano, channelname, writeObject) {
                                     keyvalue.value
                                 )
                             );
+
+                            await mongodb.collection('mychannel_fabcar').insertOne({
+                                _id: keyvalue.key, data: JSON.parse(
+                                    keyvalue.value
+                                )
+                            }, () => {
+                                console.log("data inserted")
+                            })
                         }
                     }
 
@@ -178,6 +188,10 @@ async function writeValuesToCouchDBP(nano, channelname, writeObject) {
                         null,
                         keyvalue
                     );
+
+                    // mongodb.collection('mychannel_fabcar_history').insertOne({ data: JSON.parse(keyvalue) }, () => {
+                    //     console.log("data inserted")
+                    // })
                 }
             } catch (error) {
                 console.log(error);
