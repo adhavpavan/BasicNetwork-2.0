@@ -22,7 +22,7 @@
     "http": "0.0.1-security",
     "js-yaml": "^3.13.1",
     "jsonwebtoken": "^8.5.1",
-    "log4js": "^6.2.0",
+    "log4js": "^6.4.0",
     "npm": "^6.14.6",
     "save": "^2.4.0"
   }
