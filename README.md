@@ -1,6 +1,6 @@
 # Auth_Network
 
-This is a school project for Cryptography at Danang University of Science and Technology.
+This is a school project for Cryptography teached by Dr.Nguyen Tan Khoi at Danang University of Science and Technology.
 
 Implement a hyperledger fabric network named Asset Authentication Network
 
