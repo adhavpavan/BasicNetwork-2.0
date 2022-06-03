@@ -18,24 +18,24 @@ function json_ccp {
         ./ccp-template.json
 }
 
-ORG=1
+ORG=firm
 P0PORT=7051
 CAPORT=7054
 P0PORT1=8051
-PEERPEM=../../artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
-PEERPEM1=../../artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
-CAPEM=../../artifacts/channel/crypto-config/peerOrganizations/org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+PEERPEM=../../artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/peers/peer0.firm.assetauth.vn/msp/tlscacerts/tlsca.firm.assetauth.vn-cert.pem
+PEERPEM1=../../artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/peers/peer1.firm.assetauth.vn/msp/tlscacerts/tlsca.firm.assetauth.vn-cert.pem
+CAPEM=../../artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/msp/tlscacerts/tlsca.firm.assetauth.vn-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM $PEERPEM1 $P0PORT1)" > connection-org1.json
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM $PEERPEM1 $P0PORT1)" > connection-$ORG.json
 
 
-ORG=2
+ORG=gov
 P0PORT=9051
 CAPORT=8054
 P0PORT1=10051
-PEERPEM=../../artifacts/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
-PEERPEM1=../../artifacts/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
-CAPEM=../../artifacts/channel/crypto-config/peerOrganizations/org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem
+PEERPEM=../../artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/peers/peer0.gov.assetauth.vn/msp/tlscacerts/tlsca.gov.assetauth.vn-cert.pem
+PEERPEM1=../../artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/peers/peer1.gov.assetauth.vn/msp/tlscacerts/tlsca.gov.assetauth.vn-cert.pem
+CAPEM=../../artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/msp/tlscacerts/tlsca.gov.assetauth.vn-cert.pem
 
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM $PEERPEM1 $P0PORT1)" > connection-org2.json
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM $PEERPEM1 $P0PORT1)" > connection-$ORG.json

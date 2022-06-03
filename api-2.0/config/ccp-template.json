@@ -1,8 +1,8 @@
 {
-    "name": "first-network-org${ORG}",
+    "name": "asset-authe-${ORG}",
     "version": "1.0.0",
     "client": {
-        "organization": "Org${ORG}",
+        "organization": "${ORG}",
         "connection": {
             "timeout": {
                 "peer": {
@@ -12,45 +12,45 @@
         }
     },
     "organizations": {
-        "Org${ORG}": {
-            "mspid": "Org${ORG}MSP",
+        "${ORG}": {
+            "mspid": "${ORG}MSP",
             "peers": [
-                "peer0.org${ORG}.example.com",
-                "peer1.org${ORG}.example.com"
+                "peer0.${ORG}.assetauth.vn",
+                "peer1.${ORG}.assetauth.vn"
             ],
             "certificateAuthorities": [
-                "ca.org${ORG}.example.com"
+                "ca.${ORG}.assetauth.vn"
             ]
         }
     },
     "peers": {
-        "peer0.org${ORG}.example.com": {
+        "peer0.org${ORG}.assetauth.vn": {
             "url": "grpcs://localhost:${P0PORT}",
             "tlsCACerts": {
                 "pem": "${PEERPEM}"
             },
             "grpcOptions": {
-                "ssl-target-name-override": "peer0.org${ORG}.example.com",
-                "hostnameOverride": "peer0.org${ORG}.example.com"
+                "ssl-target-name-override": "peer0.${ORG}.assetauth.vn",
+                "hostnameOverride": "peer0.${ORG}.assetauth.vn"
             }
         },
-	"peer1.org${ORG}.example.com": {
+	"peer1.${ORG}.assetauth.vn": {
             "url": "grpcs://localhost:${P0PORT1}",
             "tlsCACerts": {
                 "pem": "${PEERPEM1}"
             },
             "grpcOptions": {
-                "ssl-target-name-override": "peer1.org${ORG}.example.com",
-                "hostnameOverride": "peer1.org${ORG}.example.com"
+                "ssl-target-name-override": "peer1.${ORG}.assetauth.vn",
+                "hostnameOverride": "peer1.${ORG}.assetauth.vn"
             }
         }
 
 	
     },
     "certificateAuthorities": {
-        "ca.org${ORG}.example.com": {
+        "ca.${ORG}.assetauth.vn": {
             "url": "https://localhost:${CAPORT}",
-            "caName": "ca.org${ORG}.example.com",
+            "caName": "ca.${ORG}.assetauth.vn",
             "tlsCACerts": {
                 "pem": "${CAPEM}"
             },

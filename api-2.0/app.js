@@ -6,7 +6,9 @@ const http = require('http')
 const util = require('util');
 const express = require('express')
 const app = express();
-const expressJWT = require('express-jwt');
+// const {expressJWT} = require('express-jwt');
+var { expressjwt } = require("express-jwt");
+
 const jwt = require('jsonwebtoken');
 const bearerToken = require('express-bearer-token');
 const cors = require('cors');
@@ -29,8 +31,9 @@ app.use(bodyParser.urlencoded({
 }));
 // set secret variable
 app.set('secret', 'thisismysecret');
-app.use(expressJWT({
-    secret: 'thisismysecret'
+app.use(expressjwt({
+    secret: 'thisismysecret',
+    algorithms: ["HS256"],
 }).unless({
     path: ['/users','/users/login', '/register']
 }));

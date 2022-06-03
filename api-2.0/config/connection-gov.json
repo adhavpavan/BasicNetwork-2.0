@@ -1,0 +1,62 @@
+{
+    "name": "asset-authe-gov",
+    "version": "1.0.0",
+    "client": {
+        "organization": "gov",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "gov": {
+            "mspid": "govMSP",
+            "peers": [
+                "peer0.gov.assetauth.vn",
+                "peer1.gov.assetauth.vn"
+            ],
+            "certificateAuthorities": [
+                "ca.gov.assetauth.vn"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.orggov.assetauth.vn": {
+            "url": "grpcs://localhost:9051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICVzCCAf2gAwIBAgIQTvweROXB4YXPAbJnf3WhaTAKBggqhkjOPQQDAjB2MQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQZ292LmFzc2V0YXV0aC52bjEfMB0GA1UEAxMWdGxz\nY2EuZ292LmFzc2V0YXV0aC52bjAeFw0yMjA1MzAwOTAzMDBaFw0zMjA1MjcwOTAz\nMDBaMHYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH\nEw1TYW4gRnJhbmNpc2NvMRkwFwYDVQQKExBnb3YuYXNzZXRhdXRoLnZuMR8wHQYD\nVQQDExZ0bHNjYS5nb3YuYXNzZXRhdXRoLnZuMFkwEwYHKoZIzj0CAQYIKoZIzj0D\nAQcDQgAEUiD8d66NSPVNubvUjDSnz+XbE07UVAAOTrqv9DmsItcOAmsDLpLNAiCS\n1FUCXV1E2Ctv3haUuXJPyXdNktKFoaNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1Ud\nJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1Ud\nDgQiBCASNRsJ8eXyeH02fhOFFqS7Zn7qprn9zvety5OMAlKWKDAKBggqhkjOPQQD\nAgNIADBFAiBnS4Ppuvk/gjS/OY2bWV9+81V0G8GndZlKyfBcmbQhxAIhAN6e7PEE\nnJIc+ubJJe6GC2EJA9GshyXI1yCgjjS+iQPH\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.gov.assetauth.vn",
+                "hostnameOverride": "peer0.gov.assetauth.vn"
+            }
+        },
+	"peer1.gov.assetauth.vn": {
+            "url": "grpcs://localhost:10051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICVzCCAf2gAwIBAgIQTvweROXB4YXPAbJnf3WhaTAKBggqhkjOPQQDAjB2MQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQZ292LmFzc2V0YXV0aC52bjEfMB0GA1UEAxMWdGxz\nY2EuZ292LmFzc2V0YXV0aC52bjAeFw0yMjA1MzAwOTAzMDBaFw0zMjA1MjcwOTAz\nMDBaMHYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH\nEw1TYW4gRnJhbmNpc2NvMRkwFwYDVQQKExBnb3YuYXNzZXRhdXRoLnZuMR8wHQYD\nVQQDExZ0bHNjYS5nb3YuYXNzZXRhdXRoLnZuMFkwEwYHKoZIzj0CAQYIKoZIzj0D\nAQcDQgAEUiD8d66NSPVNubvUjDSnz+XbE07UVAAOTrqv9DmsItcOAmsDLpLNAiCS\n1FUCXV1E2Ctv3haUuXJPyXdNktKFoaNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1Ud\nJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1Ud\nDgQiBCASNRsJ8eXyeH02fhOFFqS7Zn7qprn9zvety5OMAlKWKDAKBggqhkjOPQQD\nAgNIADBFAiBnS4Ppuvk/gjS/OY2bWV9+81V0G8GndZlKyfBcmbQhxAIhAN6e7PEE\nnJIc+ubJJe6GC2EJA9GshyXI1yCgjjS+iQPH\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.gov.assetauth.vn",
+                "hostnameOverride": "peer1.gov.assetauth.vn"
+            }
+        }
+
+	
+    },
+    "certificateAuthorities": {
+        "ca.gov.assetauth.vn": {
+            "url": "https://localhost:8054",
+            "caName": "ca.gov.assetauth.vn",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICVzCCAf2gAwIBAgIQTvweROXB4YXPAbJnf3WhaTAKBggqhkjOPQQDAjB2MQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEZMBcGA1UEChMQZ292LmFzc2V0YXV0aC52bjEfMB0GA1UEAxMWdGxz\nY2EuZ292LmFzc2V0YXV0aC52bjAeFw0yMjA1MzAwOTAzMDBaFw0zMjA1MjcwOTAz\nMDBaMHYxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQH\nEw1TYW4gRnJhbmNpc2NvMRkwFwYDVQQKExBnb3YuYXNzZXRhdXRoLnZuMR8wHQYD\nVQQDExZ0bHNjYS5nb3YuYXNzZXRhdXRoLnZuMFkwEwYHKoZIzj0CAQYIKoZIzj0D\nAQcDQgAEUiD8d66NSPVNubvUjDSnz+XbE07UVAAOTrqv9DmsItcOAmsDLpLNAiCS\n1FUCXV1E2Ctv3haUuXJPyXdNktKFoaNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1Ud\nJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1Ud\nDgQiBCASNRsJ8eXyeH02fhOFFqS7Zn7qprn9zvety5OMAlKWKDAKBggqhkjOPQQD\nAgNIADBFAiBnS4Ppuvk/gjS/OY2bWV9+81V0G8GndZlKyfBcmbQhxAIhAN6e7PEE\nnJIc+ubJJe6GC2EJA9GshyXI1yCgjjS+iQPH\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

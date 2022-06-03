@@ -63,7 +63,7 @@ var getRegisteredUser = async function (username, userOrg, isJson) {
 			let caClient = client.getCertificateAuthority();
 			let secret = await caClient.register({
 				enrollmentID: username,
-				affiliation: userOrg.toLowerCase() + '.department1',
+				// affiliation: userOrg.toLowerCase() + '.department1',
 				attrs: [{ name: 'role', value: 'approver', ecert: true }]
 			}, adminUserObj);
 			// let secret = await caClient.register({

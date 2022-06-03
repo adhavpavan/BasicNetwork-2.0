@@ -1,4 +1,7 @@
 
+docker-compose -f ./artifacts/docker-compose.yaml down -v
+
+
 docker-compose -f ./artifacts/docker-compose.yaml up -d
 
 sleep 5
@@ -6,4 +9,4 @@ sleep 5
 
 sleep 2
 
-./deployChaincode.sh
+./deployChaincodeContractApi.sh
