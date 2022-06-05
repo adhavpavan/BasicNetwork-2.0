@@ -1,0 +1,29 @@
+.register-component{
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+    background: url('../asset/bg-register.png');
+    background-size: cover;
+}
+.form-register{
+    width: 400px;
+    margin-top: -200px;
+    padding: 30px;
+    background-color: #00aaff99;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    border-radius: 5px;
+}
+.mb-3{
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+.lable-register{
+    margin-right: 20px;
+    color: #fff;
+}
+.form-register h3{
+    color: #fff;
+    margin-top: 0;
+}

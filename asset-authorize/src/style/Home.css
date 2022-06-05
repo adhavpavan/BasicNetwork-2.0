@@ -1,0 +1,21 @@
+.nav-bar{
+    background-color:cadetblue;
+    padding: 20px
+}
+.nav-bar button {
+    margin: 0 10px;
+}
+.label{
+    width: 200px;
+}
+.home-component .form-control{
+    width: 300px    ;
+}
+.form-query-an-asset{
+    width: 500px;
+    margin: auto;
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
