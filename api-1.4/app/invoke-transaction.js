@@ -161,7 +161,7 @@ var invokeChaincode = async function (peerNames, channelName, chaincodeName, fcn
 			org_name, channelName, tx_id_string);
 		logger.info(message);
 
-		return { "tx_id": tx_id_string };
+		return { "tx_id": tx_id_string};
 	} else {
 		let message = util.format('Failed to invoke chaincode. cause:%s', error_message);
 		logger.error(message);

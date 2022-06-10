@@ -5,28 +5,28 @@ version: "1.0"
 channels:
   mychannel:
     orderers:
-      - orderer.example.com
+      - orderer.assetauth.vn
 
     peers:
-      peer0.org1.example.com:
+      peer0.firm.assetauth.vn:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
-      peer1.org1.example.com:
+      peer1.firm.assetauth.vn:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
-      peer0.org2.example.com:
+      peer0.gov.assetauth.vn:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
-      peer1.org2.example.com:
+      peer1.gov.assetauth.vn:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
@@ -36,120 +36,120 @@ channels:
       - mycc:v0
 
 organizations:
-  Org1:
-    mspid: Org1MSP
+  Firm:
+    mspid: FirmMSP
 
     peers:
-      - peer0.org1.example.com
-      - peer1.org1.example.com
+      - peer0.firm.assetauth.vn
+      - peer1.firm.assetauth.vn
 
     certificateAuthorities:
-      - ca.org1.example.com
+      - ca.firm.assetauth.vn
 
     adminPrivateKey:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/priv_sk
+      path: ../artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/users/Admin@firm.assetauth.vn/msp/keystore/priv_sk
     signedCert:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+      path: ../artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/users/Admin@firm.assetauth.vn/msp/signcerts/Admin@firm.assetauth.vn-cert.pem
 
-  Org2:
-    mspid: Org2MSP
+  Gov:
+    mspid: GovMSP
 
     peers:
-      - peer0.org2.example.com
-      - peer1.org2.example.com
+      - peer0.gov.assetauth.vn
+      - peer1.gov.assetauth.vn
 
     certificateAuthorities:
-      - ca.org2.example.com
+      - ca.gov.assetauth.vn
 
     adminPrivateKey:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/priv_sk
+      path: ../artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/users/Admin@gov.assetauth.vn/msp/keystore/priv_sk
     signedCert:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
+      path: ../artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/users/Admin@gov.assetauth.vn/msp/signcerts/Admin@gov.assetauth.vn-cert.pem
 
 orderers:
-  orderer.example.com:
+  orderer.assetauth.vn:
     url: grpcs://localhost:7050
     grpcOptions:
-      ssl-target-name-override: orderer.example.com
+      ssl-target-name-override: orderer.assetauth.vn
     tlsCACerts:
-      path: ../artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
+      path: ../artifacts/channel/crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer.assetauth.vn/tls/ca.crt
 
-  orderer2.example.com:
-    url: grpcs://localhost:8050
-    grpcOptions:
-      ssl-target-name-override: orderer2.example.com
-    tlsCACerts:
-      path: ../artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/ca.crt
+  # orderer2.assetauth.vn:
+  #   url: grpcs://localhost:8050
+  #   grpcOptions:
+  #     ssl-target-name-override: orderer2.assetauth.vn
+  #   tlsCACerts:
+  #     path: ../artifacts/channel/crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer2.assetauth.vn/tls/ca.crt
 
-  orderer3.example.com:
-    url: grpcs://localhost:9050
-    grpcOptions:
-      ssl-target-name-override: orderer3.example.com
-    tlsCACerts:
-      path: ../artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/ca.crt
+  # orderer3.assetauth.vn:
+  #   url: grpcs://localhost:9050
+  #   grpcOptions:
+  #     ssl-target-name-override: orderer3.assetauth.vn
+  #   tlsCACerts:
+  #     path: ../artifacts/channel/crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer3.assetauth.vn/tls/ca.crt
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.org1.example.com:
+  peer0.firm.assetauth.vn:
     url: grpcs://localhost:7051
 
     grpcOptions:
-      ssl-target-name-override: peer0.org1.example.com
+      ssl-target-name-override: peer0.firm.assetauth.vn
     tlsCACerts:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+      path: ../artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/peers/peer0.firm.assetauth.vn/tls/ca.crt
 
-  peer1.org1.example.com:
+  peer1.firm.assetauth.vn:
     url: grpcs://localhost:8051
 
     grpcOptions:
-      ssl-target-name-override: peer1.org1.example.com
+      ssl-target-name-override: peer1.firm.assetauth.vn
     tlsCACerts:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
+      path: ../artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/peers/peer1.firm.assetauth.vn/tls/ca.crt
 
-  peer0.org2.example.com:
+  peer0.gov.assetauth.vn:
     url: grpcs://localhost:9051
 
     grpcOptions:
-      ssl-target-name-override: peer0.org2.example.com
+      ssl-target-name-override: peer0.gov.assetauth.vn
     tlsCACerts:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+      path: ../artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/peers/peer0.gov.assetauth.vn/tls/ca.crt
 
-  peer1.org2.example.com:
+  peer1.gov.assetauth.vn:
     url: grpcs://localhost:10051
 
     grpcOptions:
-      ssl-target-name-override: peer1.org2.example.com
+      ssl-target-name-override: peer1.gov.assetauth.vn
     tlsCACerts:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt
+      path: ../artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/peers/peer1.gov.assetauth.vn/tls/ca.crt
 #
 # Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
 # certificate management to be done via REST APIs. Application may choose to use a standard
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca.org1.example.com:
+  ca.firm.assetauth.vn:
     url: https://localhost:7054
     httpOptions:
       verify: false
     tlsCACerts:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
+      path: ../artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/ca/ca.firm.assetauth.vn-cert.pem
 
     registrar:
       - enrollId: admin
         enrollSecret: adminpw
-    caName: ca.org1.example.com
+    caName: ca.firm.assetauth.vn
 
-  ca.org2.example.com:
+  ca.gov.assetauth.vn:
     url: https://localhost:8054
     httpOptions:
       verify: false
     tlsCACerts:
-      path: ../artifacts/channel/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+      path: ../artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/ca/ca.gov.assetauth.vn-cert.pem
 
     registrar:
       - enrollId: admin
         enrollSecret: adminpw
-    caName: ca.org2.example.com
+    caName: ca.gov.assetauth.vn

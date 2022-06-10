@@ -19,7 +19,7 @@ Organizations:
         ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+        MSPDir: crypto-config/ordererOrganizations/assetauth.vn/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -38,12 +38,12 @@ Organizations:
     - &Org1
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org1MSP
+        Name: FirmMSP
 
         # ID to load the MSP definition as
-        ID: Org1MSP
+        ID: FirmMSP
 
-        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+        MSPDir: crypto-config/peerOrganizations/firm.assetauth.vn/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -51,34 +51,34 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+                Rule: "OR('FirmMSP.admin', 'FirmMSP.peer', 'FirmMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
+                Rule: "OR('FirmMSP.admin', 'FirmMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin')"
+                Rule: "OR('FirmMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org1MSP.peer')"
+                Rule: "OR('FirmMSP.peer')"
 
         # leave this flag set to true.
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org1.example.com
+            - Host: peer0.firm.assetauth.vn
               Port: 7051
 
     - &Org2
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org2MSP
+        Name: GovMSP
 
         # ID to load the MSP definition as
-        ID: Org2MSP
+        ID: GovMSP
 
-        MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+        MSPDir: crypto-config/peerOrganizations/gov.assetauth.vn/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -86,22 +86,22 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')"
+                Rule: "OR('GovMSP.admin', 'GovMSP.peer', 'GovMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin', 'Org2MSP.client')"
+                Rule: "OR('GovMSP.admin', 'GovMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin')"
+                Rule: "OR('GovMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org2MSP.peer')"
+                Rule: "OR('GovMSP.peer')"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org2.example.com
+            - Host: peer0.gov.assetauth.vn
               Port: 9051
 
 ################################################################################
@@ -211,13 +211,13 @@ Orderer: &OrdererDefaults
 
     EtcdRaft:
         Consenters:
-        - Host: orderer.example.com
+        - Host: orderer.assetauth.vn
           Port: 7050
-          ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-          ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
+          ClientTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer.assetauth.vn/tls/server.crt
+          ServerTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer.assetauth.vn/tls/server.crt
 
     Addresses:
-        - orderer.example.com:7050
+        - orderer.assetauth.vn:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -322,32 +322,32 @@ Profiles:
             OrdererType: etcdraft
             EtcdRaft:
                 Consenters:
-                - Host: orderer.example.com
+                - Host: orderer.assetauth.vn
                   Port: 7050
-                  ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-                - Host: orderer2.example.com
-                  Port: 8050
-                  ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
-                - Host: orderer3.example.com
-                  Port: 9050
-                  ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
-                # - Host: orderer4.example.com
+                  ClientTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer.assetauth.vn/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer.assetauth.vn/tls/server.crt
+                # - Host: orderer2.assetauth.vn
+                #   Port: 8050
+                #   ClientTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer2.assetauth.vn/tls/server.crt
+                #   ServerTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer2.assetauth.vn/tls/server.crt
+                # - Host: orderer3.assetauth.vn
+                #   Port: 9050
+                #   ClientTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer3.assetauth.vn/tls/server.crt
+                #   ServerTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer3.assetauth.vn/tls/server.crt
+                # - Host: orderer4.assetauth.vn
                 #   Port: 10050
-                #   ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/server.crt
-                #   ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/server.crt
-                # - Host: orderer5.example.com
+                #   ClientTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer4.assetauth.vn/tls/server.crt
+                #   ServerTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer4.assetauth.vn/tls/server.crt
+                # - Host: orderer5.assetauth.vn
                 #   Port: 11050
-                #   ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt
-                #   ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt
+                #   ClientTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer5.assetauth.vn/tls/server.crt
+                #   ServerTLSCert: crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer5.assetauth.vn/tls/server.crt
             Addresses:
-                - orderer.example.com:7050
-                - orderer2.example.com:8050
-                - orderer3.example.com:9050
-                # - orderer4.example.com:10050
-                # - orderer5.example.com:11050
+                - orderer.assetauth.vn:7050
+                # - orderer2.assetauth.vn:8050
+                # - orderer3.assetauth.vn:9050
+                # - orderer4.assetauth.vn:10050
+                # - orderer5.assetauth.vn:11050
 
             Organizations:
             - *OrdererOrg

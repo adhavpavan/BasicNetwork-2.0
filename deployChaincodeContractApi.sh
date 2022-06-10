@@ -1,63 +1,63 @@
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-export PEER0_ORG1_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-export PEER0_ORG2_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+export ORDERER_CA=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer.assetauth.vn/msp/tlscacerts/tlsca.assetauth.vn-cert.pem
+export PEER0_ORG1_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/peers/peer0.firm.assetauth.vn/tls/ca.crt
+export PEER0_ORG2_CA=${PWD}/artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/peers/peer0.gov.assetauth.vn/tls/ca.crt
 export FABRIC_CFG_PATH=${PWD}/artifacts/channel/config/
 
 export CHANNEL_NAME=mychannel
 
 setGlobalsForOrderer(){
     export CORE_PEER_LOCALMSPID="OrdererMSP"
-    export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp
+    export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/assetauth.vn/orderers/orderer.assetauth.vn/msp/tlscacerts/tlsca.assetauth.vn-cert.pem
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/ordererOrganizations/assetauth.vn/users/Admin@assetauth.vn/msp
     
 }
 
 setGlobalsForPeer0Org1(){
-    export CORE_PEER_LOCALMSPID="Org1MSP"
+    export CORE_PEER_LOCALMSPID="FirmMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/users/Admin@firm.assetauth.vn/msp
     export CORE_PEER_ADDRESS=localhost:7051
 }
 
 setGlobalsForPeer1Org1(){
-    export CORE_PEER_LOCALMSPID="Org1MSP"
+    export CORE_PEER_LOCALMSPID="FirmMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/firm.assetauth.vn/users/Admin@firm.assetauth.vn/msp
     export CORE_PEER_ADDRESS=localhost:8051
     
 }
 
 setGlobalsForPeer0Org2(){
-    export CORE_PEER_LOCALMSPID="Org2MSP"
+    export CORE_PEER_LOCALMSPID="GovMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/users/Admin@gov.assetauth.vn/msp
     export CORE_PEER_ADDRESS=localhost:9051
     
 }
 
 setGlobalsForPeer1Org2(){
-    export CORE_PEER_LOCALMSPID="Org2MSP"
+    export CORE_PEER_LOCALMSPID="GovMSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/artifacts/channel/crypto-config/peerOrganizations/gov.assetauth.vn/users/Admin@gov.assetauth.vn/msp
     export CORE_PEER_ADDRESS=localhost:10051
     
 }
 
 presetup(){
     echo Vendoring Go dependencies ...
-    pushd ./artifacts/src/github.com/fabcar_contract_api/go
+    pushd ./artifacts/src/github.com/asset_contract_api/go
     GO111MODULE=on go mod vendor
     popd
     echo Finished vendoring Go dependencies
 }
-# presetup
+presetup
 
 CHANNEL_NAME="mychannel"
 CC_RUNTIME_LANGUAGE="golang"
 VERSION="1"
-CC_SRC_PATH="./artifacts/src/github.com/fabcar/go/"
-CC_NAME="fabcar"
+CC_SRC_PATH="./artifacts/src/github.com/asset_contract_api/go/"
+CC_NAME="asset"
 
 packageChaincode(){
     rm -rf ${CC_NAME}.tar.gz
@@ -97,7 +97,7 @@ approveForMyOrg1(){
     setGlobalsForPeer0Org1
 
     peer lifecycle chaincode approveformyorg -o localhost:7050  \
-    --ordererTLSHostnameOverride orderer.example.com \
+    --ordererTLSHostnameOverride orderer.assetauth.vn \
     --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
     --channelID $CHANNEL_NAME --name ${CC_NAME} \
     --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${VERSION}
@@ -106,11 +106,11 @@ approveForMyOrg1(){
     
 }
 
-# --signature-policy "OR ('Org1MSP.member')"
+# --signature-policy "OR ('FirmMSP.member')"
 # --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA
-# --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles $PEER0_ORG2_CA
+# --peerAddresses peer0.firm.assetauth.vn:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses peer0.gov.assetauth.vn:9051 --tlsRootCertFiles $PEER0_ORG2_CA
 #--channel-config-policy Channel/Application/Admins
-# --signature-policy "OR ('Org1MSP.peer','Org2MSP.peer')"
+# --signature-policy "OR ('FirmMSP.peer','GovMSP.peer')"
 
 
 checkCommitReadyness(){
@@ -126,7 +126,7 @@ approveForMyOrg2(){
     setGlobalsForPeer0Org2
 
     peer lifecycle chaincode approveformyorg -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer.example.com \
+    --ordererTLSHostnameOverride orderer.assetauth.vn \
     --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
     --channelID $CHANNEL_NAME --name ${CC_NAME} \
     --version ${VERSION} --init-required \
@@ -151,7 +151,7 @@ commitChaincodeDefination(){
     setGlobalsForPeer0Org1
 
     peer lifecycle chaincode commit -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer.example.com \
+    --ordererTLSHostnameOverride orderer.assetauth.vn \
     --tls $CORE_PEER_TLS_ENABLED  --cafile $ORDERER_CA \
     --channelID $CHANNEL_NAME --name ${CC_NAME} \
     --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
@@ -173,7 +173,7 @@ queryCommitted(){
 chaincodeInvokeInit(){
     setGlobalsForPeer0Org1
 
-    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
+    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.assetauth.vn \
     --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} \
     --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
     --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
@@ -187,7 +187,7 @@ chaincodeInvoke(){
 
     # Initialize Ledger
     # peer chaincode invoke -o localhost:7050 \
-    # --ordererTLSHostnameOverride orderer.example.com \
+    # --ordererTLSHostnameOverride orderer.assetauth.vn \
     # --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} \
     # --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
     # --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA  \
@@ -196,47 +196,52 @@ chaincodeInvoke(){
     setGlobalsForPeer0Org1
 
     ## Create Car
-    # peer chaincode invoke -o localhost:7050 \
-    #     --ordererTLSHostnameOverride orderer.example.com \
-    #     --tls $CORE_PEER_TLS_ENABLED \
-    #     --cafile $ORDERER_CA \
-    #     -C $CHANNEL_NAME -n ${CC_NAME}  \
-    #     --peerAddresses localhost:7051 \
-    #     --tlsRootCertFiles $PEER0_ORG1_CA \
-    #     --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA $PEER_CONN_PARMS  \
-    #     -c '{"function": "CreateCar","Args":["Car-ABCDEEE", "Audi", "R8", "Red", "Pavan"]}'
-    
-    ## Change car owner
     peer chaincode invoke -o localhost:7050 \
-        --ordererTLSHostnameOverride orderer.example.com \
+        --ordererTLSHostnameOverride orderer.assetauth.vn \
         --tls $CORE_PEER_TLS_ENABLED \
         --cafile $ORDERER_CA \
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 \
         --tlsRootCertFiles $PEER0_ORG1_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA $PEER_CONN_PARMS  \
-        -c '{"function": "ChangeCarOwner","Args":["Car-ABCDEEE", "Sandip"]}'
+        -c '{"function": "CreateAsset","Args":["ASSET3", "Than", "xe hoi", "hha", "111", "DQTT"]}'
+    
+    ## Change car owner
+    # peer chaincode invoke -o localhost:7050 \
+    #     --ordererTLSHostnameOverride orderer.assetauth.vn \
+    #     --tls $CORE_PEER_TLS_ENABLED \
+    #     --cafile $ORDERER_CA \
+    #     -C $CHANNEL_NAME -n ${CC_NAME}  \
+    #     --peerAddresses localhost:7051 \
+    #     --tlsRootCertFiles $PEER0_ORG1_CA \
+    #     --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA $PEER_CONN_PARMS  \
+    #     -c '{"function": "ChangeCarOwner","Args":["Car-ABCDEEE", "Sandip"]}'
 }
 
 chaincodeQuery(){
     setGlobalsForPeer0Org1
 
     # Query all Cars
-    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["queryAllCars"]}'
+    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["queryAllAsset"]}'
 
     # Query by Car id
-    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["queryCar", "Car-ABCDEEE"]}'
+    peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["queryAsset", "ASSET0"]}'
 }
 
-# packageChaincode
-# installChaincode
-# queryInstalled
-# approveForMyOrg1
+packageChaincode
+installChaincode
+queryInstalled
+# sleep 2
+approveForMyOrg1
 # checkCommitReadyness
-# approveForMyOrg2
-# checkCommitReadyness
-# commitChaincodeDefination
-# queryCommitted
-# chaincodeInvokeInit
+approveForMyOrg2
+sleep 2
+checkCommitReadyness
+commitChaincodeDefination
+sleep 2
+queryCommitted
+sleep 2
+chaincodeInvokeInit
+sleep 2
 chaincodeInvoke
-chaincodeQuery
+# chaincodeQuery

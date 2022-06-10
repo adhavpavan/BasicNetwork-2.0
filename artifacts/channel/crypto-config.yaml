@@ -4,7 +4,7 @@ OrdererOrgs:
   # Orderer
   # ---------------------------------------------------------------------------
   - Name: Orderer
-    Domain: example.com
+    Domain: assetauth.vn
     EnableNodeOUs: true
 
     # ---------------------------------------------------------------------------
@@ -12,17 +12,17 @@ OrdererOrgs:
     # ---------------------------------------------------------------------------
     Specs:
       - Hostname: orderer
-        SANS:
-            - "localhost"
-            - "127.0.0.1"
-      - Hostname: orderer2
-        SANS:
-          - "localhost"
-          - "127.0.0.1"
-      - Hostname: orderer3
-        SANS:
-            - "localhost"
-            - "127.0.0.1"
+        # SANS:
+        #     - "localhost"
+        #     - "127.0.0.1"
+      # - Hostname: orderer2
+      #   SANS:
+      #     - "localhost"
+      #     - "127.0.0.1"
+      # - Hostname: orderer3
+      #   SANS:
+      #       - "localhost"
+      #       - "127.0.0.1"
 
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
@@ -31,8 +31,8 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # Org1
   # ---------------------------------------------------------------------------
-  - Name: Org1
-    Domain: org1.example.com
+  - Name: gov
+    Domain: gov.assetauth.vn
     EnableNodeOUs: true
 
     Template:
@@ -45,8 +45,8 @@ PeerOrgs:
     Users:
       Count: 1
 
-  - Name: Org2
-    Domain: org2.example.com
+  - Name: firm
+    Domain: firm.assetauth.vn
     EnableNodeOUs: true
 
     Template:

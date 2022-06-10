@@ -293,11 +293,61 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req
 
 
 		const response_payload = {
-			result: message,
-			error: null,
-			errorData: null
+			"result": message,
+			"error": null,
+			"errorData": null
 		}
 		res.send(response_payload);
+
+	} catch (error) {
+		const response_payload = {
+			"result": null,
+			"error": error.name,
+			"errorData": error.message
+		}
+		res.send(response_payload)
+	}
+});
+
+
+// Query on chaincode on target peers
+app.get('/channels/:channelName/chaincodes/:chaincodeName', async function (req, res) {
+	try {
+		logger.debug('==================== QUERY BY CHAINCODE ==================');
+		var channelName = req.params.channelName;
+		var chaincodeName = req.params.chaincodeName;
+		let args = req.query.args;
+		let fcn = req.query.fcn;
+		let peer = req.query.peer;
+
+		logger.debug('channelName : ' + channelName);
+		logger.debug('chaincodeName : ' + chaincodeName);
+		logger.debug('fcn : ' + fcn);
+		logger.debug('args : ' + args);
+
+		if (!chaincodeName) {
+			res.json(getErrorMessage('\'chaincodeName\''));
+			return;
+		}
+		if (!channelName) {
+			res.json(getErrorMessage('\'channelName\''));
+			return;
+		}
+		if (!fcn) {
+			res.json(getErrorMessage('\'fcn\''));
+			return;
+		}
+		if (!args) {
+			res.json(getErrorMessage('\'args\''));
+			return;
+		}
+		args = args.replace(/'/g, '"');
+		args = JSON.parse(args);
+		logger.debug(args);
+
+
+		let message = await query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname);
+		res.send(message);
 
 	} catch (error) {
 		const response_payload = {
@@ -307,45 +357,6 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req
 		}
 		res.send(response_payload)
 	}
-});
-
-
-// Query on chaincode on target peers
-app.get('/channels/:channelName/chaincodes/:chaincodeName', async function (req, res) {
-	logger.debug('==================== QUERY BY CHAINCODE ==================');
-	var channelName = req.params.channelName;
-	var chaincodeName = req.params.chaincodeName;
-	let args = req.query.args;
-	let fcn = req.query.fcn;
-	let peer = req.query.peer;
-
-	logger.debug('channelName : ' + channelName);
-	logger.debug('chaincodeName : ' + chaincodeName);
-	logger.debug('fcn : ' + fcn);
-	logger.debug('args : ' + args);
-
-	if (!chaincodeName) {
-		res.json(getErrorMessage('\'chaincodeName\''));
-		return;
-	}
-	if (!channelName) {
-		res.json(getErrorMessage('\'channelName\''));
-		return;
-	}
-	if (!fcn) {
-		res.json(getErrorMessage('\'fcn\''));
-		return;
-	}
-	if (!args) {
-		res.json(getErrorMessage('\'args\''));
-		return;
-	}
-	args = args.replace(/'/g, '"');
-	args = JSON.parse(args);
-	logger.debug(args);
-
-	let message = await query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname);
-	res.send(message);
 });
 
 //  Query Get Block by BlockNumber
