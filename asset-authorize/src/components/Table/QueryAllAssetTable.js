@@ -3,7 +3,7 @@ import { Button, Table } from 'react-bootstrap';
 import APIClient from '../../api/APIClient';
 import ChangeAsset from '../Modal/ChangeAsset';
 
-const QueryAllAssetTable = ({ data }) => {
+const QueryAllAssetTable = ({ data, setData }) => {
     const [showChangeModal, setShowChangeModal] = useState(false)
     const [keyChange, setKeyChange] = useState('')
     const handleDelete = (key) => {
@@ -16,6 +16,19 @@ const QueryAllAssetTable = ({ data }) => {
             }else{
                 alert('Delete failed!')
             }
+        })
+    }
+    const handleShowHistory = (asset) => {
+        APIClient.getHistoryanAsset({
+            args:  `["${asset}"]`,
+            peer: 'peer0.gov.assetauth.vn',
+            fcn: 'getHistoryForAsset'
+        }).then((rs) => {
+            setData({
+                data: rs.data,
+                name:'history asset',
+                asset: asset
+            })
         })
     }
     return (
@@ -54,6 +67,9 @@ const QueryAllAssetTable = ({ data }) => {
                                         setKeyChange(_data.Key)
                                         setShowChangeModal(true)
                                     }}>EDIT</Button>
+                                    <Button className='option' variant="info" size="sm" onClick={() =>{
+                                        handleShowHistory(_data.Key)
+                                    }}>History</Button>
                                 </td>
                             </tr>
                             )

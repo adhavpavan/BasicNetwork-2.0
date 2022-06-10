@@ -13,30 +13,32 @@ const getTokenRegister = (data) => {
 
 const queryAnAsset = (param) => {
     console.log(localStorage.getItem('token'))
-    const url ='channels/mychannel/chaincodes/asset'
+    const url = 'channels/mychannel/chaincodes/asset'
     return axiosClient.get(
-        url,
-        {params: {...param}},
+        url, { params: {...param } },
     )
 }
 
 const queryAllAsset = () => {
-    const url ='channels/mychannel/chaincodes/asset'
-    return axiosClient.get(url,
-        {params: {
+    const url = 'channels/mychannel/chaincodes/asset'
+    return axiosClient.get(url, {
+        params: {
             peer: 'peer0.gov.assetauth.vn',
             fcn: 'queryAllAsset',
             args: `["ASSET2", "Than", "xe hoi", "hha", "111", "DQT"]`
-        }}
-    )
+        }
+    })
 }
-
+const getHistoryanAsset = (param) => {
+    const url = 'channels/mychannel/chaincodes/asset'
+    return axiosClient.get(url, { params: param })
+}
 const createAnAsset = (body) => {
     const url = 'channels/mychannel/chaincodes/asset';
     return axiosClient.post(url, {
         fcn: "createAsset",
         peers: ["peer0.gov.assetauth.vn", "peer0.firm.assetauth.vn"],
-        chaincodeName:"asset",
+        chaincodeName: "asset",
         channelName: "mychannel",
         ...body
     })
@@ -47,7 +49,7 @@ const deleteAnAsset = (body) => {
     return axiosClient.post(url, {
         fcn: "deleteAsset",
         peers: ["peer0.gov.assetauth.vn", "peer0.firm.assetauth.vn"],
-        chaincodeName:"asset",
+        chaincodeName: "asset",
         channelName: "mychannel",
         ...body
     })
@@ -58,7 +60,7 @@ const changeAsset = (body) => {
     return axiosClient.post(url, {
         fcn: "changeAssetOwner",
         peers: ["peer0.gov.assetauth.vn", "peer0.firm.assetauth.vn"],
-        chaincodeName:"asset",
+        chaincodeName: "asset",
         channelName: "mychannel",
         ...body
     })
@@ -70,6 +72,7 @@ const APIClient = {
     queryAllAsset,
     createAnAsset,
     deleteAnAsset,
-    changeAsset
+    changeAsset,
+    getHistoryanAsset
 }
 export default APIClient;

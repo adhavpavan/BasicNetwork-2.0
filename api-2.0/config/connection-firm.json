@@ -1,8 +1,8 @@
 {
-    "name": "asset-authe-firm",
+    "name": "asset-authe-Firm",
     "version": "1.0.0",
     "client": {
-        "organization": "firm",
+        "organization": "Firm",
         "connection": {
             "timeout": {
                 "peer": {
@@ -12,45 +12,45 @@
         }
     },
     "organizations": {
-        "firm": {
-            "mspid": "firmMSP",
+        "Firm": {
+            "mspid": "FirmMSP",
             "peers": [
-                "peer0.firm.assetauth.vn",
-                "peer1.firm.assetauth.vn"
+                "peer0.Firm.assetauth.vn",
+                "peer1.Firm.assetauth.vn"
             ],
             "certificateAuthorities": [
-                "ca.firm.assetauth.vn"
+                "ca.Firm.assetauth.vn"
             ]
         }
     },
     "peers": {
-        "peer0.orgfirm.assetauth.vn": {
+        "peer0.orgFirm.assetauth.vn": {
             "url": "grpcs://localhost:7051",
             "tlsCACerts": {
                 "pem": "-----BEGIN CERTIFICATE-----\nMIICWzCCAgKgAwIBAgIRANS//LxJiNTCCxguiFOdcREwCgYIKoZIzj0EAwIweDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGjAYBgNVBAoTEWZpcm0uYXNzZXRhdXRoLnZuMSAwHgYDVQQDExd0\nbHNjYS5maXJtLmFzc2V0YXV0aC52bjAeFw0yMjA1MzAwOTAzMDBaFw0zMjA1Mjcw\nOTAzMDBaMHgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYD\nVQQHEw1TYW4gRnJhbmNpc2NvMRowGAYDVQQKExFmaXJtLmFzc2V0YXV0aC52bjEg\nMB4GA1UEAxMXdGxzY2EuZmlybS5hc3NldGF1dGgudm4wWTATBgcqhkjOPQIBBggq\nhkjOPQMBBwNCAATq+rtCyVpJ/MNKKwvcxA/wft7e2dTwW82uznhUi6w3AlBuRO20\nFsq78rSv7whBaplV6R9e1Xxpi5Dtk131mANTo20wazAOBgNVHQ8BAf8EBAMCAaYw\nHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8w\nKQYDVR0OBCIEIIPvTFDaRgG63Z4f9TY/gCKIsspJ3d00eX83fWdwkBMWMAoGCCqG\nSM49BAMCA0cAMEQCIGP0m+EmQsl8W/m5XZkr6s2O6ImWNjORxSV2wyFjFeDqAiBm\nD6DKShiEXYb2/gAhlSKwfhXimpG/xR3QhLeyE4t89A==\n-----END CERTIFICATE-----\n"
             },
             "grpcOptions": {
-                "ssl-target-name-override": "peer0.firm.assetauth.vn",
-                "hostnameOverride": "peer0.firm.assetauth.vn"
+                "ssl-target-name-override": "peer0.Firm.assetauth.vn",
+                "hostnameOverride": "peer0.Firm.assetauth.vn"
             }
         },
-	"peer1.firm.assetauth.vn": {
+	"peer1.Firm.assetauth.vn": {
             "url": "grpcs://localhost:8051",
             "tlsCACerts": {
                 "pem": "-----BEGIN CERTIFICATE-----\nMIICWzCCAgKgAwIBAgIRANS//LxJiNTCCxguiFOdcREwCgYIKoZIzj0EAwIweDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGjAYBgNVBAoTEWZpcm0uYXNzZXRhdXRoLnZuMSAwHgYDVQQDExd0\nbHNjYS5maXJtLmFzc2V0YXV0aC52bjAeFw0yMjA1MzAwOTAzMDBaFw0zMjA1Mjcw\nOTAzMDBaMHgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYD\nVQQHEw1TYW4gRnJhbmNpc2NvMRowGAYDVQQKExFmaXJtLmFzc2V0YXV0aC52bjEg\nMB4GA1UEAxMXdGxzY2EuZmlybS5hc3NldGF1dGgudm4wWTATBgcqhkjOPQIBBggq\nhkjOPQMBBwNCAATq+rtCyVpJ/MNKKwvcxA/wft7e2dTwW82uznhUi6w3AlBuRO20\nFsq78rSv7whBaplV6R9e1Xxpi5Dtk131mANTo20wazAOBgNVHQ8BAf8EBAMCAaYw\nHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8w\nKQYDVR0OBCIEIIPvTFDaRgG63Z4f9TY/gCKIsspJ3d00eX83fWdwkBMWMAoGCCqG\nSM49BAMCA0cAMEQCIGP0m+EmQsl8W/m5XZkr6s2O6ImWNjORxSV2wyFjFeDqAiBm\nD6DKShiEXYb2/gAhlSKwfhXimpG/xR3QhLeyE4t89A==\n-----END CERTIFICATE-----\n"
             },
             "grpcOptions": {
-                "ssl-target-name-override": "peer1.firm.assetauth.vn",
-                "hostnameOverride": "peer1.firm.assetauth.vn"
+                "ssl-target-name-override": "peer1.Firm.assetauth.vn",
+                "hostnameOverride": "peer1.Firm.assetauth.vn"
             }
         }
 
 	
     },
     "certificateAuthorities": {
-        "ca.firm.assetauth.vn": {
+        "ca.Firm.assetauth.vn": {
             "url": "https://localhost:7054",
-            "caName": "ca.firm.assetauth.vn",
+            "caName": "ca.Firm.assetauth.vn",
             "tlsCACerts": {
                 "pem": "-----BEGIN CERTIFICATE-----\nMIICWzCCAgKgAwIBAgIRANS//LxJiNTCCxguiFOdcREwCgYIKoZIzj0EAwIweDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGjAYBgNVBAoTEWZpcm0uYXNzZXRhdXRoLnZuMSAwHgYDVQQDExd0\nbHNjYS5maXJtLmFzc2V0YXV0aC52bjAeFw0yMjA1MzAwOTAzMDBaFw0zMjA1Mjcw\nOTAzMDBaMHgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYD\nVQQHEw1TYW4gRnJhbmNpc2NvMRowGAYDVQQKExFmaXJtLmFzc2V0YXV0aC52bjEg\nMB4GA1UEAxMXdGxzY2EuZmlybS5hc3NldGF1dGgudm4wWTATBgcqhkjOPQIBBggq\nhkjOPQMBBwNCAATq+rtCyVpJ/MNKKwvcxA/wft7e2dTwW82uznhUi6w3AlBuRO20\nFsq78rSv7whBaplV6R9e1Xxpi5Dtk131mANTo20wazAOBgNVHQ8BAf8EBAMCAaYw\nHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8w\nKQYDVR0OBCIEIIPvTFDaRgG63Z4f9TY/gCKIsspJ3d00eX83fWdwkBMWMAoGCCqG\nSM49BAMCA0cAMEQCIGP0m+EmQsl8W/m5XZkr6s2O6ImWNjORxSV2wyFjFeDqAiBm\nD6DKShiEXYb2/gAhlSKwfhXimpG/xR3QhLeyE4t89A==\n-----END CERTIFICATE-----\n"
             },
